@@ -1,0 +1,59 @@
+<mat-card class="profile-card" (click)="viewDetails()">
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <img
+        [src]="profile.avatar_url || 'assets/images/default-avatar.png'"
+        alt="Profile Avatar"
+      />
+    </div>
+    <div class="profile-info">
+      <h3 class="profile-name">{{ profile.display_name || profile.name }}</h3>
+      <span class="profile-type">{{
+          type === "influencer" ? "Influencer" : "Marca"
+        }}</span>
+    </div>
+  </div>
+
+  <div class="profile-content">
+    <p class="profile-bio">{{ profile.bio || "Sin biografía" }}</p>
+
+    <!-- Información específica para influencers -->
+    <div *ngIf="type === 'influencer'" class="profile-metrics">
+      <div class="metric" *ngIf="profile.followers">
+        <mat-icon>people</mat-icon>
+        <span>{{ formatNumber(getTotalFollowers()) }} seguidores</span>
+      </div>
+      <div class="metric" *ngIf="profile.engagement_rate">
+        <mat-icon>trending_up</mat-icon>
+        <span>{{ profile.engagement_rate }}% engagement</span>
+      </div>
+      <div class="metric" *ngIf="profile.niche">
+        <mat-icon>category</mat-icon>
+        <span>{{ profile.niche }}</span>
+      </div>
+    </div>
+
+    <!-- Información específica para marcas -->
+    <div *ngIf="type === 'brand'" class="profile-metrics">
+      <div class="metric" *ngIf="profile.sector">
+        <mat-icon>business</mat-icon>
+        <span>{{ profile.sector }}</span>
+      </div>
+      <div class="metric" *ngIf="profile.budget_range">
+        <mat-icon>attach_money</mat-icon>
+        <span>{{ profile.budget_range }}</span>
+      </div>
+      <div class="metric" *ngIf="profile.content_s">
+        <mat-icon>video_library</mat-icon>
+        <span>{{ profile.content_s }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-footer">
+    <button mat-button color="primary" class="view-details-btn">
+      Ver detalles
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </div>
+</mat-card>
