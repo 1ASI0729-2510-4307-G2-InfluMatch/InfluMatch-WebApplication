@@ -100,8 +100,8 @@
       <li class="toggle-sidebar-button-container" *ngIf="!isMobile">
         <button class="toggle-sidebar-button" (click)="toggleSidebar()">
           <mat-icon>{{
-              isExpanded ? "chevron_left" : "chevron_right"
-            }}</mat-icon>
+            isExpanded ? "chevron_left" : "chevron_right"
+          }}</mat-icon>
         </button>
       </li>
       <li>
@@ -188,7 +188,7 @@
             <span
               *ngIf="isExpanded"
               [@fadeInOut]="isExpanded ? 'visible' : 'hidden'"
-            >{{ "SIDEBAR.DASHBOARD" | translate }}</span
+              >{{ "SIDEBAR.DASHBOARD" | translate }}</span
             >
           </a>
         </li>
@@ -204,7 +204,7 @@
             <span
               *ngIf="isExpanded"
               [@fadeInOut]="isExpanded ? 'visible' : 'hidden'"
-            >{{ "SIDEBAR.PROFILE" | translate }}</span
+              >{{ "SIDEBAR.PROFILE" | translate }}</span
             >
           </a>
         </li>
@@ -220,7 +220,7 @@
             <span
               *ngIf="isExpanded"
               [@fadeInOut]="isExpanded ? 'visible' : 'hidden'"
-            >{{ "SIDEBAR.MESSAGES" | translate }}</span
+              >{{ "SIDEBAR.MESSAGES" | translate }}</span
             >
             <div
               class="badge"
@@ -243,7 +243,7 @@
             <span
               *ngIf="isExpanded"
               [@fadeInOut]="isExpanded ? 'visible' : 'hidden'"
-            >{{ "SIDEBAR.CAMPAIGNS" | translate }}</span
+              >{{ "SIDEBAR.CAMPAIGNS" | translate }}</span
             >
           </a>
         </li>
@@ -259,7 +259,7 @@
             <span
               *ngIf="isExpanded"
               [@fadeInOut]="isExpanded ? 'visible' : 'hidden'"
-            >{{ "SIDEBAR.ANALYTICS" | translate }}</span
+              >{{ "SIDEBAR.ANALYTICS" | translate }}</span
             >
           </a>
         </li>
@@ -306,7 +306,7 @@
             <span
               *ngIf="isExpanded"
               [@fadeInOut]="isExpanded ? 'visible' : 'hidden'"
-            >{{ "SIDEBAR.SETTINGS" | translate }}</span
+              >{{ "SIDEBAR.SETTINGS" | translate }}</span
             >
           </a>
         </li>
@@ -321,7 +321,7 @@
             <span
               *ngIf="isExpanded"
               [@fadeInOut]="isExpanded ? 'visible' : 'hidden'"
-            >{{ "SIDEBAR.LOGOUT" | translate }}</span
+              >{{ "SIDEBAR.LOGOUT" | translate }}</span
             >
           </button>
         </li>
