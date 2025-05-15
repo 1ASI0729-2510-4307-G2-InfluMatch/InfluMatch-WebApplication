@@ -1,0 +1,35 @@
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - main    # o la rama que uses para producción
+
+jobs:
+  build_and_deploy_job:
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build app
+        run: npm run build --if-present
+
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_INFLU_MATCH_SWA }}
+          repo_token:                             ${{ secrets.GITHUB_TOKEN }}
+          action:                                "upload"
+          app_location:                          "/"  
+          api_location:                          ""  
+          output_location:                       "dist/influ-match-web-application/browser"
