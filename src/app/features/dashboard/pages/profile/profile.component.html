@@ -1,0 +1,248 @@
+<div class="profile-container">
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando perfil...</p>
+  </div>
+
+  <!-- Estado de error -->
+  <div *ngIf="error && !loading" class="error-container">
+    <mat-icon color="warn">error_outline</mat-icon>
+    <p>No se pudo cargar la información del perfil</p>
+    <button mat-raised-button color="primary">Reintentar</button>
+  </div>
+
+  <!-- Perfil cargado -->
+  <div *ngIf="user && !loading && !error" class="profile-content">
+    <div class="profile-header">
+      <div class="avatar-container">
+        <div
+          class="avatar"
+          [style.backgroundImage]="
+            user.avatar_url ? 'url(' + user.avatar_url + ')' : ''
+          "
+        >
+          <mat-icon *ngIf="!user.avatar_url">person</mat-icon>
+        </div>
+      </div>
+      <div class="user-info">
+        <h1>{{ user.display_name || user.name }}</h1>
+        <p class="user-type">{{ isInfluencer() ? "Influencer" : "Marca" }}</p>
+        <p class="location" *ngIf="user.location">
+          <mat-icon>location_on</mat-icon> {{ user.location }}
+        </p>
+      </div>
+      <div class="actions">
+        <button mat-raised-button color="primary">
+          <mat-icon>edit</mat-icon> Editar Perfil
+        </button>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Bio -->
+    <section class="profile-section">
+      <h2>Biografía</h2>
+      <p class="bio">{{ user.bio || "No hay biografía disponible" }}</p>
+    </section>
+
+    <mat-divider></mat-divider>
+
+    <!-- Información específica para Influencers -->
+    <ng-container *ngIf="isInfluencer()">
+      <section class="profile-section">
+        <h2>Información de Influencer</h2>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value">
+              {{ formatFollowers(getTotalFollowers()) }}
+            </div>
+            <div class="stat-label">Seguidores Totales</div>
+          </div>
+
+          <div class="stat-card" *ngIf="user.engagement_rate">
+            <div class="stat-value">{{ user.engagement_rate }}%</div>
+            <div class="stat-label">Engagement Rate</div>
+          </div>
+
+          <div class="stat-card" *ngIf="user.rate_per_post">
+            <div class="stat-value">${{ user.rate_per_post }}</div>
+            <div class="stat-label">Tarifa por Post</div>
+          </div>
+        </div>
+
+        <div class="detail-grid">
+          <div class="detail-item" *ngIf="user.niche">
+            <span class="detail-label">Nicho:</span>
+            <span class="detail-value">{{ user.niche }}</span>
+          </div>
+
+          <div class="detail-item" *ngIf="user.main_audience">
+            <span class="detail-label">Audiencia Principal:</span>
+            <span class="detail-value">{{ user.main_audience }}</span>
+          </div>
+
+          <div class="detail-item" *ngIf="user.languages">
+            <span class="detail-label">Idiomas:</span>
+            <span class="detail-value">{{ user.languages }}</span>
+          </div>
+
+          <div class="detail-item" *ngIf="user.preferred_categories">
+            <span class="detail-label">Categorías Preferidas:</span>
+            <span class="detail-value">{{ user.preferred_categories }}</span>
+          </div>
+        </div>
+
+        <!-- Seguidores por plataforma -->
+        <div *ngIf="user.followers" class="followers-section">
+          <h3>Seguidores por Plataforma</h3>
+          <div class="platform-stats">
+            <div class="platform-stat" *ngIf="user.followers.instagram">
+              <mat-icon>photo_camera</mat-icon>
+              <span class="platform-name">Instagram</span>
+              <span class="platform-value">{{
+                formatFollowers(user.followers.instagram)
+              }}</span>
+            </div>
+
+            <div class="platform-stat" *ngIf="user.followers.tiktok">
+              <mat-icon>music_note</mat-icon>
+              <span class="platform-name">TikTok</span>
+              <span class="platform-value">{{
+                formatFollowers(user.followers.tiktok)
+              }}</span>
+            </div>
+
+            <div class="platform-stat" *ngIf="user.followers.youtube">
+              <mat-icon>smart_display</mat-icon>
+              <span class="platform-name">YouTube</span>
+              <span class="platform-value">{{
+                formatFollowers(user.followers.youtube)
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Experiencia previa -->
+        <div *ngIf="user.previous_experience" class="experience-section">
+          <h3>Experiencia Previa</h3>
+          <p>{{ user.previous_experience }}</p>
+        </div>
+
+        <!-- Portfolio -->
+        <div
+          *ngIf="user.portfolio_urls && user.portfolio_urls.length > 0"
+          class="portfolio-section"
+        >
+          <h3>Portfolio</h3>
+          <div class="portfolio-links">
+            <a
+              *ngFor="let url of user.portfolio_urls"
+              [href]="url"
+              target="_blank"
+              class="portfolio-link"
+            >
+              <mat-icon>link</mat-icon>
+              <span>{{ url }}</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <!-- Información específica para Marcas -->
+    <ng-container *ngIf="isBrand()">
+      <section class="profile-section">
+        <h2>Información de Marca</h2>
+
+        <div class="detail-grid">
+          <div class="detail-item" *ngIf="user.sector">
+            <span class="detail-label">Sector:</span>
+            <span class="detail-value">{{ user.sector }}</span>
+          </div>
+
+          <div class="detail-item" *ngIf="user.website">
+            <span class="detail-label">Sitio Web:</span>
+            <span class="detail-value">
+              <a [href]="user.website" target="_blank">{{ user.website }}</a>
+            </span>
+          </div>
+
+          <div class="detail-item" *ngIf="user.budget_range">
+            <span class="detail-label">Presupuesto:</span>
+            <span class="detail-value">{{ user.budget_range }}</span>
+          </div>
+
+          <div class="detail-item" *ngIf="user.objectives">
+            <span class="detail-label">Objetivos:</span>
+            <span class="detail-value">{{ user.objectives }}</span>
+          </div>
+
+          <div class="detail-item" *ngIf="user.contact_name">
+            <span class="detail-label">Contacto:</span>
+            <span class="detail-value">{{ user.contact_name }}</span>
+          </div>
+
+          <div class="detail-item" *ngIf="user.contact_position">
+            <span class="detail-label">Cargo:</span>
+            <span class="detail-value">{{ user.contact_position }}</span>
+          </div>
+
+          <div class="detail-item" *ngIf="user.content_s">
+            <span class="detail-label">Tipo de Contenido:</span>
+            <span class="detail-value">{{ user.content_s }}</span>
+          </div>
+
+          <div class="detail-item" *ngIf="user.influencer_s">
+            <span class="detail-label">Tipo de Influencer:</span>
+            <span class="detail-value">{{ user.influencer_s }}</span>
+          </div>
+
+          <div class="detail-item" *ngIf="user.campaign_duration">
+            <span class="detail-label">Duración de Campaña:</span>
+            <span class="detail-value">{{ user.campaign_duration }}</span>
+          </div>
+        </div>
+
+        <!-- Información adicional -->
+        <div *ngIf="user.additional_info" class="additional-info">
+          <h3>Información Adicional</h3>
+          <p>{{ user.additional_info }}</p>
+        </div>
+      </section>
+    </ng-container>
+
+    <mat-divider></mat-divider>
+
+    <!-- Redes Sociales -->
+    <section class="profile-section" *ngIf="getSocialLinks().length > 0">
+      <h2>Redes Sociales</h2>
+      <div class="social-links">
+        <a
+          *ngFor="let social of getSocialLinks()"
+          [href]="social.url"
+          target="_blank"
+          class="social-link"
+        >
+          <mat-icon>{{ social.icon }}</mat-icon>
+          <span>{{ social.platform | titlecase }}</span>
+        </a>
+      </div>
+    </section>
+
+    <mat-divider></mat-divider>
+
+    <!-- Información de Contacto -->
+    <section class="profile-section">
+      <h2>Información de Contacto</h2>
+      <div class="contact-info">
+        <div class="contact-item">
+          <mat-icon>email</mat-icon>
+          <span>{{ user.contact_email || user.email }}</span>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

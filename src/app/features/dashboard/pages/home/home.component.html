@@ -1,0 +1,60 @@
+<div class="dashboard-home">
+  <div class="dashboard-header">
+    <h1>
+      {{ role === "marca" ? "Influencers Disponibles" : "Marcas Disponibles" }}
+    </h1>
+    <p class="subtitle">
+      {{
+        role === "marca"
+          ? "Encuentra influencers que se ajusten a tu marca"
+          : "Descubre marcas que buscan colaboraciones"
+      }}
+    </p>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando perfiles...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p>
+      No se pudieron cargar los perfiles. Por favor, intenta de nuevo más tarde.
+    </p>
+  </div>
+
+  <div *ngIf="!loading && !error" class="profiles-grid">
+    <div
+      *ngIf="role === 'marca' && influencers.length === 0"
+      class="empty-state"
+    >
+      <p>No hay influencers disponibles en este momento.</p>
+    </div>
+
+    <div *ngIf="role !== 'marca' && brands.length === 0" class="empty-state">
+      <p>No hay marcas disponibles en este momento.</p>
+    </div>
+
+    <div *ngIf="role === 'marca'">
+      <div class="profiles-grid">
+        <app-profile-card
+          *ngFor="let influencer of influencers"
+          [profile]="influencer"
+          type="influencer"
+        >
+        </app-profile-card>
+      </div>
+    </div>
+
+    <div *ngIf="role !== 'marca'">
+      <div class="profiles-grid">
+        <app-profile-card
+          *ngFor="let brand of brands"
+          [profile]="brand"
+          type="brand"
+        >
+        </app-profile-card>
+      </div>
+    </div>
+  </div>
+</div>
