@@ -1,0 +1,151 @@
+<div class="register-container">
+  <div class="register-left">
+    <div class="image-container">
+      <img
+        src="../../../../../assets/images/register-bg.jpg"
+        alt="Register Background"
+        class="register-bg-image"
+      />
+      <div class="image-overlay"></div>
+    </div>
+
+    <div class="top-actions">
+      <!-- Language Selector -->
+      <div class="language-selector">
+        <button
+          class="lang-btn"
+          [class.active]="currentLang === 'es'"
+          (click)="changeLang('es')"
+        >
+          ES
+        </button>
+        <div class="lang-divider"></div>
+        <button
+          class="lang-btn"
+          [class.active]="currentLang === 'en'"
+          (click)="changeLang('en')"
+        >
+          EN
+        </button>
+      </div>
+    </div>
+
+    <div class="left-content">
+      <div class="logo">
+        <img
+          src="../../../../../assets/images/logo-dark.png"
+          alt="InfluMatch Logo"
+        />
+      </div>
+      <h1 class="welcome-text">{{ "REGISTER.WELCOME" | translate }}</h1>
+      <p class="welcome-subtitle">{{ "REGISTER.SUBTITLE" | translate }}</p>
+    </div>
+  </div>
+
+  <div class="register-right">
+    <div class="register-form-container">
+      <h2>{{ "REGISTER.TITLE" | translate }}</h2>
+      <p class="subtitle">{{ "REGISTER.INSTRUCTION" | translate }}</p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="register-form">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "REGISTER.NAME" | translate }}</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput formControlName="name" required />
+          <mat-error *ngIf="form.get('name')?.hasError('required')">
+            {{ "REGISTER.NAME_REQUIRED" | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "REGISTER.EMAIL" | translate }}</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput formControlName="email" type="email" required />
+          <mat-error *ngIf="form.get('email')?.hasError('required')">
+            {{ "REGISTER.EMAIL_REQUIRED" | translate }}
+          </mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('email')">
+            {{ "REGISTER.EMAIL_INVALID" | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "REGISTER.PASSWORD" | translate }}</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input
+            matInput
+            formControlName="password"
+            [type]="hidePassword ? 'password' : 'text'"
+            required
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+            type="button"
+            aria-label="Toggle password visibility"
+          >
+            <mat-icon>{{
+              hidePassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('password')?.hasError('required')">
+            {{ "REGISTER.PASSWORD_REQUIRED" | translate }}
+          </mat-error>
+          <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+            {{ "REGISTER.PASSWORD_MINLENGTH" | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "REGISTER.ACCOUNT_TYPE" | translate }}</mat-label>
+          <mat-icon matPrefix>business</mat-icon>
+          <mat-select formControlName="user_type">
+            <mat-option
+              *ngFor="let option of rolOptions"
+              [value]="option.value"
+            >
+              {{ option.translationKey | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="terms-checkbox">
+          <mat-checkbox color="primary" formControlName="acceptTerms">
+            {{ "REGISTER.ACCEPT_TERMS_1" | translate }}
+            <a href="#" class="terms-link">{{
+              "REGISTER.TERMS_CONDITIONS" | translate
+            }}</a>
+            {{ "REGISTER.AND" | translate }}
+            <a href="#" class="terms-link">{{
+              "REGISTER.PRIVACY_POLICY" | translate
+            }}</a>
+          </mat-checkbox>
+          <mat-error
+            *ngIf="
+              form.get('acceptTerms')?.hasError('required') &&
+              form.get('acceptTerms')?.touched
+            "
+          >
+            {{ "REGISTER.TERMS_REQUIRED" | translate }}
+          </mat-error>
+        </div>
+
+        <button
+          mat-flat-button
+          type="submit"
+          class="register-button"
+          [disabled]="form.invalid"
+        >
+          <span>{{ "REGISTER.SIGN_UP" | translate }}</span>
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </form>
+
+      <div class="login-link">
+        {{ "REGISTER.HAVE_ACCOUNT" | translate }}
+        <a routerLink="/login">{{ "REGISTER.SIGN_IN" | translate }}</a>
+      </div>
+    </div>
+  </div>
+</div>
