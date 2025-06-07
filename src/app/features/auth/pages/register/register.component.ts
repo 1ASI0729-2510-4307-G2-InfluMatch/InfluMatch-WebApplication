@@ -20,12 +20,14 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { RegisterUseCase } from '../../../../application/use-cases/register.usecase';
 import { AuthService } from '../../../../core/services/auth.service';
-import { NewUserVO } from '../../../../domain/value-objects/new-user.vo';
+import { RegisterVO } from '../../../../domain/value-objects/auth/register.vo';
+import { UserRole } from '../../../../infrastructure/dtos/auth/register.dto';
+import { passwordValidator } from '../../../../shared/validators/password.validator';
 
 // Interfaz para las opciones de rol
 interface RolOption {
-  value: string; // Valor que se enviará al backend (siempre en español)
-  translationKey: string; // Clave para la traducción
+  value: UserRole;
+  translationKey: string;
 }
 
 @Component({
@@ -49,15 +51,15 @@ interface RolOption {
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   form!: FormGroup;
-  hidePassword = true;
+  hide = true;
   currentLang = 'es';
   private langSubscription: Subscription | null = null;
 
+  // Opciones de rol actualizadas
   rolOptions: RolOption[] = [
-    { value: 'influencer', translationKey: 'REGISTER.ACCOUNT_TYPE_INFLUENCER' },
-    { value: 'marca', translationKey: 'REGISTER.ACCOUNT_TYPE_BRAND' },
+    { value: 'BRAND', translationKey: 'REGISTER.ROLE_BRAND' },
+    { value: 'INFLUENCER', translationKey: 'REGISTER.ROLE_INFLUENCER' },
   ];
-  // Opciones de rol (siempre en español)
 
   constructor(
     private fb: FormBuilder,
@@ -72,17 +74,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.form = this.fb.group({
-      name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      user_type: ['', Validators.required],
-      profile_completed: [false], // ← snake_case
+      password: ['', [Validators.required, passwordValidator]],
+      role: ['', Validators.required],
       acceptTerms: [false, Validators.requiredTrue],
     });
   }
 
   ngOnInit() {
-    // Initialize language
     this.currentLang = this.translate.currentLang || 'es';
     this.langSubscription = this.translate.onLangChange.subscribe((event) => {
       this.currentLang = event.lang;
@@ -100,20 +99,42 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
   }
 
+  getPasswordErrorMessage(): string {
+    const control = this.form.get('password');
+    if (!control?.errors || !control.touched) return '';
+
+    if (control.hasError('required')) {
+      return this.translate.instant('REGISTER.PASSWORD_REQUIRED');
+    }
+    if (control.hasError('minlength')) {
+      return this.translate.instant('REGISTER.PASSWORD_MIN_LENGTH');
+    }
+    if (control.hasError('noUpperCase')) {
+      return this.translate.instant('REGISTER.PASSWORD_NO_UPPERCASE');
+    }
+    if (control.hasError('noLowerCase')) {
+      return this.translate.instant('REGISTER.PASSWORD_NO_LOWERCASE');
+    }
+    if (control.hasError('noNumber')) {
+      return this.translate.instant('REGISTER.PASSWORD_NO_NUMBER');
+    }
+    if (control.hasError('noSpecialChar')) {
+      return this.translate.instant('REGISTER.PASSWORD_NO_SPECIAL_CHAR');
+    }
+
+    return '';
+  }
+
   submit() {
     if (this.form.invalid) return;
 
-    // desestructuramos para descartar acceptTerms
-    const { acceptTerms, ...userData } = this.form.value as {
-      name: string;
-      email: string;
-      password: string;
-      user_type: string;
-      profile_completed: boolean;
-      acceptTerms: boolean;
+    const { acceptTerms, ...formData } = this.form.value;
+    
+    const data: RegisterVO = {
+      email: formData.email,
+      password: formData.password,
+      role: formData.role
     };
-
-    const data: NewUserVO = userData;
 
     this.registerUC.execute(data).subscribe(
       (user) => {
@@ -123,8 +144,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.translate.instant('LOGIN.CLOSE'),
           { duration: 5000 }
         );
-
-        // 🚀 tras crear la cuenta, si NO completó el perfil...
         this.router.navigateByUrl('/onboarding');
       },
       (error) => {

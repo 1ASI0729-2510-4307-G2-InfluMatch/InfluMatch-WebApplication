@@ -5,12 +5,14 @@ import { Observable, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { User } from '../../domain/entities/user.entity';
 import { UserCredentials } from '../../domain/value-objects/user-credentials.vo';
-import { NewUserVO } from '../../domain/value-objects/new-user.vo';
+import { RegisterVO } from '../../domain/value-objects/auth/register.vo';
 import { ProfileVO } from '../../domain/value-objects/profile.vo';
+
+import { RegisterAssembler } from '../assemblers/auth/register.assembler';
+import { RegisterResponseDTO } from '../dtos/auth/register.dto';
 import { 
   UserAssembler, 
   LoginResponseDTO, 
-  RegisterResponseDTO, 
   ProfileResponseDTO 
 } from '../assemblers/user.assembler';
 
@@ -29,10 +31,13 @@ export class AuthApi {
     );
   }
 
-  register(data: NewUserVO): Observable<User> {
-    const dto = UserAssembler.toNewUserDTO(data);
-    return this.http.post<RegisterResponseDTO>(`${this.baseUrl}/users-register`, dto).pipe(
-      map(response => UserAssembler.toUserFromRegister(response))
+  register(data: RegisterVO): Observable<User> {
+    const dto = RegisterAssembler.toRequestDTO(data);
+    return this.http.post<RegisterResponseDTO>(
+      `${this.baseUrl}/api/auth/register`, 
+      dto
+    ).pipe(
+      map(response => RegisterAssembler.toUser(response))
     );
   }
 

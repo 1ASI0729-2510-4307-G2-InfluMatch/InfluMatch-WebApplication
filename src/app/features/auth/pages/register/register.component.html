@@ -49,15 +49,6 @@
 
       <form [formGroup]="form" (ngSubmit)="submit()" class="register-form">
         <mat-form-field appearance="outline">
-          <mat-label>{{ "REGISTER.NAME" | translate }}</mat-label>
-          <mat-icon matPrefix>person</mat-icon>
-          <input matInput formControlName="name" required />
-          <mat-error *ngIf="form.get('name')?.hasError('required')">
-            {{ "REGISTER.NAME_REQUIRED" | translate }}
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
           <mat-label>{{ "REGISTER.EMAIL" | translate }}</mat-label>
           <mat-icon matPrefix>email</mat-icon>
           <input matInput formControlName="email" type="email" required />
@@ -75,32 +66,26 @@
           <input
             matInput
             formControlName="password"
-            [type]="hidePassword ? 'password' : 'text'"
+            [type]="hide ? 'password' : 'text'"
             required
           />
           <button
             mat-icon-button
             matSuffix
-            (click)="hidePassword = !hidePassword"
+            (click)="hide = !hide"
             type="button"
             aria-label="Toggle password visibility"
           >
-            <mat-icon>{{
-              hidePassword ? "visibility_off" : "visibility"
-            }}</mat-icon>
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
-          <mat-error *ngIf="form.get('password')?.hasError('required')">
-            {{ "REGISTER.PASSWORD_REQUIRED" | translate }}
-          </mat-error>
-          <mat-error *ngIf="form.get('password')?.hasError('minlength')">
-            {{ "REGISTER.PASSWORD_MINLENGTH" | translate }}
-          </mat-error>
+          <mat-hint>{{ "REGISTER.PASSWORD_HINT" | translate }}</mat-hint>
+          <mat-error>{{ getPasswordErrorMessage() }}</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>{{ "REGISTER.ACCOUNT_TYPE" | translate }}</mat-label>
+          <mat-label>{{ "REGISTER.ROLE" | translate }}</mat-label>
           <mat-icon matPrefix>business</mat-icon>
-          <mat-select formControlName="user_type">
+          <mat-select formControlName="role">
             <mat-option
               *ngFor="let option of rolOptions"
               [value]="option.value"
@@ -108,6 +93,9 @@
               {{ option.translationKey | translate }}
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="form.get('role')?.hasError('required')">
+            {{ "REGISTER.ROLE_REQUIRED" | translate }}
+          </mat-error>
         </mat-form-field>
 
         <div class="terms-checkbox">
