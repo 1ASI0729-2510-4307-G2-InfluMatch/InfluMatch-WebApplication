@@ -15,22 +15,12 @@ export class AuthRepositoryImpl extends AuthRepository {
   }
 
   login(creds: UserCredentials): Observable<User | null> {
-    return this.api.login(creds).pipe(
-      map((user) =>
-        user
-          ? {
-              ...user,
-              role: user.user_type, // ya tenías esto
-              profile_completed: user.profile_completed ?? false, // ¡añadido!
-            }
-          : null
-      )
-    );
+    return this.api.login(creds);
   }
 
   register(data: NewUserVO): Observable<User> {
     return this.api.register(data).pipe(
-      map((u) => ({ ...u, role: u.user_type ?? 'guest' })) // adapta el campo
+      map((u) => ({ ...u, role: u.user_type ?? 'guest' }))
     );
   }
 
