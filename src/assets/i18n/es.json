@@ -1,9 +1,16 @@
 {
   "login": {
-    "title": "Iniciar sesión",
+    "title": "Iniciar Sesión",
     "email": "Correo electrónico",
+    "email.placeholder": "Ingresa tu correo electrónico",
+    "email.required": "El correo electrónico es requerido",
+    "email.invalid": "Por favor ingrese un correo electrónico válido",
     "password": "Contraseña",
-    "submit": "Entrar",
+    "password.placeholder": "Ingresa tu contraseña",
+    "password.required": "La contraseña es requerida",
+    "submit": "Iniciar sesión",
+    "noAccount": "¿No tienes una cuenta? Regístrate",
+    "register": "Regístrate aquí",
     "success": "¡Login exitoso!"
   },
   "register": {
@@ -14,9 +21,12 @@
     "roleBrand": "Marca",
     "roleInfluencer": "Influencer",
     "submit": "Registrarse",
-    "success": "¡Registro exitoso!"
+    "success": "¡Registro exitoso!",
+    "hasAccount": "¿Ya tienes una cuenta?",
+    "login": "Inicia sesión aquí"
   },
   "setup": {
+    "title": "Configuración de Perfil",
     "influencer": {
       "title": "Completa tu perfil de influencer"
     },
@@ -24,19 +34,26 @@
       "title": "Completa el perfil de tu marca"
     },
     "step": {
-      "basic": "Datos básicos",
+      "basic": "Información Básica",
       "details": "Detalles"
     },
-    "displayName": "Nombre público",
+    "displayName": "Nombre a mostrar",
     "bio": "Biografía",
     "category": "Categoría",
+    "categories": {
+      "fashion": "Moda",
+      "tech": "Tecnología",
+      "food": "Gastronomía",
+      "travel": "Viajes",
+      "fitness": "Fitness"
+    },
     "country": "País",
-    "followers": "Seguidores",
+    "followers": "Número de seguidores",
     "companyName": "Nombre de la empresa",
     "description": "Descripción",
     "industry": "Industria",
     "website": "Sitio web",
-    "logo": "Logo URL",
+    "logo": "URL del logo",
     "next": "Siguiente",
     "back": "Atrás",
     "finish": "Finalizar"

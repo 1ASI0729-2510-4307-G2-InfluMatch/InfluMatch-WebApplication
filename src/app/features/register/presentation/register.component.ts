@@ -7,12 +7,19 @@ import { catchError, tap } from 'rxjs/operators';
 
 import { RegisterFacade } from '@features/register/application/facades/register.facade';
 import { MaterialModule } from '@shared/material/material.module';
-import { TranslationModule } from '@shared/translation/translation.module';
+import { LanguageSelectorComponent } from '@shared/language/language-selector.component';
+import { TranslatePipe } from '@shared/translation/translate.pipe';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MaterialModule, TranslationModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    LanguageSelectorComponent,
+    TranslatePipe
+  ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })

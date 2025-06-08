@@ -5,19 +5,18 @@ export const routes: Routes = [
 
   {
     path: 'login',
-    loadChildren: () =>
-      import('./features/login/presentation/login.routes').then(m => m.loginRoutes),
+    loadComponent: () => import('./features/login/presentation/login.component').then(m => m.LoginComponent)
   },
   {
     path: 'register',
-    loadChildren: () =>
-      import('./features/register/presentation/register.routes').then(m => m.registerRoutes),
+    loadComponent: () => import('./features/register/presentation/register.component').then(m => m.RegisterComponent)
   },
   {
     path: 'profile-setup',
-    loadChildren: () =>
-      import('./features/profile-setup/presentation/profile-setup.routes')
-        .then(m => m.profileSetupRoutes),
+    loadComponent: () => import('./features/profile-setup/presentation/profile-setup.component').then(m => m.ProfileSetupComponent)
   },
-
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./features/dashboard/presentation/dashboard.component').then(m => m.DashboardComponent)
+  }
 ];

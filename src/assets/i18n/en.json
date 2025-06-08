@@ -8,27 +8,47 @@
     "roleInfluencer": "Influencer",
     "submit": "Register",
     "success": "Registration successful!",
-    "goLogin": "Already have an account? Login"
+    "hasAccount": "Already have an account?",
+    "login": "Log in here"
   },
 
   "login": {
-    "title": "Log in",
+    "title": "Login",
     "email": "Email",
+    "email.placeholder": "Enter your email",
+    "email.required": "Email is required",
     "password": "Password",
-    "submit": "Login",
+    "password.placeholder": "Enter your password",
+    "noAccount": "Don't have an account? Sign up",
+    "submit": "Log in",
     "success": "Login successful!"
   },
 
   "setup": {
-    "influencer": { "title": "Complete your influencer profile" },
-    "brand": { "title": "Complete your brand profile" },
-    "step": { "basic": "Basic data", "details": "Details" },
-    "displayName": "Public name",
-    "bio": "Bio",
+    "title": "Profile Setup",
+    "influencer": {
+      "title": "Complete your influencer profile"
+    },
+    "brand": {
+      "title": "Complete your brand profile"
+    },
+    "step": {
+      "basic": "Basic Information",
+      "details": "Details"
+    },
+    "displayName": "Display Name",
+    "bio": "Biography",
     "category": "Category",
+    "categories": {
+      "fashion": "Fashion",
+      "tech": "Technology",
+      "food": "Food",
+      "travel": "Travel",
+      "fitness": "Fitness"
+    },
     "country": "Country",
-    "followers": "Followers",
-    "companyName": "Company name",
+    "followers": "Number of followers",
+    "companyName": "Company Name",
     "description": "Description",
     "industry": "Industry",
     "website": "Website",

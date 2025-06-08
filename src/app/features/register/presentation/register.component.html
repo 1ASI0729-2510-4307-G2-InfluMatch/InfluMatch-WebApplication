@@ -1,33 +1,36 @@
+<app-language-selector></app-language-selector>
+
 <mat-card class="register-card">
-  <h1 i18n="@@register.title">Sign up</h1>
+  <h1>{{ 'register.title' | translate }}</h1>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label i18n="@@register.email">Email</mat-label>
-      <input matInput type="email" formControlName="email" required />
+      <mat-label>{{ 'register.email' | translate }}</mat-label>
+      <input matInput formControlName="email" type="email" required />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label i18n="@@register.password">Password</mat-label>
-      <input matInput type="password" formControlName="password" required />
+      <mat-label>{{ 'register.password' | translate }}</mat-label>
+      <input matInput formControlName="password" type="password" required />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label i18n="@@register.role">User type</mat-label>
+      <mat-label>{{ 'register.role' | translate }}</mat-label>
       <mat-select formControlName="role">
-        <mat-option value="BRAND"      i18n="@@register.roleBrand">Brand</mat-option>
-        <mat-option value="INFLUENCER" i18n="@@register.roleInfluencer">Influencer</mat-option>
+        <mat-option value="BRAND">{{ 'register.roleBrand' | translate }}</mat-option>
+        <mat-option value="INFLUENCER">{{ 'register.roleInfluencer' | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <button mat-raised-button color="primary"
-            type="submit" [disabled]="form.invalid"
-            i18n="@@register.submit">
-      Register
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      {{ 'register.submit' | translate }}
     </button>
 
-    <button mat-button type="button" (click)="goToLogin()" i18n="@@register.goLogin">
-      Already have an account? Login
-    </button>
+    <div class="login-link">
+      <span>{{ 'register.hasAccount' | translate }}</span>
+      <button mat-button color="accent" type="button" (click)="goToLogin()">
+        {{ 'register.login' | translate }}
+      </button>
+    </div>
   </form>
 </mat-card>

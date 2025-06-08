@@ -6,10 +6,11 @@ import { Router } from '@angular/router';
 import { catchError, of, tap } from 'rxjs';
 
 import { MaterialModule } from '@shared/material/material.module';
-import { TranslationModule } from '@shared/translation/translation.module';
 import { ProfileSetupFacade } from '../application/facades/profile-setup.facade';
 import { InfluencerProfileRequestDTO } from '../application/dtos/influencer-profile-request.dto';
 import { BrandProfileRequestDTO } from '../application/dtos/brand-profile-request.dto';
+import { LanguageSelectorComponent } from '@shared/language/language-selector.component';
+import { TranslatePipe } from '@shared/translation/translate.pipe';
 
 @Component({
   selector: 'app-profile-setup',
@@ -18,7 +19,8 @@ import { BrandProfileRequestDTO } from '../application/dtos/brand-profile-reques
     CommonModule,
     ReactiveFormsModule,
     MaterialModule,
-    TranslationModule,
+    LanguageSelectorComponent,
+    TranslatePipe
   ],
   templateUrl: './profile-setup.component.html',
   styleUrls: ['./profile-setup.component.scss']
