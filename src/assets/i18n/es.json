@@ -1,0 +1,12 @@
+{
+    "register": {
+      "title": "Crear cuenta",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "role": "Tipo de usuario",
+      "roleBrand": "Marca",
+      "roleInfluencer": "Influencer",
+      "submit": "Registrarse",
+      "success": "¡Registro exitoso!"
+    }
+  }

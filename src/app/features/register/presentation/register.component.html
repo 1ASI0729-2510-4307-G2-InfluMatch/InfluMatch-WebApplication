@@ -1,0 +1,27 @@
+<mat-card class="register-card">
+    <h1 i18n="@@register.title">Crear cuenta</h1>
+  
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label i18n="@@register.email">Correo electrónico</mat-label>
+        <input matInput formControlName="email" type="email" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label i18n="@@register.password">Contraseña</mat-label>
+        <input matInput formControlName="password" type="password" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label i18n="@@register.role">Tipo de usuario</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="BRAND" i18n="@@register.roleBrand">Marca</mat-option>
+          <mat-option value="INFLUENCER" i18n="@@register.roleInfluencer">Influencer</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" i18n="@@register.submit">
+        Registrarse
+      </button>
+    </form>
+  </mat-card>
