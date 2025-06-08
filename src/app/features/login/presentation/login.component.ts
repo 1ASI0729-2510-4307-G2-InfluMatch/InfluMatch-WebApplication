@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@shared/material/material.module';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { LanguageSelectorComponent } from '@shared/language/language-selector.component';
 import { TranslatePipe } from '@shared/translation/translate.pipe';
 import { TranslationService } from '@shared/services/translation.service';
+import { LoginFacade } from '@features/login/application/facades/login.facade';
+import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +29,9 @@ import { TranslationService } from '@shared/services/translation.service';
 export class LoginComponent implements OnInit {
   form: FormGroup;
   hidePassword = true;
+
+  private readonly facade = inject(LoginFacade);
+  private readonly snackBar = inject(MatSnackBar);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,8 +54,26 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      // Handle login logic here
-      console.log('Form submitted:', this.form.value);
+      this.facade.submit(this.form).pipe(
+        tap((response: any) => {
+          // Guardar el token y datos del usuario
+          localStorage.setItem('user', JSON.stringify({
+            userId: response.userId,
+            email: response.email,
+            role: response.role,
+            token: response.token,
+            hasProfile: response.hasProfile
+          }));
+          this.snackBar.open('login.success', 'OK', { duration: 3000 });
+          // Redirigir según si tiene perfil o no
+          const route = response.hasProfile ? '/dashboard' : '/profile-setup';
+          this.router.navigate([route]);
+        }),
+        catchError((error) => {
+          this.snackBar.open(error.message, 'OK', { duration: 3000 });
+          throw error;
+        })
+      ).subscribe();
     }
   }
 

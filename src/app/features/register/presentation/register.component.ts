@@ -11,6 +11,12 @@ import { TranslationService } from '@shared/services/translation.service';
 import { RegisterFacade } from '@features/register/application/facades/register.facade';
 import { catchError, tap } from 'rxjs/operators';
 
+interface RegisterPayload {
+  email: string;
+  password: string;
+  role: string;
+}
+
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -71,7 +77,6 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      const { email, password, userType } = this.form.value;
       this.facade.submit(this.form).pipe(
         tap(() => {
           this.snackBar.open('register.success', 'OK', { duration: 3000 });
