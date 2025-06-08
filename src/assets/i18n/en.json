@@ -54,30 +54,42 @@
     "setup": {
       "title": "Profile Setup",
       "influencer": {
-        "title": "Complete your influencer profile"
+        "title": "Complete your influencer profile",
+        "addSocialLink": "Add Social Link",
+        "addMediaAsset": "Add Media Asset",
+        "removeSocialLink": "Remove Social Link",
+        "removeMediaAsset": "Remove Media Asset"
       },
       "brand": {
         "title": "Complete your brand profile"
       },
       "step": {
         "basic": "Basic Information",
-        "details": "Details"
-      }
+        "details": "Details",
+        "social": "Social Networks",
+        "media": "Media Assets"
+      },
+      "success": "Profile created successfully!",
+      "error": "Error creating profile"
     },
     "displayName": {
       "label": "Display Name",
-      "placeholder": "Enter your display name",
-      "required": "Display name is required"
+      "placeholder": "Enter your display name (3-50 characters)",
+      "required": "Display name is required",
+      "minLength": "Display name must be at least 3 characters",
+      "maxLength": "Display name cannot exceed 50 characters"
     },
     "bio": {
       "label": "Biography",
-      "placeholder": "Tell us about yourself",
-      "required": "Biography is required"
+      "placeholder": "Tell us about yourself (max 255 characters)",
+      "required": "Biography is required",
+      "maxLength": "Biography cannot exceed 255 characters"
     },
     "category": {
       "label": "Category",
       "placeholder": "Select your category",
-      "required": "Category is required"
+      "required": "Category is required",
+      "maxLength": "Category cannot exceed 50 characters"
     },
     "categories": {
       "fashion": "Fashion",
@@ -94,12 +106,74 @@
     "country": {
       "label": "Country",
       "placeholder": "Select your country",
-      "required": "Country is required"
+      "required": "Country is required",
+      "maxLength": "Country cannot exceed 50 characters"
     },
     "followers": {
       "label": "Number of followers",
       "placeholder": "Enter your number of followers",
-      "required": "Number of followers is required"
+      "required": "Number of followers is required",
+      "min": "Number of followers must be positive"
+    },
+    "socialLinks": {
+      "title": "Social Networks",
+      "platform": {
+        "label": "Platform",
+        "placeholder": "Select platform",
+        "required": "Platform is required",
+        "options": {
+          "IG": "Instagram",
+          "YT": "YouTube",
+          "TT": "TikTok",
+          "FB": "Facebook",
+          "TW": "Twitter",
+          "LN": "LinkedIn",
+          "OTHER": "Other"
+        }
+      },
+      "url": {
+        "label": "Profile URL",
+        "placeholder": "Enter your profile URL",
+        "required": "Profile URL is required",
+        "invalid": "Please enter a valid URL"
+      }
+    },
+    "mediaAssets": {
+      "title": "Media Assets",
+      "url": {
+        "label": "Media URL",
+        "placeholder": "Enter media URL",
+        "required": "Media URL is required",
+        "invalid": "Please enter a valid URL"
+      },
+      "mediaType": {
+        "label": "Media Type",
+        "placeholder": "Select media type",
+        "required": "Media type is required",
+        "options": {
+          "IMAGE": "Image",
+          "VIDEO": "Video",
+          "DOC": "Document"
+        }
+      },
+      "title": {
+        "label": "Title",
+        "placeholder": "Enter media title",
+        "maxLength": "Title cannot exceed 100 characters"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter media description",
+        "maxLength": "Description cannot exceed 255 characters"
+      },
+      "sizeBytes": {
+        "label": "File Size (bytes)",
+        "placeholder": "Enter file size in bytes"
+      },
+      "metadata": {
+        "label": "Additional Metadata",
+        "placeholder": "Enter additional metadata as JSON"
+      }
     },
     "companyName": {
       "label": "Company Name",

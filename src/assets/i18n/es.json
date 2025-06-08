@@ -52,30 +52,42 @@
     "setup": {
       "title": "Configuración de Perfil",
       "influencer": {
-        "title": "Completa tu perfil de influencer"
+        "title": "Completa tu perfil de influencer",
+        "addSocialLink": "Agregar Red Social",
+        "addMediaAsset": "Agregar Archivo Multimedia",
+        "removeSocialLink": "Eliminar Red Social",
+        "removeMediaAsset": "Eliminar Archivo Multimedia"
       },
       "brand": {
         "title": "Completa tu perfil de marca"
       },
       "step": {
         "basic": "Información Básica",
-        "details": "Detalles"
-      }
+        "details": "Detalles",
+        "social": "Redes Sociales",
+        "media": "Archivos Multimedia"
+      },
+      "success": "¡Perfil creado exitosamente!",
+      "error": "Error al crear el perfil"
     },
     "displayName": {
       "label": "Nombre a mostrar",
-      "placeholder": "Ingresa tu nombre a mostrar",
-      "required": "El nombre a mostrar es requerido"
+      "placeholder": "Ingresa tu nombre a mostrar (3-50 caracteres)",
+      "required": "El nombre a mostrar es requerido",
+      "minLength": "El nombre debe tener al menos 3 caracteres",
+      "maxLength": "El nombre no puede exceder los 50 caracteres"
     },
     "bio": {
       "label": "Biografía",
-      "placeholder": "Cuéntanos sobre ti",
-      "required": "La biografía es requerida"
+      "placeholder": "Cuéntanos sobre ti (máximo 255 caracteres)",
+      "required": "La biografía es requerida",
+      "maxLength": "La biografía no puede exceder los 255 caracteres"
     },
     "category": {
       "label": "Categoría",
       "placeholder": "Selecciona tu categoría",
-      "required": "La categoría es requerida"
+      "required": "La categoría es requerida",
+      "maxLength": "La categoría no puede exceder los 50 caracteres"
     },
     "categories": {
       "fashion": "Moda",
@@ -92,12 +104,14 @@
     "country": {
       "label": "País",
       "placeholder": "Selecciona tu país",
-      "required": "El país es requerido"
+      "required": "El país es requerido",
+      "maxLength": "El país no puede exceder los 50 caracteres"
     },
     "followers": {
       "label": "Número de seguidores",
       "placeholder": "Ingresa tu número de seguidores",
-      "required": "El número de seguidores es requerido"
+      "required": "El número de seguidores es requerido",
+      "min": "El número de seguidores debe ser positivo"
     },
     "companyName": {
       "label": "Nombre de la empresa",
@@ -124,6 +138,66 @@
       "label": "URL del logo",
       "placeholder": "Ingresa la URL de tu logo",
       "required": "La URL del logo es requerida"
+    },
+    "socialLinks": {
+      "title": "Redes Sociales",
+      "platform": {
+        "label": "Plataforma",
+        "placeholder": "Selecciona la plataforma",
+        "required": "La plataforma es requerida",
+        "options": {
+          "IG": "Instagram",
+          "YT": "YouTube",
+          "TT": "TikTok",
+          "FB": "Facebook",
+          "TW": "Twitter",
+          "LN": "LinkedIn",
+          "OTHER": "Otra"
+        }
+      },
+      "url": {
+        "label": "URL del perfil",
+        "placeholder": "Ingresa la URL de tu perfil",
+        "required": "La URL del perfil es requerida",
+        "invalid": "Por favor ingresa una URL válida"
+      }
+    },
+    "mediaAssets": {
+      "title": "Archivos Multimedia",
+      "url": {
+        "label": "URL del archivo",
+        "placeholder": "Ingresa la URL del archivo",
+        "required": "La URL del archivo es requerida",
+        "invalid": "Por favor ingresa una URL válida"
+      },
+      "mediaType": {
+        "label": "Tipo de archivo",
+        "placeholder": "Selecciona el tipo de archivo",
+        "required": "El tipo de archivo es requerido",
+        "options": {
+          "IMAGE": "Imagen",
+          "VIDEO": "Video",
+          "DOC": "Documento"
+        }
+      },
+      "title": {
+        "label": "Título",
+        "placeholder": "Ingresa el título del archivo",
+        "maxLength": "El título no puede exceder los 100 caracteres"
+      },
+      "description": {
+        "label": "Descripción",
+        "placeholder": "Ingresa la descripción del archivo",
+        "maxLength": "La descripción no puede exceder los 255 caracteres"
+      },
+      "sizeBytes": {
+        "label": "Tamaño del archivo (bytes)",
+        "placeholder": "Ingresa el tamaño en bytes"
+      },
+      "metadata": {
+        "label": "Metadatos adicionales",
+        "placeholder": "Ingresa metadatos adicionales en formato JSON"
+      }
     },
     "actions": {
       "next": "Siguiente",
