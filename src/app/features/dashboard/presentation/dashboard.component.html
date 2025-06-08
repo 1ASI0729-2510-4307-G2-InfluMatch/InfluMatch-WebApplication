@@ -4,11 +4,34 @@
   </mat-toolbar>
 
   <div class="dashboard-content">
-    <mat-card>
-      <mat-card-content>
-        <h2 i18n="@@dashboard.welcome">¡Bienvenido al Dashboard!</h2>
-        <p i18n="@@dashboard.description">Este es el dashboard principal de la aplicación.</p>
-      </mat-card-content>
-    </mat-card>
+    <!-- Cards for Influencers viewing Brands -->
+    <div *ngIf="userRole === 'influencer'" class="cards-grid">
+      <mat-card *ngFor="let brand of brands" class="brand-card">
+        <img mat-card-image [src]="brand.logoUrl" [alt]="brand.companyName" class="brand-logo" (error)="handleImageError($event)">
+        <mat-card-header>
+          <mat-card-title>{{ brand.companyName }}</mat-card-title>
+          <mat-card-subtitle>{{ brand.industry }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ brand.description }}</p>
+          <a [href]="brand.websiteUrl" target="_blank" rel="noopener noreferrer">Visitar sitio web</a>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Cards for Brands viewing Influencers -->
+    <div *ngIf="userRole === 'brand'" class="cards-grid">
+      <mat-card *ngFor="let influencer of influencers" class="influencer-card">
+        <mat-card-header>
+          <mat-card-title>{{ influencer.displayName }}</mat-card-title>
+          <mat-card-subtitle>{{ influencer.category }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ influencer.bio }}</p>
+          <p><strong>País:</strong> {{ influencer.country }}</p>
+          <p><strong>Seguidores:</strong> {{ influencer.followersCount | number }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 </div> 

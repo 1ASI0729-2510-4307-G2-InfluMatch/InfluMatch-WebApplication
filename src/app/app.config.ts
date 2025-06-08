@@ -8,6 +8,8 @@ import { AuthRepository } from '@core/domain/auth/repositories/auth.repository';
 import { AuthHttpRepository } from './infrastructure/auth/auth-http.repository';
 import { ProfileRepository } from './core/domain/profile/repositories/profile.repository';
 import { ProfileHttpRepository } from './infrastructure/profile/profile-http.repository';
+import { DashboardRepository } from '@core/domain/dashboard/repositories/dashboard.repository';
+import { DashboardHttpRepository } from './infrastructure/dashboard/dashboard-http.repository';
 
 // Import locales
 import { registerLocaleData } from '@angular/common';
@@ -38,6 +40,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: ProfileRepository,
       useClass: ProfileHttpRepository
+    },
+    {
+      provide: DashboardRepository,
+      useClass: DashboardHttpRepository
     },
     {
       provide: LOCALE_ID,
