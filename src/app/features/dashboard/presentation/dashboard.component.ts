@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
   influencers: Influencer[] = [];
   userRole: string = '';
   defaultImageUrl = 'assets/images/default-placeholder.png';
+  failedImages: Set<string> = new Set();
 
   constructor(
     private readonly authService: AuthService,
@@ -41,8 +42,14 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  handleImageError(event: any) {
+  handleImageError(event: any, url: string) {
+    // Solo si la imagen falla, la agregamos al set de imágenes fallidas
+    this.failedImages.add(url);
     event.target.src = this.defaultImageUrl;
+  }
+
+  shouldShowDefaultImage(url: string): boolean {
+    return this.failedImages.has(url);
   }
 
   private loadBrands() {

@@ -7,7 +7,11 @@
     <!-- Cards for Influencers viewing Brands -->
     <div *ngIf="userRole === 'influencer'" class="cards-grid">
       <mat-card *ngFor="let brand of brands" class="brand-card">
-        <img mat-card-image [src]="brand.logoUrl" [alt]="brand.companyName" class="brand-logo" (error)="handleImageError($event)">
+        <img mat-card-image 
+             [src]="shouldShowDefaultImage(brand.logoUrl) ? defaultImageUrl : brand.logoUrl" 
+             [alt]="brand.companyName" 
+             class="brand-logo"
+             (error)="handleImageError($event, brand.logoUrl)">
         <mat-card-header>
           <mat-card-title>{{ brand.companyName }}</mat-card-title>
           <mat-card-subtitle>{{ brand.industry }}</mat-card-subtitle>

@@ -24,7 +24,7 @@ interface MediaAsset {
   title?: string;
   description?: string;
   sizeBytes?: number;
-  metadata?: string;
+  metadata?: any;
 }
 
 interface InfluencerFormValue {
@@ -157,6 +157,25 @@ export class ProfileSetupComponent implements OnInit {
     if (this.influencerForm.invalid) return;
 
     const formValue = this.influencerForm.getRawValue() as InfluencerFormValue;
+    
+    // Procesar los mediaAssets para asegurar que el metadata sea un objeto válido
+    const processedMediaAssets = formValue.mediaAssets.map(asset => {
+      let metadata = {};
+      if (asset.metadata) {
+        try {
+          // Si es un string vacío o inválido, usar un objeto vacío
+          metadata = asset.metadata.trim() ? JSON.parse(asset.metadata) : {};
+        } catch (e) {
+          console.warn('Invalid metadata JSON, using empty object instead:', e);
+          metadata = {};
+        }
+      }
+      return {
+        ...asset,
+        metadata
+      };
+    });
+
     const request: InfluencerProfileRequestDTO = {
       displayName: formValue.displayName,
       bio: formValue.bio,
@@ -164,10 +183,7 @@ export class ProfileSetupComponent implements OnInit {
       country: formValue.country,
       followersCount: formValue.followersCount,
       socialLinks: formValue.socialLinks,
-      mediaAssets: formValue.mediaAssets.map(asset => ({
-        ...asset,
-        metadata: asset.metadata ? JSON.parse(asset.metadata) : {}
-      }))
+      mediaAssets: processedMediaAssets
     };
 
     this.facade.createInfluencerProfile(request).pipe(
