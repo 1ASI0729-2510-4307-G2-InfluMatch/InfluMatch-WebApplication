@@ -1,61 +1,135 @@
 {
   "login": {
     "title": "Iniciar Sesión",
-    "email": "Correo electrónico",
-    "email.placeholder": "Ingresa tu correo electrónico",
-    "email.required": "El correo electrónico es requerido",
-    "email.invalid": "Por favor ingrese un correo electrónico válido",
-    "password": "Contraseña",
-    "password.placeholder": "Ingresa tu contraseña",
-    "password.required": "La contraseña es requerida",
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "Ingresa tu correo electrónico",
+      "required": "El correo electrónico es requerido",
+      "invalid": "Por favor ingresa un correo electrónico válido"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Ingresa tu contraseña",
+      "required": "La contraseña es requerida"
+    },
     "submit": "Iniciar sesión",
-    "noAccount": "¿No tienes una cuenta? Regístrate",
-    "register": "Regístrate aquí",
-    "success": "¡Login exitoso!"
+    "noAccount": "¿No tienes una cuenta?",
+    "register": "Regístrate aquí"
   },
   "register": {
-    "title": "Crear cuenta",
-    "email": "Correo electrónico",
-    "password": "Contraseña",
-    "role": "Tipo de usuario",
-    "roleBrand": "Marca",
-    "roleInfluencer": "Influencer",
+    "title": "Registro",
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "Ingresa tu correo electrónico",
+      "required": "El correo electrónico es requerido",
+      "invalid": "Por favor ingresa un correo electrónico válido"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Ingresa tu contraseña",
+      "required": "La contraseña es requerida",
+      "minLength": "La contraseña debe tener al menos 6 caracteres"
+    },
+    "confirmPassword": {
+      "label": "Confirmar contraseña",
+      "placeholder": "Confirma tu contraseña",
+      "required": "Confirma tu contraseña",
+      "match": "Las contraseñas no coinciden"
+    },
+    "userType": {
+      "label": "Tipo de usuario",
+      "required": "Selecciona un tipo de usuario",
+      "options": {
+        "influencer": "Influencer",
+        "brand": "Marca"
+      }
+    },
     "submit": "Registrarse",
-    "success": "¡Registro exitoso!",
     "hasAccount": "¿Ya tienes una cuenta?",
     "login": "Inicia sesión aquí"
   },
-  "setup": {
-    "title": "Configuración de Perfil",
-    "influencer": {
-      "title": "Completa tu perfil de influencer"
+  "profile": {
+    "setup": {
+      "title": "Configuración de Perfil",
+      "influencer": {
+        "title": "Completa tu perfil de influencer"
+      },
+      "brand": {
+        "title": "Completa tu perfil de marca"
+      },
+      "step": {
+        "basic": "Información Básica",
+        "details": "Detalles"
+      }
     },
-    "brand": {
-      "title": "Completa el perfil de tu marca"
+    "displayName": {
+      "label": "Nombre a mostrar",
+      "placeholder": "Ingresa tu nombre a mostrar",
+      "required": "El nombre a mostrar es requerido"
     },
-    "step": {
-      "basic": "Información Básica",
-      "details": "Detalles"
+    "bio": {
+      "label": "Biografía",
+      "placeholder": "Cuéntanos sobre ti",
+      "required": "La biografía es requerida"
     },
-    "displayName": "Nombre a mostrar",
-    "bio": "Biografía",
-    "category": "Categoría",
+    "category": {
+      "label": "Categoría",
+      "placeholder": "Selecciona tu categoría",
+      "required": "La categoría es requerida"
+    },
     "categories": {
       "fashion": "Moda",
       "tech": "Tecnología",
-      "food": "Gastronomía",
+      "food": "Comida",
       "travel": "Viajes",
-      "fitness": "Fitness"
+      "fitness": "Fitness",
+      "beauty": "Belleza",
+      "lifestyle": "Estilo de vida",
+      "gaming": "Gaming",
+      "education": "Educación",
+      "business": "Negocios"
     },
-    "country": "País",
-    "followers": "Número de seguidores",
-    "companyName": "Nombre de la empresa",
-    "description": "Descripción",
-    "industry": "Industria",
-    "website": "Sitio web",
-    "logo": "URL del logo",
-    "next": "Siguiente",
-    "back": "Atrás",
-    "finish": "Finalizar"
+    "country": {
+      "label": "País",
+      "placeholder": "Selecciona tu país",
+      "required": "El país es requerido"
+    },
+    "followers": {
+      "label": "Número de seguidores",
+      "placeholder": "Ingresa tu número de seguidores",
+      "required": "El número de seguidores es requerido"
+    },
+    "companyName": {
+      "label": "Nombre de la empresa",
+      "placeholder": "Ingresa el nombre de tu empresa",
+      "required": "El nombre de la empresa es requerido"
+    },
+    "description": {
+      "label": "Descripción",
+      "placeholder": "Describe tu empresa",
+      "required": "La descripción es requerida"
+    },
+    "industry": {
+      "label": "Industria",
+      "placeholder": "Selecciona tu industria",
+      "required": "La industria es requerida"
+    },
+    "website": {
+      "label": "Sitio web",
+      "placeholder": "Ingresa tu sitio web",
+      "required": "El sitio web es requerido",
+      "invalid": "Ingresa una URL válida"
+    },
+    "logo": {
+      "label": "URL del logo",
+      "placeholder": "Ingresa la URL de tu logo",
+      "required": "La URL del logo es requerida"
+    },
+    "actions": {
+      "next": "Siguiente",
+      "back": "Atrás",
+      "finish": "Finalizar",
+      "save": "Guardar cambios"
+    }
   }
 }

@@ -1,66 +1,91 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, tap } from 'rxjs/operators';
-
-import { RegisterFacade } from '@features/register/application/facades/register.facade';
 import { MaterialModule } from '@shared/material/material.module';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { LanguageSelectorComponent } from '@shared/language/language-selector.component';
 import { TranslatePipe } from '@shared/translation/translate.pipe';
+import { TranslationService } from '@shared/services/translation.service';
+import { RegisterFacade } from '@features/register/application/facades/register.facade';
+import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     MaterialModule,
+    ReactiveFormsModule,
+    MatIconModule,
     LanguageSelectorComponent,
     TranslatePipe
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
+  providers: [TranslatePipe]
 })
-export class RegisterComponent {
-  private readonly fb = inject(FormBuilder);
+export class RegisterComponent implements OnInit {
+  form: FormGroup;
+  hidePassword = true;
+  hideConfirmPassword = true;
+
   private readonly facade = inject(RegisterFacade);
-  private readonly snack = inject(MatSnackBar);
-  private readonly router = inject(Router);
+  private readonly snackBar = inject(MatSnackBar);
 
-  form = this.fb.nonNullable.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
-    role: ['BRAND', [Validators.required]],
-  });
-
-  onSubmit(): void {
-    if (this.form.invalid) return;
-
-    this.facade
-      .submit(this.form)
-      .pipe(
-        tap((response) => {
-          localStorage.setItem('user', JSON.stringify({
-            userId: response.userId,
-            email: response.email,
-            role: response.role,
-            token: response.token,
-            hasProfile: response.hasProfile
-          }));
-          this.snack.open($localize`Registro exitoso`, undefined, { duration: 2500 });
-          this.router.navigate(['/profile-setup']);
-        }),
-        catchError((err) => {
-          this.snack.open($localize`Error en el registro`, undefined, { duration: 2500 });
-          throw err;
-        }),
-      )
-      .subscribe();
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private translationService: TranslationService
+  ) {
+    this.form = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]],
+      userType: ['', [Validators.required]]
+    }, {
+      validators: this.passwordMatchValidator
+    });
   }
 
-  goToLogin(): void {
+  ngOnInit() {
+    // Ensure translations are loaded
+    const currentLang = localStorage.getItem('language') || 'es';
+    this.translationService.setLanguage(currentLang).subscribe({
+      error: (err) => console.error('Error loading translations:', err)
+    });
+  }
+
+  private passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password');
+    const confirmPassword = form.get('confirmPassword');
+
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      confirmPassword.setErrors({ passwordMismatch: true });
+    } else if (confirmPassword?.hasError('passwordMismatch')) {
+      confirmPassword.setErrors(null);
+    }
+    return null;
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      const { email, password, userType } = this.form.value;
+      this.facade.submit(this.form).pipe(
+        tap(() => {
+          this.snackBar.open('register.success', 'OK', { duration: 3000 });
+          this.router.navigate(['/login']);
+        }),
+        catchError((error) => {
+          this.snackBar.open(error.message, 'OK', { duration: 3000 });
+          throw error;
+        })
+      ).subscribe();
+    }
+  }
+
+  goToLogin() {
     this.router.navigate(['/login']);
   }
 }

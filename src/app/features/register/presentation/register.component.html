@@ -1,36 +1,111 @@
 <app-language-selector></app-language-selector>
 
 <mat-card class="register-card">
-  <h1>{{ 'register.title' | translate }}</h1>
+  <mat-card-header>
+    <mat-card-title>
+      <h1>{{ 'register.title' | translate }}</h1>
+    </mat-card-title>
+  </mat-card-header>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>{{ 'register.email' | translate }}</mat-label>
-      <input matInput formControlName="email" type="email" required />
-    </mat-form-field>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'register.email.label' | translate }}</mat-label>
+        <input 
+          matInput 
+          formControlName="email" 
+          type="email" 
+          required
+          autocomplete="email"
+          [placeholder]="'register.email.placeholder' | translate" />
+        <mat-error *ngIf="form.get('email')?.hasError('required')">
+          {{ 'register.email.required' | translate }}
+        </mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">
+          {{ 'register.email.invalid' | translate }}
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>{{ 'register.password' | translate }}</mat-label>
-      <input matInput formControlName="password" type="password" required />
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'register.password.label' | translate }}</mat-label>
+        <input 
+          matInput 
+          formControlName="password" 
+          [type]="hidePassword ? 'password' : 'text'"
+          required
+          autocomplete="new-password"
+          [placeholder]="'register.password.placeholder' | translate" />
+        <button 
+          mat-icon-button 
+          matSuffix 
+          (click)="hidePassword = !hidePassword" 
+          [attr.aria-label]="'Hide password'" 
+          [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('password')?.hasError('required')">
+          {{ 'register.password.required' | translate }}
+        </mat-error>
+        <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+          {{ 'register.password.minLength' | translate }}
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>{{ 'register.role' | translate }}</mat-label>
-      <mat-select formControlName="role">
-        <mat-option value="BRAND">{{ 'register.roleBrand' | translate }}</mat-option>
-        <mat-option value="INFLUENCER">{{ 'register.roleInfluencer' | translate }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'register.confirmPassword.label' | translate }}</mat-label>
+        <input 
+          matInput 
+          formControlName="confirmPassword" 
+          [type]="hideConfirmPassword ? 'password' : 'text'"
+          required
+          autocomplete="new-password"
+          [placeholder]="'register.confirmPassword.placeholder' | translate" />
+        <button 
+          mat-icon-button 
+          matSuffix 
+          (click)="hideConfirmPassword = !hideConfirmPassword" 
+          [attr.aria-label]="'Hide password'" 
+          [attr.aria-pressed]="hideConfirmPassword">
+          <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">
+          {{ 'register.confirmPassword.required' | translate }}
+        </mat-error>
+        <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
+          {{ 'register.confirmPassword.match' | translate }}
+        </mat-error>
+      </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-      {{ 'register.submit' | translate }}
-    </button>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'register.userType.label' | translate }}</mat-label>
+        <mat-select formControlName="userType" required>
+          <mat-option value="INFLUENCER">{{ 'register.userType.options.influencer' | translate }}</mat-option>
+          <mat-option value="BRAND">{{ 'register.userType.options.brand' | translate }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('userType')?.hasError('required')">
+          {{ 'register.userType.required' | translate }}
+        </mat-error>
+      </mat-form-field>
 
-    <div class="login-link">
-      <span>{{ 'register.hasAccount' | translate }}</span>
-      <button mat-button color="accent" type="button" (click)="goToLogin()">
-        {{ 'register.login' | translate }}
+      <button 
+        mat-raised-button 
+        color="primary" 
+        type="submit" 
+        [disabled]="form.invalid"
+        class="submit-button">
+        {{ 'register.submit' | translate }}
       </button>
-    </div>
-  </form>
+
+      <div class="login-link">
+        <span>{{ 'register.hasAccount' | translate }}</span>
+        <button 
+          mat-button 
+          color="accent" 
+          type="button" 
+          (click)="goToLogin()">
+          {{ 'register.login' | translate }}
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
 </mat-card>

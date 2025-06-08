@@ -1,60 +1,137 @@
 {
   "register": {
-    "title": "Sign up",
-    "email": "Email",
-    "password": "Password",
-    "role": "User type",
-    "roleBrand": "Brand",
-    "roleInfluencer": "Influencer",
+    "title": "Register",
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your email",
+      "required": "Email is required",
+      "invalid": "Please enter a valid email"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password",
+      "required": "Password is required",
+      "minLength": "Password must be at least 6 characters"
+    },
+    "confirmPassword": {
+      "label": "Confirm password",
+      "placeholder": "Confirm your password",
+      "required": "Please confirm your password",
+      "match": "Passwords do not match"
+    },
+    "userType": {
+      "label": "User type",
+      "required": "Please select a user type",
+      "options": {
+        "influencer": "Influencer",
+        "brand": "Brand"
+      }
+    },
     "submit": "Register",
-    "success": "Registration successful!",
     "hasAccount": "Already have an account?",
-    "login": "Log in here"
+    "login": "Login here"
   },
 
   "login": {
     "title": "Login",
-    "email": "Email",
-    "email.placeholder": "Enter your email",
-    "email.required": "Email is required",
-    "password": "Password",
-    "password.placeholder": "Enter your password",
-    "noAccount": "Don't have an account? Sign up",
-    "submit": "Log in",
-    "success": "Login successful!"
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your email",
+      "required": "Email is required",
+      "invalid": "Please enter a valid email"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password",
+      "required": "Password is required"
+    },
+    "submit": "Login",
+    "noAccount": "Don't have an account?",
+    "register": "Register here"
   },
 
-  "setup": {
-    "title": "Profile Setup",
-    "influencer": {
-      "title": "Complete your influencer profile"
+  "profile": {
+    "setup": {
+      "title": "Profile Setup",
+      "influencer": {
+        "title": "Complete your influencer profile"
+      },
+      "brand": {
+        "title": "Complete your brand profile"
+      },
+      "step": {
+        "basic": "Basic Information",
+        "details": "Details"
+      }
     },
-    "brand": {
-      "title": "Complete your brand profile"
+    "displayName": {
+      "label": "Display Name",
+      "placeholder": "Enter your display name",
+      "required": "Display name is required"
     },
-    "step": {
-      "basic": "Basic Information",
-      "details": "Details"
+    "bio": {
+      "label": "Biography",
+      "placeholder": "Tell us about yourself",
+      "required": "Biography is required"
     },
-    "displayName": "Display Name",
-    "bio": "Biography",
-    "category": "Category",
+    "category": {
+      "label": "Category",
+      "placeholder": "Select your category",
+      "required": "Category is required"
+    },
     "categories": {
       "fashion": "Fashion",
       "tech": "Technology",
       "food": "Food",
       "travel": "Travel",
-      "fitness": "Fitness"
+      "fitness": "Fitness",
+      "beauty": "Beauty",
+      "lifestyle": "Lifestyle",
+      "gaming": "Gaming",
+      "education": "Education",
+      "business": "Business"
     },
-    "country": "Country",
-    "followers": "Number of followers",
-    "companyName": "Company Name",
-    "description": "Description",
-    "industry": "Industry",
-    "website": "Website",
-    "logo": "Logo URL",
-    "next": "Next",
-    "back": "Back",
-    "finish": "Finish"
+    "country": {
+      "label": "Country",
+      "placeholder": "Select your country",
+      "required": "Country is required"
+    },
+    "followers": {
+      "label": "Number of followers",
+      "placeholder": "Enter your number of followers",
+      "required": "Number of followers is required"
+    },
+    "companyName": {
+      "label": "Company Name",
+      "placeholder": "Enter your company name",
+      "required": "Company name is required"
+    },
+    "description": {
+      "label": "Description",
+      "placeholder": "Describe your company",
+      "required": "Description is required"
+    },
+    "industry": {
+      "label": "Industry",
+      "placeholder": "Select your industry",
+      "required": "Industry is required"
+    },
+    "website": {
+      "label": "Website",
+      "placeholder": "Enter your website",
+      "required": "Website is required",
+      "invalid": "Please enter a valid URL"
+    },
+    "logo": {
+      "label": "Logo URL",
+      "placeholder": "Enter your logo URL",
+      "required": "Logo URL is required"
+    },
+    "actions": {
+      "next": "Next",
+      "back": "Back",
+      "finish": "Finish",
+      "save": "Save changes"
+    }
   }
 }
