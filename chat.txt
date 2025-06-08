@@ -1,0 +1,754 @@
+import { Email } from '../value-objects/email.vo';
+import { Role } from '../value-objects/role.vo';
+import { User } from '../entities/user.entity';
+import { RegisterResponseDTO } from '@features/register/application/dtos/register-response.dto';
+
+export class UserAssembler {
+  static fromResponse(dto: RegisterResponseDTO): User {
+    return new User(
+      dto.id,
+      Email.create(dto.email),
+      dto.role as Role,
+      new Date(dto.createdAt),
+    );
+  }
+}
+
+import { Email } from '../value-objects/email.vo';
+import { Role } from '../value-objects/role.vo';
+
+export class User {
+  constructor(
+    public readonly id: string,
+    public readonly email: Email,
+    public readonly role: Role,
+    public readonly createdAt: Date,
+  ) {}
+}
+
+import { Observable } from 'rxjs';
+import { RegisterRequestDTO } from '@features/register/application/dtos/register-request.dto';
+import { RegisterResponseDTO } from '@features/register/application/dtos/register-response.dto';
+import { User } from '../entities/user.entity';
+
+export abstract class AuthRepository {
+  abstract register(request: RegisterRequestDTO): Observable<RegisterResponseDTO>;
+}
+
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { RegisterRequestDTO } from '@features/register/application/dtos/register-request.dto';
+import { RegisterResponseDTO } from '@features/register/application/dtos/register-response.dto';
+import { AuthRepository } from '@core/domain/auth/repositories/auth.repository';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RegisterUserUseCase {
+  constructor(private readonly repository: AuthRepository) {}
+
+  execute(request: RegisterRequestDTO): Observable<RegisterResponseDTO> {
+    return this.repository.register(request);
+  }
+}
+
+
+export class Email {
+    private constructor(public readonly value: string) {}
+  
+    static create(value: string): Email {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value)) {
+        throw new Error('INVALID_EMAIL');
+      }
+      return new Email(value);
+    }
+  }
+export class Password {
+    private constructor(public readonly value: string) {}
+  
+    static create(value: string): Password {
+      // 8+ chars, 1 upper, 1 lower, 1 number, 1 special
+      const strong = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if (!strong.test(value)) {
+        throw new Error('INVALID_PASSWORD');
+      }
+      return new Password(value);
+    }
+  }
+export type Role = 'BRAND' | 'INFLUENCER';
+
+export class RoleVO {
+  constructor(private readonly value: Role) {}
+
+  getValue(): Role {
+    return this.value;
+  }
+
+  static create(value: Role): RoleVO {
+    return new RoleVO(value);
+  }
+}
+import { Role } from '../../../../core/domain/auth/value-objects/role.vo';
+
+export interface RegisterRequestDTO {
+  email: string;
+  password: string;
+  role: Role;
+}
+import { Role } from '../../../../core/domain/auth/value-objects/role.vo';
+
+export interface RegisterResponseDTO {
+  id: string;
+  email: string;
+  role: Role;
+  createdAt: string;
+}
+import { Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { RegisterUserUseCase } from '@core/domain/auth/use-cases/register-user.usecase';
+import { RegisterResponseDTO } from '@features/register/application/dtos/register-response.dto';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RegisterFacade {
+  constructor(private readonly registerUseCase: RegisterUserUseCase) {}
+
+  submit(form: FormGroup): Observable<RegisterResponseDTO> {
+    return this.registerUseCase.execute({
+      email: form.get('email')?.value,
+      password: form.get('password')?.value,
+      role: form.get('role')?.value,
+    });
+  }
+}
+<mat-card class="register-card">
+    <h1 i18n="@@register.title">Crear cuenta</h1>
+  
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label i18n="@@register.email">Correo electrónico</mat-label>
+        <input matInput formControlName="email" type="email" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label i18n="@@register.password">Contraseña</mat-label>
+        <input matInput formControlName="password" type="password" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label i18n="@@register.role">Tipo de usuario</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="BRAND" i18n="@@register.roleBrand">Marca</mat-option>
+          <mat-option value="INFLUENCER" i18n="@@register.roleInfluencer">Influencer</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" i18n="@@register.submit">
+        Registrarse
+      </button>
+    </form>
+  </mat-card>
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+
+  h1 {
+    margin: 0 0 2rem;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #333;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    button {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+    }
+  }
+
+  .full-width {
+    width: 100%;
+  }
+}
+
+
+
+
+
+
+import { TestBed } from '@angular/core/testing';
+import { RegisterComponent } from './register.component';
+
+describe('RegisterComponent', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [RegisterComponent],
+    }).compileComponents();
+  });
+
+  it('should create', () => {
+    const fixture = TestBed.createComponent(RegisterComponent);
+    const component = fixture.componentInstance;
+    expect(component).toBeTruthy();
+  });
+});import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RegisterFacade } from '@features/register/application/facades/register.facade';
+import { MaterialModule } from '@shared/material/material.module';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError, tap } from 'rxjs/operators';
+import { TranslationModule } from '@shared/translation/translation.module';
+
+@Component({
+  selector: 'app-register',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    TranslationModule
+  ],
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
+})
+export class RegisterComponent {
+  private readonly fb = inject(FormBuilder);
+  private readonly facade = inject(RegisterFacade);
+  private readonly snack = inject(MatSnackBar);
+
+  form = this.fb.nonNullable.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
+    role: ['BRAND', [Validators.required]],
+  });
+
+  onSubmit(): void {
+    if (this.form.invalid) return;
+
+    this.facade
+      .submit(this.form)
+      .pipe(
+        tap(() => this.snack.open($localize`Registro exitoso`, undefined, { duration: 2500 })),
+        catchError((err) => {
+          this.snack.open($localize`Error en el registro`, undefined, { duration: 2500 });
+          throw err;
+        }),
+      )
+      .subscribe();
+  }
+}import { Routes } from '@angular/router';
+import { RegisterComponent } from './register.component';
+
+export const registerRoutes: Routes = [
+  {
+    path: '',
+    component: RegisterComponent,
+  },
+];
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AuthRepository } from '@core/domain/auth/repositories/auth.repository';
+import { RegisterRequestDTO } from '@features/register/application/dtos/register-request.dto';
+import { RegisterResponseDTO } from '@features/register/application/dtos/register-response.dto';
+import { environment } from '../../../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthHttpRepository extends AuthRepository {
+  constructor(private readonly http: HttpClient) {
+    super();
+  }
+
+  register(request: RegisterRequestDTO): Observable<RegisterResponseDTO> {
+    return this.http.post<RegisterResponseDTO>(`${environment.apiUrl}/auth/register`, request);
+  }
+}import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
+const materialModules = [
+  MatInputModule,
+  MatButtonModule,
+  MatSelectModule,
+  MatCardModule,
+  MatIconModule,
+  MatSnackBarModule
+];
+
+@NgModule({
+  declarations: [],
+  imports: [
+    CommonModule,
+    ...materialModules
+  ],
+  exports: [
+    ...materialModules
+  ]
+})
+export class MaterialModule { }import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import {
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function loaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
+@NgModule({
+  imports: [
+    HttpClientModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'es',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: loaderFactory,
+        deps: [HttpClient],
+      },
+    }),
+  ],
+  exports: [TranslateModule],
+})
+export class TranslationModule {}import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
+
+import { routes } from './app.routes';
+import { AuthRepository } from '@core/domain/auth/repositories/auth.repository';
+import { AuthHttpRepository } from './infrastructure/auth/auth-http.repository';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideHttpClient(),
+    provideAnimations(),
+    {
+      provide: AuthRepository,
+      useClass: AuthHttpRepository
+    }
+  ]
+};<router-outlet></router-outlet>
+import { Routes } from '@angular/router';
+
+export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'register',
+    pathMatch: 'full',
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./features/register/presentation/register.routes').then(m => m.registerRoutes),
+  },
+];
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}import { TestBed } from '@angular/core/testing';
+import { App } from './app';
+
+describe('App', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [App],
+    }).compileComponents();
+  });
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
+
+  it('should render title', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, influ-match-web');
+  });
+});
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet],
+  templateUrl: './app.html',
+  styleUrl: './app.scss'
+})
+export class App {}
+{
+    "register": {
+      "title": "Sign up",
+      "email": "Email",
+      "password": "Password",
+      "role": "User type",
+      "roleBrand": "Brand",
+      "roleInfluencer": "Influencer",
+      "submit": "Register",
+      "success": "Registration successful!"
+    }
+  }{
+    "register": {
+      "title": "Crear cuenta",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "role": "Tipo de usuario",
+      "roleBrand": "Marca",
+      "roleInfluencer": "Influencer",
+      "submit": "Registrarse",
+      "success": "¡Registro exitoso!"
+    }
+  }{
+    "register": {
+      "title": "Crear cuenta",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "role": "Tipo de usuario",
+      "roleBrand": "Marca",
+      "roleInfluencer": "Influencer",
+      "submit": "Registrarse",
+      "success": "¡Registro exitoso!"
+    }
+  }
+export const environment = {
+    production: false,
+    apiUrl: 'http://localhost:8080/api',
+  };export const environment = {
+  production: true,
+  apiUrl: 'https://api.influmatch.com/api'
+}; <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>InfluMatchWeb</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="mat-typography">
+  <app-root></app-root>
+</body>
+</html>
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { App } from './app/app';
+
+bootstrapApplication(App, appConfig)
+  .catch((err) => console.error(err));
+import '@angular/localize/init';
+
+// ... existing code ... /* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f5f5f5;
+}
+
+/* Material theme is loaded from angular.json */
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "influ-match-web": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "polyfills": [
+              "@angular/localize/init",
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/styles.scss"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "influ-match-web:build:production"
+            },
+            "development": {
+              "buildTarget": "influ-match-web:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "polyfills": [
+              "@angular/localize/init",
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/styles.scss"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+{
+  "name": "influ-match-web",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^20.0.2",
+    "@angular/cdk": "^20.0.2",
+    "@angular/common": "^20.0.0",
+    "@angular/compiler": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0",
+    "@angular/localize": "^20.0.2",
+    "@angular/material": "^20.0.2",
+    "@angular/platform-browser": "^20.0.0",
+    "@angular/router": "^20.0.0",
+    "@ngx-translate/core": "^16.0.4",
+    "@ngx-translate/http-loader": "^16.0.1",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^20.0.1",
+    "@angular/cli": "^20.0.1",
+    "@angular/compiler-cli": "^20.0.0",
+    "@types/jasmine": "~5.1.0",
+    "jasmine-core": "~5.7.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.8.2"
+  }
+}
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
+}
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": [
+      "jasmine"
+    ]
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@core/*": ["src/app/core/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@features/*": ["src/app/features/*"]
+    },
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022", "dom"],
+    "moduleResolution": "node"
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}
+src/
+├── main.ts
+├── styles.scss
+├── index.html
+├── polyfills.ts
+├── environments/
+│   ├── environment.ts
+│   ├── environment.prod.ts
+│   └── environment.development.ts
+└── app/
+    ├── app.config.ts
+    ├── app.html
+    ├── app.scss
+    ├── app.ts
+    ├── app.routes.ts
+    ├── app.spec.ts
+    ├── features/
+    │   └── register/
+    │       ├── presentation/
+    │       │   ├── register.component.ts
+    │       │   ├── register.component.html
+    │       │   ├── register.component.scss
+    │       │   ├── register.component.spec.ts
+    │       │   └── register.routes.ts
+    │       └── application/
+    │           ├── facades/
+    │           │   └── register.facade.ts
+    │           └── dtos/
+    │               ├── register-request.dto.ts
+    │               └── register-response.dto.ts
+    ├── core/
+    │   └── domain/
+    │       └── auth/
+    │           ├── entities/
+    │           │   └── user.entity.ts
+    │           ├── repositories/
+    │           │   └── auth.repository.ts
+    │           ├── use-cases/
+    │           │   └── register-user.usecase.ts
+    │           └── value-objects/
+    │               ├── email.vo.ts
+    │               ├── password.vo.ts
+    │               └── role.vo.ts
+    ├── infrastructure/
+    │   └── auth/
+    │       └── auth-http.repository.ts
+    └── shared/
+        ├── material/
+        │   └── material.module.ts
+        └── translation/
+            └── translation.module.ts

@@ -23,5 +23,12 @@
       <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" i18n="@@register.submit">
         Registrarse
       </button>
+
+      <div class="login-link">
+        <span i18n="@@register.hasAccount">¿Ya tienes una cuenta?</span>
+        <button mat-button color="accent" type="button" (click)="goToLogin()" i18n="@@register.login">
+          Inicia sesión aquí
+        </button>
+      </div>
     </form>
   </mat-card>

@@ -1,5 +1,12 @@
 {
-    "register": {
+    "login": {
+    "title": "Iniciar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "submit": "Entrar",
+    "success": "¡Login exitoso!"
+  },
+  "register": {
       "title": "Crear cuenta",
       "email": "Correo electrónico",
       "password": "Contraseña",
