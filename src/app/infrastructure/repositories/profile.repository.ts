@@ -4,8 +4,8 @@ import { Observable, throwError } from 'rxjs';
 
 import { ProfileRepository } from '../../domain/repositories/profile-repository';
 import { ProfileApi } from '../api/profile.api';
-import { InfluencerProfileVO } from '../../domain/value-objects/influencer-profile.vo';
-import { BrandProfileVO } from '../../domain/value-objects/brand-profile.vo';
+import { InfluencerProfileVO, InfluencerProfileResponseVO } from '../../domain/value-objects/influencer-profile.vo';
+import { BrandProfileVO, BrandProfileResponseVO } from '../../domain/value-objects/brand-profile.vo';
 import { Profile } from '../../domain/entities/profile.entity';
 
 @Injectable({ providedIn: 'root' })
@@ -20,6 +20,14 @@ export class ProfileRepositoryImpl extends ProfileRepository {
 
   listBrands(): Observable<BrandProfileVO[]> {
     return this.api.listBrands();
+  }
+
+  createInfluencerProfile(data: InfluencerProfileVO): Observable<InfluencerProfileResponseVO> {
+    return this.api.createInfluencerProfile(data);
+  }
+
+  createBrandProfile(data: BrandProfileVO): Observable<BrandProfileResponseVO> {
+    return this.api.createBrandProfile(data);
   }
 
   // *** Implementaciones obligatorias ***

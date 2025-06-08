@@ -25,6 +25,6 @@ export class AuthRepositoryImpl extends AuthRepository {
   updateProfile(data: ProfileVO): Observable<User> {
     return this.api
       .updateProfile(data)
-      .pipe(map((u) => ({ ...u, role: u.user_type, profile_completed: true })));
+      .pipe(map((u) => ({ ...u, profile_completed: true })));
   }
 }

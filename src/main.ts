@@ -4,8 +4,9 @@ import { importProvidersFrom } from '@angular/core';
 
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -13,6 +14,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app/app.routes'; // <-- tu archivo de rutas stand-alone
 import { AppComponent } from './app/app.component';
 import { CoreModule } from './app/core/core.module';
+import { authInterceptor } from './app/core/interceptors/auth.interceptor';
 
 // 🔧 Factory para ngx-translate
 export function createTranslateLoader(http: HttpClient) {
@@ -27,9 +29,13 @@ bootstrapApplication(AppComponent, {
     // 👉 Animaciones (equivalente a BrowserAnimationsModule)
     provideAnimations(),
 
-    // 👉 Imports de módulos “clásicos” que aún necesitas
+    // 👉 HTTP Client con interceptor
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    ),
+
+    // 👉 Imports de módulos "clásicos" que aún necesitas
     importProvidersFrom(
-      HttpClientModule,
       CoreModule,
       TranslateModule.forRoot({
         loader: {

@@ -1,18 +1,34 @@
+export interface SocialLink {
+  platform: 'IG' | 'YT' | 'TT' | 'FB' | 'TW' | 'LN' | 'OTHER';
+  url: string;
+}
+
+export interface MediaAsset {
+  url: string;
+  mediaType: 'IMAGE' | 'VIDEO' | 'DOC';
+  title?: string;
+  description?: string;
+  sizeBytes?: number;
+  metadata?: string;
+}
+
 export interface InfluencerProfileVO {
-  user_id: string;
-  display_name: string;
-  avatar_url: string;
+  displayName?: string;
+  bio?: string;
+  category?: string;
+  country?: string;
+  followersCount?: number;
+  socialLinks?: SocialLink[];
+  mediaAssets?: MediaAsset[];
+}
+
+export interface InfluencerProfileResponseVO {
+  id: number;
+  userId: number;
+  displayName: string;
   bio: string;
-  location: string;
-  contact_email: string;
-  niche: string;
-  followers: { instagram: number; tiktok: number; youtube: number };
-  rate_per_post: number;
-  engagement_rate?: number;
-  main_audience?: string;
-  languages?: string;
-  social_links?: Record<string, string>;
-  portfolio_urls?: string[];
-  previous_experience?: string;
-  preferred_categories?: string;
+  category: string;
+  country: string;
+  followersCount: number;
+  message: string;
 }

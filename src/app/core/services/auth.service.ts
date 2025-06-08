@@ -1,46 +1,79 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../../domain/entities/user.entity';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Observable, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { AuthResponseDTO } from '../../infrastructure/dtos/auth/auth-response.dto';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
-  private readonly USER_STORAGE_KEY = 'currentUser';
+  private apiUrl = environment.apiBase;
 
-  constructor() {
-    // Recuperar usuario del localStorage al iniciar
-    const storedUser = localStorage.getItem(this.USER_STORAGE_KEY);
-    if (storedUser) {
-      try {
-        const user = JSON.parse(storedUser);
-        this.currentUserSubject.next(user);
-      } catch (e) {
-        localStorage.removeItem(this.USER_STORAGE_KEY);
-      }
-    }
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
+
+  register(email: string, password: string, role: 'INFLUENCER' | 'BRAND'): Observable<AuthResponseDTO> {
+    return this.http.post<AuthResponseDTO>(`${this.apiUrl}/auth/register`, {
+      email,
+      password,
+      role
+    }).pipe(
+      tap(response => {
+        // Guardar datos de autenticación
+        localStorage.setItem('authData', JSON.stringify(response));
+        localStorage.setItem('token', response.token);
+        
+        // Redirigir al onboarding
+        this.router.navigate(['/auth/onboarding']);
+      })
+    );
   }
 
-  public get currentUser(): User | null {
-    return this.currentUserSubject.value;
+  login(email: string, password: string): Observable<AuthResponseDTO> {
+    return this.http.post<AuthResponseDTO>(`${this.apiUrl}/auth/login`, {
+      email,
+      password
+    }).pipe(
+      tap(response => {
+        localStorage.setItem('authData', JSON.stringify(response));
+        localStorage.setItem('token', response.token);
+        
+        // Si no tiene perfil, redirigir al onboarding
+        if (!localStorage.getItem('hasProfile')) {
+          this.router.navigate(['/auth/onboarding']);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
+      })
+    );
   }
 
-  public get currentUserObservable(): Observable<User | null> {
-    return this.currentUserSubject.asObservable();
+  logout() {
+    localStorage.removeItem('authData');
+    localStorage.removeItem('token');
+    localStorage.removeItem('hasProfile');
+    this.router.navigate(['/auth/login']);
   }
 
-  public get isAuthenticated(): boolean {
-    return !!this.currentUserSubject.value;
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('token');
   }
 
-  public save(user: User): void {
-    localStorage.setItem(this.USER_STORAGE_KEY, JSON.stringify(user));
-    this.currentUserSubject.next(user);
+  hasProfile(): boolean {
+    return !!localStorage.getItem('hasProfile');
   }
 
-  public logout(): void {
-    localStorage.removeItem(this.USER_STORAGE_KEY);
-    this.currentUserSubject.next(null);
+  getCurrentUser(): AuthResponseDTO | null {
+    const authData = localStorage.getItem('authData');
+    return authData ? JSON.parse(authData) : null;
+  }
+
+  save(user: AuthResponseDTO): void {
+    localStorage.setItem('authData', JSON.stringify(user));
+    localStorage.setItem('token', user.token);
   }
 }

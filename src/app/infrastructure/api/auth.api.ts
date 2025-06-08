@@ -23,7 +23,7 @@ export class AuthApi {
   constructor(private http: HttpClient) {}
 
   login(creds: UserCredentials): Observable<User> {
-    return this.http.post<LoginResponseDTO>(`${this.baseUrl}/api/auth/login`, {
+    return this.http.post<LoginResponseDTO>(`${this.baseUrl}/auth/login`, {
       email: creds.email,
       password: creds.password
     }).pipe(
@@ -34,7 +34,7 @@ export class AuthApi {
   register(data: RegisterVO): Observable<User> {
     const dto = RegisterAssembler.toRequestDTO(data);
     return this.http.post<RegisterResponseDTO>(
-      `${this.baseUrl}/api/auth/register`, 
+      `${this.baseUrl}/auth/register`, 
       dto
     ).pipe(
       map(response => RegisterAssembler.toUser(response))

@@ -144,7 +144,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.translate.instant('LOGIN.CLOSE'),
           { duration: 5000 }
         );
-        this.router.navigateByUrl('/onboarding');
+        this.router.navigateByUrl('/auth/onboarding');
       },
       (error) => {
         this.snackBar.open(

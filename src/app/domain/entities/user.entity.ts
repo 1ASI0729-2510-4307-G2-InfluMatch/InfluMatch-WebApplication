@@ -1,10 +1,8 @@
 export interface User {
-  id: string;
+  userId: number;
   email: string;
-  name?: string;
-  profile_completed: boolean;
-  avatar_url?: string;
-  user_type: string; // Now required
-  token?: string; // Added for authentication
-  // Otros campos que pueda tener el usuario
+  role: 'INFLUENCER' | 'BRAND';
+  token: string;
+  message: string;
+  profile_completed?: boolean;
 }

@@ -13,11 +13,12 @@ export class RegisterAssembler {
 
   static toUser(dto: RegisterResponseDTO): User {
     return {
-      id: dto.userId.toString(),
+      userId: dto.userId,
       email: dto.email,
-      user_type: dto.role,
+      role: dto.role,
       token: dto.token,
-      profile_completed: false // Un usuario recién registrado no tiene perfil completo
+      message: dto.message,
+      profile_completed: false
     };
   }
 } 

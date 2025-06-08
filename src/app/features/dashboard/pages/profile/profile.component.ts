@@ -34,12 +34,12 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     // Obtener el usuario actual del AuthService
-    const currentUser = this.authService.currentUser;
+    const currentUser = this.authService.getCurrentUser();
 
     if (currentUser) {
       // Consultar la API para obtener los datos completos del perfil
       this.http
-        .get(`${environment.apiBase}/users-register/${currentUser.id}`)
+        .get(`${environment.apiBase}/users-register/${currentUser.userId}`)
         .subscribe({
           next: (userData: any) => {
             this.user = userData;
@@ -110,11 +110,11 @@ export class ProfileComponent implements OnInit {
 
   // Método para verificar si es influencer
   isInfluencer(): boolean {
-    return this.user?.user_type === 'influencer';
+    return this.user?.role === 'INFLUENCER';
   }
 
   // Método para verificar si es marca
   isBrand(): boolean {
-    return this.user?.user_type === 'marca';
+    return this.user?.role === 'BRAND';
   }
 }

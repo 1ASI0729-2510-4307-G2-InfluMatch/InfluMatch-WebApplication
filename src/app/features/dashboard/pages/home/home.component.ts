@@ -29,21 +29,9 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.role = this.auth.currentUser?.user_type;
+    this.role = this.auth.getCurrentUser()?.role;
 
-    if (this.role === 'marca') {
-      this.listInf.execute().subscribe({
-        next: (list) => {
-          this.influencers = list;
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error('Error loading influencers:', err);
-          this.error = true;
-          this.loading = false;
-        },
-      });
-    } else {
+    if (this.role === 'BRAND') {
       this.listBr.execute().subscribe({
         next: (list) => {
           this.brands = list;
@@ -51,6 +39,18 @@ export class HomeComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error loading brands:', err);
+          this.error = true;
+          this.loading = false;
+        },
+      });
+    } else {
+      this.listInf.execute().subscribe({
+        next: (list) => {
+          this.influencers = list;
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Error loading influencers:', err);
           this.error = true;
           this.loading = false;
         },

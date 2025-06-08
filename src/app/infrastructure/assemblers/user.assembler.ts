@@ -1,14 +1,9 @@
 import { User } from '../../domain/entities/user.entity';
 import { NewUserVO } from '../../domain/value-objects/new-user.vo';
 import { ProfileVO } from '../../domain/value-objects/profile.vo';
+import { AuthResponseDTO } from '../../infrastructure/dtos/auth/auth-response.dto';
 
-export interface LoginResponseDTO {
-  userId: number;
-  email: string;
-  role: string;
-  token: string;
-  message: string;
-}
+export interface LoginResponseDTO extends AuthResponseDTO {}
 
 export interface RegisterResponseDTO {
   id: string;
@@ -18,55 +13,38 @@ export interface RegisterResponseDTO {
   profile_completed: boolean;
 }
 
-export interface ProfileResponseDTO {
-  id: string;
-  email: string;
-  name: string;
-  user_type: string;
+export interface ProfileResponseDTO extends AuthResponseDTO {
   profile_completed: boolean;
-  avatar_url?: string;
-  // Otros campos del perfil según corresponda
 }
 
 export class UserAssembler {
-  static toUser(dto: LoginResponseDTO): User {
+  static toUser(dto: AuthResponseDTO): User {
     return {
-      id: dto.userId.toString(),
+      userId: dto.userId,
       email: dto.email,
-      user_type: dto.role,
+      role: dto.role,
       token: dto.token,
-      profile_completed: true // Since we got a successful login, we assume the profile is complete
+      message: dto.message,
+      profile_completed: false
     };
   }
 
-  static toUserFromRegister(dto: RegisterResponseDTO): User {
-    return {
-      id: dto.id,
-      email: dto.email,
-      name: dto.name,
-      user_type: dto.user_type,
-      profile_completed: dto.profile_completed
-    };
+  static toUserFromRegister(dto: AuthResponseDTO): User {
+    return this.toUser(dto);
   }
 
   static toUserFromProfile(dto: ProfileResponseDTO): User {
     return {
-      id: dto.id,
-      email: dto.email,
-      name: dto.name,
-      user_type: dto.user_type,
-      profile_completed: dto.profile_completed,
-      avatar_url: dto.avatar_url
+      ...this.toUser(dto),
+      profile_completed: true
     };
   }
 
   static toNewUserDTO(vo: NewUserVO): any {
     return {
-      name: vo.name,
       email: vo.email,
       password: vo.password,
-      user_type: vo.user_type,
-      profile_completed: vo.profile_completed
+      role: vo.user_type
     };
   }
 
