@@ -6,6 +6,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatStepperModule } from '@angular/material/stepper';
+
 
 const materialModules = [
   MatInputModule,
@@ -13,6 +15,7 @@ const materialModules = [
   MatSelectModule,
   MatCardModule,
   MatIconModule,
+  MatStepperModule,
   MatSnackBarModule
 ];
 

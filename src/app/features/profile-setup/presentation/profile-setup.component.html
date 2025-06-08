@@ -1,0 +1,119 @@
+<div class="profile-setup-container">
+  <mat-card class="profile-setup-card">
+    <h1 i18n="@@profileSetup.title">Configuración de Perfil</h1>
+
+    <!-- Influencer Profile Setup -->
+    <div *ngIf="userRole === 'INFLUENCER'" class="profile-setup-content">
+      <mat-horizontal-stepper [linear]="true" #stepper>
+        <!-- Step 1: Basic Info -->
+        <mat-step>
+          <ng-template matStepLabel i18n="@@profileSetup.influencer.step1">Información Básica</ng-template>
+          <form [formGroup]="influencerForm">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label i18n="@@profileSetup.influencer.displayName">Nombre a mostrar</mat-label>
+              <input matInput formControlName="displayName" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label i18n="@@profileSetup.influencer.bio">Biografía</mat-label>
+              <textarea matInput formControlName="bio" rows="4" required></textarea>
+            </mat-form-field>
+
+            <div class="step-actions">
+              <button mat-button matStepperNext color="primary" i18n="@@common.next">Siguiente</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Step 2: Category and Location -->
+        <mat-step>
+          <ng-template matStepLabel i18n="@@profileSetup.influencer.step2">Categoría y Ubicación</ng-template>
+          <form [formGroup]="influencerForm">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label i18n="@@profileSetup.influencer.category">Categoría</mat-label>
+              <mat-select formControlName="category" required>
+                <mat-option value="LIFESTYLE">Lifestyle</mat-option>
+                <mat-option value="FASHION">Moda</mat-option>
+                <mat-option value="TECH">Tecnología</mat-option>
+                <mat-option value="FOOD">Gastronomía</mat-option>
+                <mat-option value="TRAVEL">Viajes</mat-option>
+                <mat-option value="FITNESS">Fitness</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label i18n="@@profileSetup.influencer.country">País</mat-label>
+              <input matInput formControlName="country" required>
+            </mat-form-field>
+
+            <div class="step-actions">
+              <button mat-button matStepperPrevious i18n="@@common.back">Atrás</button>
+              <button mat-button matStepperNext color="primary" i18n="@@common.next">Siguiente</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Step 3: Followers -->
+        <mat-step>
+          <ng-template matStepLabel i18n="@@profileSetup.influencer.step3">Seguidores</ng-template>
+          <form [formGroup]="influencerForm">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label i18n="@@profileSetup.influencer.followers">Número de seguidores</mat-label>
+              <input matInput type="number" formControlName="followersCount" required>
+            </mat-form-field>
+
+            <div class="step-actions">
+              <button mat-button matStepperPrevious i18n="@@common.back">Atrás</button>
+              <button mat-raised-button color="primary" 
+                      (click)="submitInfluencerProfile()" 
+                      [disabled]="influencerForm.invalid"
+                      i18n="@@common.finish">
+                Finalizar
+              </button>
+            </div>
+          </form>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+
+    <!-- Brand Profile Setup -->
+    <div *ngIf="userRole === 'BRAND'" class="profile-setup-content">
+      <form [formGroup]="brandForm" (ngSubmit)="submitBrandProfile()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label i18n="@@profileSetup.brand.companyName">Nombre de la empresa</mat-label>
+          <input matInput formControlName="companyName" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label i18n="@@profileSetup.brand.description">Descripción</mat-label>
+          <textarea matInput formControlName="description" rows="4"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label i18n="@@profileSetup.brand.industry">Industria</mat-label>
+          <input matInput formControlName="industry">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label i18n="@@profileSetup.brand.website">Sitio web</mat-label>
+          <input matInput formControlName="websiteUrl" type="url" placeholder="https://">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label i18n="@@profileSetup.brand.logo">URL del logo</mat-label>
+          <input matInput formControlName="logoUrl" type="url" placeholder="https://">
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" 
+                  type="submit" 
+                  [disabled]="brandForm.invalid"
+                  i18n="@@common.create">
+            Crear Perfil
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-card>
+</div>
+  

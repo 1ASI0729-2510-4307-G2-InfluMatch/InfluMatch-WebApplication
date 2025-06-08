@@ -1,8 +1,10 @@
 import { Role } from '../../../../core/domain/auth/value-objects/role.vo';
 
 export interface RegisterResponseDTO {
-  id: string;
+  userId: number;
   email: string;
-  role: Role;
-  createdAt: string;
+  role: string;
+  token: string;
+  hasProfile: boolean;
+  message: string;
 }

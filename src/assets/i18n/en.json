@@ -1,19 +1,40 @@
 {
-    "login": {
+  "register": {
+    "title": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "role": "User type",
+    "roleBrand": "Brand",
+    "roleInfluencer": "Influencer",
+    "submit": "Register",
+    "success": "Registration successful!",
+    "goLogin": "Already have an account? Login"
+  },
+
+  "login": {
     "title": "Log in",
     "email": "Email",
     "password": "Password",
-    "submit": "Sign in",
+    "submit": "Login",
     "success": "Login successful!"
   },
-    "register": {
-      "title": "Sign up",
-      "email": "Email",
-      "password": "Password",
-      "role": "User type",
-      "roleBrand": "Brand",
-      "roleInfluencer": "Influencer",
-      "submit": "Register",
-      "success": "Registration successful!"
-    }
+
+  "setup": {
+    "influencer": { "title": "Complete your influencer profile" },
+    "brand": { "title": "Complete your brand profile" },
+    "step": { "basic": "Basic data", "details": "Details" },
+    "displayName": "Public name",
+    "bio": "Bio",
+    "category": "Category",
+    "country": "Country",
+    "followers": "Followers",
+    "companyName": "Company name",
+    "description": "Description",
+    "industry": "Industry",
+    "website": "Website",
+    "logo": "Logo URL",
+    "next": "Next",
+    "back": "Back",
+    "finish": "Finish"
   }
+}

@@ -1,0 +1,66 @@
+.profile-setup-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  box-sizing: border-box;
+  background-color: #f5f5f5;
+}
+
+.profile-setup-card {
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem;
+
+  h1 {
+    margin: 0 0 2rem;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.profile-setup-content {
+  margin-top: 2rem;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.step-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  gap: 1rem;
+
+  button {
+    min-width: 120px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+
+  button {
+    min-width: 120px;
+  }
+}
+
+::ng-deep {
+  .mat-horizontal-stepper-header-container {
+    margin-bottom: 2rem;
+  }
+
+  .mat-step-header {
+    &.mat-step-header-ripple {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+}
+  

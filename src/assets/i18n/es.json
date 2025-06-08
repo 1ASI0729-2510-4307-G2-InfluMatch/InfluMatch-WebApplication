@@ -1,5 +1,5 @@
 {
-    "login": {
+  "login": {
     "title": "Iniciar sesión",
     "email": "Correo electrónico",
     "password": "Contraseña",
@@ -7,13 +7,38 @@
     "success": "¡Login exitoso!"
   },
   "register": {
-      "title": "Crear cuenta",
-      "email": "Correo electrónico",
-      "password": "Contraseña",
-      "role": "Tipo de usuario",
-      "roleBrand": "Marca",
-      "roleInfluencer": "Influencer",
-      "submit": "Registrarse",
-      "success": "¡Registro exitoso!"
-    }
+    "title": "Crear cuenta",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "role": "Tipo de usuario",
+    "roleBrand": "Marca",
+    "roleInfluencer": "Influencer",
+    "submit": "Registrarse",
+    "success": "¡Registro exitoso!"
+  },
+  "setup": {
+    "influencer": {
+      "title": "Completa tu perfil de influencer"
+    },
+    "brand": {
+      "title": "Completa el perfil de tu marca"
+    },
+    "step": {
+      "basic": "Datos básicos",
+      "details": "Detalles"
+    },
+    "displayName": "Nombre público",
+    "bio": "Biografía",
+    "category": "Categoría",
+    "country": "País",
+    "followers": "Seguidores",
+    "companyName": "Nombre de la empresa",
+    "description": "Descripción",
+    "industry": "Industria",
+    "website": "Sitio web",
+    "logo": "Logo URL",
+    "next": "Siguiente",
+    "back": "Atrás",
+    "finish": "Finalizar"
   }
+}

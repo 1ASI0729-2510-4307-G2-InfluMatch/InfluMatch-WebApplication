@@ -13,4 +13,11 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/register/presentation/register.routes').then(m => m.registerRoutes),
   },
+  {
+    path: 'profile-setup',
+    loadChildren: () =>
+      import('./features/profile-setup/presentation/profile-setup.routes')
+        .then(m => m.profileSetupRoutes),
+  },
+
 ];

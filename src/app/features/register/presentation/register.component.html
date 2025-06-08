@@ -1,34 +1,33 @@
 <mat-card class="register-card">
-    <h1 i18n="@@register.title">Crear cuenta</h1>
-  
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label i18n="@@register.email">Correo electrónico</mat-label>
-        <input matInput formControlName="email" type="email" required />
-      </mat-form-field>
-  
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label i18n="@@register.password">Contraseña</mat-label>
-        <input matInput formControlName="password" type="password" required />
-      </mat-form-field>
-  
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label i18n="@@register.role">Tipo de usuario</mat-label>
-        <mat-select formControlName="role">
-          <mat-option value="BRAND" i18n="@@register.roleBrand">Marca</mat-option>
-          <mat-option value="INFLUENCER" i18n="@@register.roleInfluencer">Influencer</mat-option>
-        </mat-select>
-      </mat-form-field>
-  
-      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" i18n="@@register.submit">
-        Registrarse
-      </button>
+  <h1 i18n="@@register.title">Sign up</h1>
 
-      <div class="login-link">
-        <span i18n="@@register.hasAccount">¿Ya tienes una cuenta?</span>
-        <button mat-button color="accent" type="button" (click)="goToLogin()" i18n="@@register.login">
-          Inicia sesión aquí
-        </button>
-      </div>
-    </form>
-  </mat-card>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label i18n="@@register.email">Email</mat-label>
+      <input matInput type="email" formControlName="email" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label i18n="@@register.password">Password</mat-label>
+      <input matInput type="password" formControlName="password" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label i18n="@@register.role">User type</mat-label>
+      <mat-select formControlName="role">
+        <mat-option value="BRAND"      i18n="@@register.roleBrand">Brand</mat-option>
+        <mat-option value="INFLUENCER" i18n="@@register.roleInfluencer">Influencer</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary"
+            type="submit" [disabled]="form.invalid"
+            i18n="@@register.submit">
+      Register
+    </button>
+
+    <button mat-button type="button" (click)="goToLogin()" i18n="@@register.goLogin">
+      Already have an account? Login
+    </button>
+  </form>
+</mat-card>

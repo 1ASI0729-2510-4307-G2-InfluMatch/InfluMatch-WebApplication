@@ -1,22 +1,18 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RegisterFacade } from '@features/register/application/facades/register.facade';
-import { MaterialModule } from '@shared/material/material.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, tap } from 'rxjs/operators';
+
+import { RegisterFacade } from '@features/register/application/facades/register.facade';
+import { MaterialModule } from '@shared/material/material.module';
 import { TranslationModule } from '@shared/translation/translation.module';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MaterialModule,
-    TranslationModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MaterialModule, TranslationModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
@@ -38,7 +34,17 @@ export class RegisterComponent {
     this.facade
       .submit(this.form)
       .pipe(
-        tap(() => this.snack.open($localize`Registro exitoso`, undefined, { duration: 2500 })),
+        tap((response) => {
+          localStorage.setItem('user', JSON.stringify({
+            userId: response.userId,
+            email: response.email,
+            role: response.role,
+            token: response.token,
+            hasProfile: response.hasProfile
+          }));
+          this.snack.open($localize`Registro exitoso`, undefined, { duration: 2500 });
+          this.router.navigate(['/profile-setup']);
+        }),
         catchError((err) => {
           this.snack.open($localize`Error en el registro`, undefined, { duration: 2500 });
           throw err;

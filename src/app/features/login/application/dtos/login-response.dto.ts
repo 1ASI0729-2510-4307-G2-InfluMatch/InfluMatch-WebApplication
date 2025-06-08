@@ -1,9 +1,9 @@
 import { Role } from '@core/domain/auth/value-objects/role.vo';
 
 export interface LoginResponseDTO {
-  userId: string;
+  userId: number;
   email: string;
-  role: Role;
+  role: string;
   token: string;
   hasProfile: boolean;
   message: string;

@@ -36,9 +36,22 @@ export class LoginComponent {
     if (this.form.invalid) return;
 
     this.fac.submit(this.form).pipe(
-      tap(() =>
-        this.snack.open($localize`Login exitoso`, undefined, { duration: 2500 })
-      ),
+      tap((response) => {
+        localStorage.setItem('user', JSON.stringify({
+          userId: response.userId,
+          email: response.email,
+          role: response.role,
+          token: response.token,
+          hasProfile: response.hasProfile
+        }));
+        this.snack.open($localize`Login exitoso`, undefined, { duration: 2500 });
+        
+        if (response.hasProfile) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/profile-setup']);
+        }
+      }),
       catchError(err => {
         this.snack.open($localize`Error en el login`, undefined, { duration: 2500 });
         throw err;
