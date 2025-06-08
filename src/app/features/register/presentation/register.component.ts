@@ -10,12 +10,7 @@ import { TranslatePipe } from '@shared/translation/translate.pipe';
 import { TranslationService } from '@shared/services/translation.service';
 import { RegisterFacade } from '@features/register/application/facades/register.facade';
 import { catchError, tap } from 'rxjs/operators';
-
-interface RegisterPayload {
-  email: string;
-  password: string;
-  role: string;
-}
+import { Role } from '@core/domain/auth/enums/role.enum';
 
 @Component({
   selector: 'app-register',
@@ -36,6 +31,7 @@ export class RegisterComponent implements OnInit {
   form: FormGroup;
   hidePassword = true;
   hideConfirmPassword = true;
+  readonly Role = Role; // Para usar en el template
 
   private readonly facade = inject(RegisterFacade);
   private readonly snackBar = inject(MatSnackBar);
@@ -49,7 +45,7 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
-      userType: ['', [Validators.required]]
+      userType: [Role.BRAND, [Validators.required]] // Valor por defecto: BRAND
     }, {
       validators: this.passwordMatchValidator
     });
@@ -78,9 +74,17 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       this.facade.submit(this.form).pipe(
-        tap(() => {
+        tap((response) => {
+          // Guardar el token y datos del usuario
+          localStorage.setItem('user', JSON.stringify({
+            userId: response.userId,
+            email: response.email,
+            role: response.role,
+            token: response.token,
+            hasProfile: false // Usuario recién registrado no tiene perfil
+          }));
           this.snackBar.open('register.success', 'OK', { duration: 3000 });
-          this.router.navigate(['/login']);
+          this.router.navigate(['/profile-setup']);
         }),
         catchError((error) => {
           this.snackBar.open(error.message, 'OK', { duration: 3000 });

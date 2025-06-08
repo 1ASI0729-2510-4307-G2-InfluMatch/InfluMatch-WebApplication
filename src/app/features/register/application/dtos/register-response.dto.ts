@@ -1,5 +1,3 @@
-import { Role } from '../../../../core/domain/auth/value-objects/role.vo';
-
 export interface RegisterResponseDTO {
   userId: number;
   email: string;
