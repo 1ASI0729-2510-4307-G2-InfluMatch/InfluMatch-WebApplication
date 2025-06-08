@@ -2,10 +2,10 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RegisterFacade } from '@features/register/application/facades/register.facade';
-import { TranslationModule } from '@shared/translation/translation.module';
 import { MaterialModule } from '@shared/material/material.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, tap } from 'rxjs/operators';
+import { TranslationModule } from '@shared/translation/translation.module';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +14,7 @@ import { catchError, tap } from 'rxjs/operators';
     CommonModule,
     ReactiveFormsModule,
     MaterialModule,
-    TranslationModule,
+    TranslationModule
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
