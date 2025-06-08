@@ -156,7 +156,7 @@
           "DOC": "Document"
         }
       },
-      "title": {
+      "assetTitle": {
         "label": "Title",
         "placeholder": "Enter media title",
         "maxLength": "Title cannot exceed 100 characters"
@@ -207,5 +207,35 @@
       "finish": "Finish",
       "save": "Save changes"
     }
+  },
+
+  "app": {
+    "name": "InfluMatch"
+  },
+
+  "nav": {
+    "dashboard": "Dashboard",
+    "campaigns": "Campaigns",
+    "messages": "Messages",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+
+  "campaigns": {
+    "title": "Campaigns",
+    "description": "Manage your marketing campaigns and collaborations",
+    "comingSoon": "Campaign management features coming soon!"
+  },
+
+  "messages": {
+    "title": "Messages",
+    "description": "Chat with your connections and potential collaborators",
+    "comingSoon": "Messaging features coming soon!"
+  },
+
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Welcome to your dashboard",
+    "comingSoon": "Dashboard features coming soon!"
   }
 }

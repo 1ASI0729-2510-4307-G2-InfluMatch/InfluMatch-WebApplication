@@ -180,7 +180,7 @@
           "DOC": "Documento"
         }
       },
-      "title": {
+      "assetTitle": {
         "label": "Título",
         "placeholder": "Ingresa el título del archivo",
         "maxLength": "El título no puede exceder los 100 caracteres"
@@ -205,5 +205,30 @@
       "finish": "Finalizar",
       "save": "Guardar cambios"
     }
+  },
+  "app": {
+    "name": "InfluMatch"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "campaigns": "Campañas",
+    "messages": "Mensajes",
+    "profile": "Perfil",
+    "logout": "Cerrar Sesión"
+  },
+  "campaigns": {
+    "title": "Campañas",
+    "description": "Gestiona tus campañas de marketing y colaboraciones",
+    "comingSoon": "¡Las funciones de gestión de campañas estarán disponibles pronto!"
+  },
+  "messages": {
+    "title": "Mensajes",
+    "description": "Chatea con tus conexiones y posibles colaboradores",
+    "comingSoon": "¡Las funciones de mensajería estarán disponibles pronto!"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "description": "Bienvenido a tu panel",
+    "comingSoon": "¡Las funciones del panel estarán disponibles pronto!"
   }
 }

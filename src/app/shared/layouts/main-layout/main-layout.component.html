@@ -1,0 +1,59 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" opened class="sidenav" [class.collapsed]="!sidenav.opened">
+    <div class="sidenav-header">
+      <img src="assets/images/logo.png" alt="Logo" class="logo">
+      <h2 *ngIf="sidenav.opened">{{ 'app.name' | translate }}</h2>
+    </div>
+
+    <mat-nav-list>
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
+        <mat-icon>dashboard</mat-icon>
+        <span class="nav-text" *ngIf="sidenav.opened">{{ 'nav.dashboard' | translate }}</span>
+      </a>
+
+      <a mat-list-item routerLink="/campaigns" routerLinkActive="active">
+        <mat-icon>campaign</mat-icon>
+        <span class="nav-text" *ngIf="sidenav.opened">{{ 'nav.campaigns' | translate }}</span>
+      </a>
+
+      <a mat-list-item routerLink="/messages" routerLinkActive="active">
+        <mat-icon>message</mat-icon>
+        <span class="nav-text" *ngIf="sidenav.opened">{{ 'nav.messages' | translate }}</span>
+      </a>
+
+      <a mat-list-item routerLink="/profile" routerLinkActive="active">
+        <mat-icon>person</mat-icon>
+        <span class="nav-text" *ngIf="sidenav.opened">{{ 'nav.profile' | translate }}</span>
+      </a>
+    </mat-nav-list>
+
+    <div class="toggle-container">
+      <button mat-icon-button class="toggle-sidenav" (click)="sidenav.toggle()">
+        <mat-icon>{{ sidenav.opened ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+      </button>
+    </div>
+
+    <div class="sidenav-footer">
+      <div class="user-info" *ngIf="sidenav.opened">
+        <mat-icon>account_circle</mat-icon>
+        <span class="user-email">{{ userEmail }}</span>
+      </div>
+
+      <button mat-button class="language-button" (click)="toggleLanguage()">
+        <mat-icon>language</mat-icon>
+        <span *ngIf="sidenav.opened">{{ currentLanguage | uppercase }}</span>
+      </button>
+      
+      <button mat-button class="logout-button" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span *ngIf="sidenav.opened">{{ 'nav.logout' | translate }}</span>
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container> 

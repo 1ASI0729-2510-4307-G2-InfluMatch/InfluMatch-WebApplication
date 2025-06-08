@@ -1,39 +1,57 @@
-import { Email } from '../value-objects/email.vo';
-import { Role } from '../value-objects/role.vo';
-import { User } from '../entities/user.entity';
 import { RegisterResponseDTO } from '@features/register/application/dtos/register-response.dto';
+import { User } from '../entities/user.entity';
+import { Role } from '../value-objects/role.vo';
 
 export class UserAssembler {
-  static fromResponse(dto: RegisterResponseDTO): User {
+  static toEntity(dto: RegisterResponseDTO): User {
     return new User(
-      dto.id,
-      Email.create(dto.email),
+      dto.userId,
+      dto.email,
       dto.role as Role,
-      new Date(dto.createdAt),
+      new Date()
     );
   }
 }
 
-import { Email } from '../value-objects/email.vo';
 import { Role } from '../value-objects/role.vo';
 
 export class User {
   constructor(
-    public readonly id: string,
-    public readonly email: Email,
+    public readonly userId: number,
+    public readonly email: string,
     public readonly role: Role,
-    public readonly createdAt: Date,
+    public readonly createdAt: Date
   ) {}
 }
 
-import { Observable } from 'rxjs';
+export enum Role {
+  BRAND = 'BRAND',
+  INFLUENCER = 'INFLUENCER'
+} import { Observable } from 'rxjs';
 import { RegisterRequestDTO } from '@features/register/application/dtos/register-request.dto';
 import { RegisterResponseDTO } from '@features/register/application/dtos/register-response.dto';
-import { User } from '../entities/user.entity';
+import { LoginRequestDTO } from '@features/login/application/dtos/login-request.dto';
+import { LoginResponseDTO } from '@app/features/login/application/dtos/login-response.dto';
 
 export abstract class AuthRepository {
   abstract register(request: RegisterRequestDTO): Observable<RegisterResponseDTO>;
+  abstract login(request: LoginRequestDTO): Observable<LoginResponseDTO>;
 }
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AuthRepository } from '@core/domain/auth/repositories/auth.repository';
+import { LoginRequestDTO } from '@features/login/application/dtos/login-request.dto';
+import { LoginResponseDTO } from '@app/features/login/application/dtos/login-response.dto';
+
+@Injectable({ providedIn: 'root' })
+export class LoginUserUseCase {
+  constructor(private readonly repository: AuthRepository) {}
+
+  execute(request: LoginRequestDTO): Observable<LoginResponseDTO> {
+    return this.repository.login(request);
+  }
+}
+
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -52,7 +70,6 @@ export class RegisterUserUseCase {
   }
 }
 
-
 export class Email {
     private constructor(public readonly value: string) {}
   
@@ -64,7 +81,8 @@ export class Email {
       return new Email(value);
     }
   }
-export class Password {
+
+  export class Password {
     private constructor(public readonly value: string) {}
   
     static create(value: string): Password {
@@ -76,7 +94,8 @@ export class Password {
       return new Password(value);
     }
   }
-export type Role = 'BRAND' | 'INFLUENCER';
+
+  export type Role = 'BRAND' | 'INFLUENCER';
 
 export class RoleVO {
   constructor(private readonly value: Role) {}
@@ -89,27 +108,1222 @@ export class RoleVO {
     return new RoleVO(value);
   }
 }
-import { Role } from '../../../../core/domain/auth/value-objects/role.vo';
+
+
+import { Observable } from 'rxjs';
+import { InfluencerProfileRequestDTO } from '../../../../features/profile-setup/application/dtos/influencer-profile-request.dto';
+import { InfluencerProfileResponseDTO } from '../../../../features/profile-setup/application/dtos/influencer-profile-response.dto';
+import { BrandProfileRequestDTO } from '../../../../features/profile-setup/application/dtos/brand-profile-request.dto';
+import { BrandProfileResponseDTO } from '../../../../features/profile-setup/application/dtos/brand-profile-response.dto';
+
+export abstract class ProfileRepository {
+  abstract createInfluencerProfile(request: InfluencerProfileRequestDTO): Observable<InfluencerProfileResponseDTO>;
+  abstract createBrandProfile(request: BrandProfileRequestDTO): Observable<BrandProfileResponseDTO>;
+}
+
+
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ProfileRepository } from '../repositories/profile.repository';
+import { BrandProfileRequestDTO } from '../../../../features/profile-setup/application/dtos/brand-profile-request.dto';
+import { BrandProfileResponseDTO } from '../../../../features/profile-setup/application/dtos/brand-profile-response.dto';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CreateBrandProfileUseCase {
+  private readonly repository = inject(ProfileRepository);
+
+  execute(request: BrandProfileRequestDTO): Observable<BrandProfileResponseDTO> {
+    return this.repository.createBrandProfile(request);
+  }
+}
+
+
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ProfileRepository } from '../repositories/profile.repository';
+import { InfluencerProfileRequestDTO } from '../../../../features/profile-setup/application/dtos/influencer-profile-request.dto';
+import { InfluencerProfileResponseDTO } from '../../../../features/profile-setup/application/dtos/influencer-profile-response.dto';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CreateInfluencerProfileUseCase {
+  private readonly repository = inject(ProfileRepository);
+
+  execute(request: InfluencerProfileRequestDTO): Observable<InfluencerProfileResponseDTO> {
+    return this.repository.createInfluencerProfile(request);
+  }
+}
+
+
+<div class="dashboard-container">
+  <mat-toolbar color="primary">
+    <span i18n="@@dashboard.title">Dashboard</span>
+  </mat-toolbar>
+
+  <div class="dashboard-content">
+    <mat-card>
+      <mat-card-content>
+        <h2 i18n="@@dashboard.welcome">¡Bienvenido al Dashboard!</h2>
+        <p i18n="@@dashboard.description">Este es el dashboard principal de la aplicación.</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div> 
+
+.dashboard-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-content {
+  padding: 2rem;
+  flex: 1;
+  background-color: #f5f5f5;
+
+  mat-card {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    h2 {
+      margin: 0 0 1rem;
+      color: #333;
+      font-size: 2rem;
+      font-weight: 500;
+    }
+
+    p {
+      color: #666;
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+  }
+} 
+
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MaterialModule } from '@shared/material/material.module';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
+
+@Component({
+  selector: 'app-dashboard',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MaterialModule,
+    MatToolbarModule,
+    MatCardModule
+  ],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
+})
+export class DashboardComponent {} 
+
+export interface LoginRequestDTO {
+    email: string;
+    password: string;
+  }
+  
+
+  import { Role } from '@core/domain/auth/value-objects/role.vo';
+
+export interface LoginResponseDTO {
+  userId: number;
+  email: string;
+  role: string;
+  token: string;
+  hasProfile: boolean;
+  message: string;
+}
+
+
+import { Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { LoginUserUseCase } from '@core/domain/auth/use-cases/login-user.usecase';
+import { LoginResponseDTO } from '../dtos/login-response.dto';
+
+@Injectable({ providedIn: 'root' })
+export class LoginFacade {
+  constructor(private readonly loginUseCase: LoginUserUseCase) {}
+
+  submit(form: FormGroup): Observable<LoginResponseDTO> {
+    return this.loginUseCase.execute({
+      email: form.get('email')?.value,
+      password: form.get('password')?.value,
+    });
+  }
+}
+
+
+
+<app-language-selector></app-language-selector>
+
+<mat-card class="login-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>{{ 'login.title' | translate }}</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'login.email.label' | translate }}</mat-label>
+        <input 
+          matInput 
+          formControlName="email" 
+          type="email" 
+          required
+          autocomplete="email"
+          [placeholder]="'login.email.placeholder' | translate" />
+        <mat-error *ngIf="form.get('email')?.hasError('required')">
+          {{ 'login.email.required' | translate }}
+        </mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">
+          {{ 'login.email.invalid' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'login.password.label' | translate }}</mat-label>
+        <input 
+          matInput 
+          formControlName="password" 
+          [type]="hidePassword ? 'password' : 'text'"
+          required
+          autocomplete="current-password"
+          [placeholder]="'login.password.placeholder' | translate" />
+        <button 
+          mat-icon-button 
+          matSuffix 
+          (click)="hidePassword = !hidePassword" 
+          [attr.aria-label]="'Hide password'" 
+          [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('password')?.hasError('required')">
+          {{ 'login.password.required' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <button 
+        mat-raised-button 
+        color="primary" 
+        type="submit" 
+        [disabled]="form.invalid" 
+        class="submit-button">
+        {{ 'login.submit' | translate }}
+      </button>
+
+      <div class="register-link">
+        <span>{{ 'login.noAccount' | translate }}</span>
+        <button 
+          mat-button 
+          color="accent" 
+          type="button" 
+          (click)="goToRegister()">
+          {{ 'login.register' | translate }}
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+
+import { TestBed } from '@angular/core/testing';
+import { LoginComponent } from './login.component';
+
+describe('LoginComponent', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [LoginComponent],
+    }).compileComponents();
+  });
+
+  it('should create', () => {
+    const fixture = TestBed.createComponent(LoginComponent);
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+});
+
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MaterialModule } from '@shared/material/material.module';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { LanguageSelectorComponent } from '@shared/language/language-selector.component';
+import { TranslatePipe } from '@shared/translation/translate.pipe';
+import { TranslationService } from '@shared/services/translation.service';
+import { LoginFacade } from '@features/login/application/facades/login.facade';
+import { catchError, tap } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    LanguageSelectorComponent,
+    TranslatePipe
+  ],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  providers: [TranslatePipe]
+})
+export class LoginComponent implements OnInit {
+  form: FormGroup;
+  hidePassword = true;
+
+  private readonly facade = inject(LoginFacade);
+  private readonly snackBar = inject(MatSnackBar);
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private translationService: TranslationService
+  ) {
+    this.form = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
+  }
+
+  ngOnInit() {
+    // Ensure translations are loaded
+    const currentLang = localStorage.getItem('language') || 'es';
+    this.translationService.setLanguage(currentLang).subscribe({
+      error: (err) => console.error('Error loading translations:', err)
+    });
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      this.facade.submit(this.form).pipe(
+        tap((response: any) => {
+          // Guardar el token y datos del usuario
+          localStorage.setItem('user', JSON.stringify({
+            userId: response.userId,
+            email: response.email,
+            role: response.role,
+            token: response.token,
+            hasProfile: response.hasProfile
+          }));
+          this.snackBar.open('login.success', 'OK', { duration: 3000 });
+          // Redirigir según si tiene perfil o no
+          const route = response.hasProfile ? '/dashboard' : '/profile-setup';
+          this.router.navigate([route]);
+        }),
+        catchError((error) => {
+          this.snackBar.open(error.message, 'OK', { duration: 3000 });
+          throw error;
+        })
+      ).subscribe();
+    }
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
+  }
+}
+
+
+import { Routes } from '@angular/router';
+import { LoginComponent } from './login.component';
+
+export const loginRoutes: Routes = [
+  { path: '', component: LoginComponent },
+];
+
+
+
+
+export interface BrandProfileRequestDTO {
+    companyName: string;
+    description?: string;
+    industry?: string;
+    websiteUrl?: string;
+    logoUrl?: string;
+  }
+  
+
+  export interface BrandProfileResponseDTO {
+  id: number;
+  userId: number;
+  companyName: string;
+  description?: string;
+  industry?: string;
+  websiteUrl?: string;
+  logoUrl?: string;
+  message: string;
+}
+  
+
+  interface SocialLink {
+  platform: string;  // IG, YT, TT, FB, TW, LN, OTHER
+  url: string;
+}
+
+interface MediaAsset {
+  url: string;
+  mediaType: string;  // IMAGE, VIDEO, DOC
+  title?: string;
+  description?: string;
+  sizeBytes?: number;
+  metadata?: Record<string, unknown>;
+}
+
+export interface InfluencerProfileRequestDTO {
+    displayName: string;
+    bio: string;
+    category: string;
+    country: string;
+    followersCount: number;
+    socialLinks?: SocialLink[];
+    mediaAssets?: MediaAsset[];
+  }
+  
+
+  export interface InfluencerProfileResponseDTO {
+    id: number;
+    userId: number;
+    displayName: string;
+    bio: string;
+    category: string;
+    country: string;
+    followersCount: number;
+    message: string;
+  }
+
+
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { CreateInfluencerProfileUseCase } from '@core/domain/profile/use-cases/create-influencer-profile.usecase';
+import { CreateBrandProfileUseCase } from '@core/domain/profile/use-cases/create-brand-profile.usecase';
+import { InfluencerProfileRequestDTO } from '../dtos/influencer-profile-request.dto';
+import { BrandProfileRequestDTO } from '../dtos/brand-profile-request.dto';
+import { InfluencerProfileResponseDTO } from '../dtos/influencer-profile-response.dto';
+import { BrandProfileResponseDTO } from '../dtos/brand-profile-response.dto';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProfileSetupFacade {
+  private readonly createInfluencerUseCase = inject(CreateInfluencerProfileUseCase);
+  private readonly createBrandUseCase = inject(CreateBrandProfileUseCase);
+
+  createInfluencerProfile(request: InfluencerProfileRequestDTO): Observable<InfluencerProfileResponseDTO> {
+    return this.createInfluencerUseCase.execute(request);
+  }
+
+  createBrandProfile(request: BrandProfileRequestDTO): Observable<BrandProfileResponseDTO> {
+    return this.createBrandUseCase.execute(request);
+  }
+}
+
+
+<app-language-selector></app-language-selector>
+
+<div class="profile-setup-container">
+  <mat-card class="profile-setup-card">
+    <h1>{{ 'profile.setup.title' | translate }}</h1>
+
+    <!-- Influencer Profile Setup -->
+    <div *ngIf="userRole === 'INFLUENCER'" class="profile-setup-content">
+      <mat-horizontal-stepper [linear]="true" #stepper>
+        <!-- Step 1: Basic Info -->
+        <mat-step>
+          <ng-template matStepLabel>{{ 'profile.setup.step.basic' | translate }}</ng-template>
+          <form [formGroup]="influencerForm">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'profile.displayName.label' | translate }}</mat-label>
+              <input matInput formControlName="displayName" required 
+                     [placeholder]="'profile.displayName.placeholder' | translate">
+              <mat-error *ngIf="influencerForm.get('displayName')?.hasError('required')">
+                {{ 'profile.displayName.required' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'profile.bio.label' | translate }}</mat-label>
+              <textarea matInput formControlName="bio" rows="4" required
+                        [placeholder]="'profile.bio.placeholder' | translate"></textarea>
+              <mat-error *ngIf="influencerForm.get('bio')?.hasError('required')">
+                {{ 'profile.bio.required' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <div class="step-actions">
+              <button mat-button matStepperNext color="primary">{{ 'profile.actions.next' | translate }}</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Step 2: Category and Location -->
+        <mat-step>
+          <ng-template matStepLabel>{{ 'profile.setup.step.details' | translate }}</ng-template>
+          <form [formGroup]="influencerForm">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'profile.category.label' | translate }}</mat-label>
+              <mat-select formControlName="category" required
+                         [placeholder]="'profile.category.placeholder' | translate">
+                <mat-option value="LIFESTYLE">{{ 'profile.categories.lifestyle' | translate }}</mat-option>
+                <mat-option value="FASHION">{{ 'profile.categories.fashion' | translate }}</mat-option>
+                <mat-option value="TECH">{{ 'profile.categories.tech' | translate }}</mat-option>
+                <mat-option value="FOOD">{{ 'profile.categories.food' | translate }}</mat-option>
+                <mat-option value="TRAVEL">{{ 'profile.categories.travel' | translate }}</mat-option>
+                <mat-option value="FITNESS">{{ 'profile.categories.fitness' | translate }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="influencerForm.get('category')?.hasError('required')">
+                {{ 'profile.category.required' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'profile.country.label' | translate }}</mat-label>
+              <input matInput formControlName="country" required
+                     [placeholder]="'profile.country.placeholder' | translate">
+              <mat-error *ngIf="influencerForm.get('country')?.hasError('required')">
+                {{ 'profile.country.required' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <div class="step-actions">
+              <button mat-button matStepperPrevious>{{ 'profile.actions.back' | translate }}</button>
+              <button mat-button matStepperNext color="primary">{{ 'profile.actions.next' | translate }}</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Step 3: Followers -->
+        <mat-step>
+          <ng-template matStepLabel>{{ 'profile.followers.label' | translate }}</ng-template>
+          <form [formGroup]="influencerForm">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'profile.followers.label' | translate }}</mat-label>
+              <input matInput type="number" formControlName="followersCount" required
+                     [placeholder]="'profile.followers.placeholder' | translate">
+              <mat-error *ngIf="influencerForm.get('followersCount')?.hasError('required')">
+                {{ 'profile.followers.required' | translate }}
+              </mat-error>
+              <mat-error *ngIf="influencerForm.get('followersCount')?.hasError('min')">
+                {{ 'profile.followers.min' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <div class="step-actions">
+              <button mat-button matStepperPrevious>{{ 'profile.actions.back' | translate }}</button>
+              <button mat-button matStepperNext color="primary">{{ 'profile.actions.next' | translate }}</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Step 4: Social Links -->
+        <mat-step>
+          <ng-template matStepLabel>{{ 'profile.setup.step.social' | translate }}</ng-template>
+          <form [formGroup]="influencerForm">
+            <div formArrayName="socialLinks">
+              <div *ngFor="let socialLink of socialLinks.controls; let i = index" 
+                   [formGroupName]="i" class="social-link-item">
+                <div class="social-link-fields">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.socialLinks.platform.label' | translate }}</mat-label>
+                    <mat-select formControlName="platform" required>
+                      <mat-option *ngFor="let platform of SocialPlatform | keyvalue" 
+                                [value]="platform.value">
+                        {{ 'profile.socialLinks.platform.options.' + platform.value | translate }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="socialLink.get('platform')?.hasError('required')">
+                      {{ 'profile.socialLinks.platform.required' | translate }}
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.socialLinks.url.label' | translate }}</mat-label>
+                    <input matInput formControlName="url" required type="url"
+                           [placeholder]="'profile.socialLinks.url.placeholder' | translate">
+                    <mat-error *ngIf="socialLink.get('url')?.hasError('required')">
+                      {{ 'profile.socialLinks.url.required' | translate }}
+                    </mat-error>
+                    <mat-error *ngIf="socialLink.get('url')?.hasError('pattern')">
+                      {{ 'profile.socialLinks.url.invalid' | translate }}
+                    </mat-error>
+                  </mat-form-field>
+
+                  <button mat-icon-button color="warn" type="button"
+                          (click)="removeSocialLink(i)"
+                          [attr.aria-label]="'profile.setup.influencer.removeSocialLink' | translate">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button mat-stroked-button type="button" 
+                    (click)="addSocialLink()"
+                    class="add-button">
+              <mat-icon>add</mat-icon>
+              {{ 'profile.setup.influencer.addSocialLink' | translate }}
+            </button>
+
+            <div class="step-actions">
+              <button mat-button matStepperPrevious>{{ 'profile.actions.back' | translate }}</button>
+              <button mat-button matStepperNext color="primary">{{ 'profile.actions.next' | translate }}</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Step 5: Media Assets -->
+        <mat-step>
+          <ng-template matStepLabel>{{ 'profile.setup.step.media' | translate }}</ng-template>
+          <form [formGroup]="influencerForm">
+            <div formArrayName="mediaAssets">
+              <div *ngFor="let mediaAsset of mediaAssets.controls; let i = index" 
+                   [formGroupName]="i" class="media-asset-item">
+                <div class="media-asset-fields">
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.mediaAssets.url.label' | translate }}</mat-label>
+                    <input matInput formControlName="url" required type="url"
+                           [placeholder]="'profile.mediaAssets.url.placeholder' | translate">
+                    <mat-error *ngIf="mediaAsset.get('url')?.hasError('required')">
+                      {{ 'profile.mediaAssets.url.required' | translate }}
+                    </mat-error>
+                    <mat-error *ngIf="mediaAsset.get('url')?.hasError('pattern')">
+                      {{ 'profile.mediaAssets.url.invalid' | translate }}
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.mediaAssets.mediaType.label' | translate }}</mat-label>
+                    <mat-select formControlName="mediaType" required>
+                      <mat-option *ngFor="let type of MediaType | keyvalue" 
+                                [value]="type.value">
+                        {{ 'profile.mediaAssets.mediaType.options.' + type.value | translate }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="mediaAsset.get('mediaType')?.hasError('required')">
+                      {{ 'profile.mediaAssets.mediaType.required' | translate }}
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.mediaAssets.title.label' | translate }}</mat-label>
+                    <input matInput formControlName="title"
+                           [placeholder]="'profile.mediaAssets.title.placeholder' | translate">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.mediaAssets.description.label' | translate }}</mat-label>
+                    <textarea matInput formControlName="description" rows="2"
+                             [placeholder]="'profile.mediaAssets.description.placeholder' | translate">
+                    </textarea>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.mediaAssets.sizeBytes.label' | translate }}</mat-label>
+                    <input matInput formControlName="sizeBytes" type="number"
+                           [placeholder]="'profile.mediaAssets.sizeBytes.placeholder' | translate">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ 'profile.mediaAssets.metadata.label' | translate }}</mat-label>
+                    <textarea matInput formControlName="metadata" rows="2"
+                             [placeholder]="'profile.mediaAssets.metadata.placeholder' | translate">
+                    </textarea>
+                  </mat-form-field>
+
+                  <button mat-icon-button color="warn" type="button"
+                          (click)="removeMediaAsset(i)"
+                          [attr.aria-label]="'profile.setup.influencer.removeMediaAsset' | translate">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button mat-stroked-button type="button" 
+                    (click)="addMediaAsset()"
+                    class="add-button">
+              <mat-icon>add</mat-icon>
+              {{ 'profile.setup.influencer.addMediaAsset' | translate }}
+            </button>
+
+            <div class="step-actions">
+              <button mat-button matStepperPrevious>{{ 'profile.actions.back' | translate }}</button>
+              <button mat-raised-button color="primary" 
+                      (click)="submitInfluencerProfile()" 
+                      [disabled]="influencerForm.invalid">
+                {{ 'profile.actions.finish' | translate }}
+              </button>
+            </div>
+          </form>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+
+    <!-- Brand Profile Setup -->
+    <div *ngIf="userRole === 'BRAND'" class="profile-setup-content">
+      <form [formGroup]="brandForm" (ngSubmit)="submitBrandProfile()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'profile.companyName.label' | translate }}</mat-label>
+          <input matInput formControlName="companyName" required
+                 [placeholder]="'profile.companyName.placeholder' | translate">
+          <mat-error *ngIf="brandForm.get('companyName')?.hasError('required')">
+            {{ 'profile.companyName.required' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'profile.description.label' | translate }}</mat-label>
+          <textarea matInput formControlName="description" rows="4"
+                    [placeholder]="'profile.description.placeholder' | translate"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'profile.industry.label' | translate }}</mat-label>
+          <input matInput formControlName="industry"
+                 [placeholder]="'profile.industry.placeholder' | translate">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'profile.website.label' | translate }}</mat-label>
+          <input matInput formControlName="websiteUrl" type="url" 
+                 [placeholder]="'profile.website.placeholder' | translate">
+          <mat-error *ngIf="brandForm.get('websiteUrl')?.hasError('pattern')">
+            {{ 'profile.website.invalid' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'profile.logo.label' | translate }}</mat-label>
+          <input matInput formControlName="logoUrl" type="url" 
+                 [placeholder]="'profile.logo.placeholder' | translate">
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" 
+                  type="submit" 
+                  [disabled]="brandForm.invalid">
+            {{ 'profile.actions.finish' | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-card>
+</div>
+  
+
+  .profile-setup-container {
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.profile-setup-card {
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  background-color: white;
+
+  h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+  }
+}
+
+.profile-setup-content {
+  .full-width {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  // Stepper customization
+  ::ng-deep {
+    .mat-horizontal-stepper-header-container {
+      margin-bottom: 2rem;
+    }
+
+    .mat-step-header {
+      &.mat-step-header-ripple {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+
+      .mat-step-icon {
+        background-color: #3f51b5;
+      }
+
+      .mat-step-label {
+        color: #666;
+        font-weight: 500;
+      }
+    }
+  }
+
+  // Form fields styling
+  mat-form-field {
+    .mat-form-field-wrapper {
+      padding-bottom: 1.2em;
+    }
+
+    &.mat-focused .mat-form-field-label {
+      color: #3f51b5;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+  }
+
+  // Steps content
+  mat-step {
+    padding: 1rem 0;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+
+  // Social Links styling
+  .social-link-item {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    .social-link-fields {
+      display: grid;
+      grid-template-columns: 1fr 2fr auto;
+      gap: 1rem;
+      align-items: start;
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  // Media Assets styling
+  .media-asset-item {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    .media-asset-fields {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+
+      mat-form-field {
+        &:nth-child(1),  // URL field
+        &:nth-child(2) { // Media Type field
+          grid-column: span 1;
+        }
+
+        &:nth-child(3),  // Title field
+        &:nth-child(4) { // Description field
+          grid-column: span 2;
+        }
+
+        &:nth-child(5),  // Size field
+        &:nth-child(6) { // Metadata field
+          grid-column: span 1;
+        }
+      }
+
+      button {
+        grid-column: 2;
+        justify-self: end;
+        margin-top: -2.5rem; // Adjust to align with the top
+      }
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+
+        mat-form-field {
+          grid-column: 1 !important;
+        }
+
+        button {
+          grid-column: 1;
+          justify-self: end;
+          margin-top: 0;
+        }
+      }
+    }
+  }
+
+  // Add button styling
+  .add-button {
+    width: 100%;
+    margin: 1rem 0;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 2px dashed #3f51b5;
+    color: #3f51b5;
+    background-color: transparent;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba(63, 81, 181, 0.04);
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // Action buttons
+  .step-actions, .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    gap: 1rem;
+
+    button {
+      min-width: 120px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 500;
+
+      &[color="primary"] {
+        background-color: #3f51b5;
+        color: white;
+
+        &:hover {
+          background-color: #303f9f;
+        }
+
+        &:disabled {
+          background-color: rgba(0, 0, 0, 0.12);
+          color: rgba(0, 0, 0, 0.26);
+        }
+      }
+    }
+  }
+
+  // Brand form specific styles
+  .brand-form {
+    display: grid;
+    gap: 1.5rem;
+    padding: 1rem 0;
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 600px) {
+  .profile-setup-container {
+    padding: 1rem;
+  }
+
+  .profile-setup-card {
+    padding: 1.5rem;
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .step-actions, .form-actions {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+    }
+  }
+}
+  import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { catchError, of, tap } from 'rxjs';
+
+import { MaterialModule } from '@shared/material/material.module';
+import { ProfileSetupFacade } from '../application/facades/profile-setup.facade';
+import { InfluencerProfileRequestDTO } from '../application/dtos/influencer-profile-request.dto';
+import { BrandProfileRequestDTO } from '../application/dtos/brand-profile-request.dto';
+import { LanguageSelectorComponent } from '@shared/language/language-selector.component';
+import { TranslatePipe } from '@shared/translation/translate.pipe';
+
+// Interfaces for form values
+interface SocialLink {
+  platform: string;
+  url: string;
+}
+
+interface MediaAsset {
+  url: string;
+  mediaType: string;
+  title?: string;
+  description?: string;
+  sizeBytes?: number;
+  metadata?: string;
+}
+
+interface InfluencerFormValue {
+  displayName: string;
+  bio: string;
+  category: string;
+  country: string;
+  followersCount: number;
+  socialLinks: SocialLink[];
+  mediaAssets: MediaAsset[];
+}
+
+// Enums for form options
+enum SocialPlatform {
+  IG = 'IG',
+  YT = 'YT',
+  TT = 'TT',
+  FB = 'FB',
+  TW = 'TW',
+  LN = 'LN',
+  OTHER = 'OTHER'
+}
+
+enum MediaType {
+  IMAGE = 'IMAGE',
+  VIDEO = 'VIDEO',
+  DOC = 'DOC'
+}
+
+@Component({
+  selector: 'app-profile-setup',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    LanguageSelectorComponent,
+    TranslatePipe
+  ],
+  templateUrl: './profile-setup.component.html',
+  styleUrls: ['./profile-setup.component.scss'],
+  providers: [TranslatePipe]
+})
+export class ProfileSetupComponent implements OnInit {
+  private readonly fb = inject(FormBuilder);
+  private readonly facade = inject(ProfileSetupFacade);
+  private readonly snack = inject(MatSnackBar);
+  private readonly router = inject(Router);
+  private readonly translatePipe = inject(TranslatePipe);
+
+  readonly SocialPlatform = SocialPlatform;
+  readonly MediaType = MediaType;
+  
+  currentStep = 1;
+  totalSteps = 5; // Updated to include all steps: Basic Info, Details, Followers, Social Links, Media Assets
+  userRole: string = '';
+  
+  influencerForm = this.fb.group({
+    displayName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+    bio: ['', [Validators.required, Validators.maxLength(255)]],
+    category: ['', [Validators.required, Validators.maxLength(50)]],
+    country: ['', [Validators.required, Validators.maxLength(50)]],
+    followersCount: [0, [Validators.required, Validators.min(0)]],
+    socialLinks: this.fb.array<FormGroup>([]),
+    mediaAssets: this.fb.array<FormGroup>([])
+  });
+
+  brandForm = this.fb.group({
+    companyName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+    description: ['', Validators.maxLength(255)],
+    industry: ['', Validators.maxLength(50)],
+    websiteUrl: ['', Validators.pattern('https?://.*')],
+    logoUrl: ['', Validators.pattern('https?://.*')]
+  });
+
+  ngOnInit() {
+    const userInfo = localStorage.getItem('user');
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      this.userRole = user.role;
+    }
+  }
+
+  // Helper getters for form arrays
+  get socialLinks() {
+    return this.influencerForm.get('socialLinks') as FormArray;
+  }
+
+  get mediaAssets() {
+    return this.influencerForm.get('mediaAssets') as FormArray;
+  }
+
+  // Methods to create form groups for dynamic fields
+  createSocialLinkFormGroup(): FormGroup {
+    return this.fb.group({
+      platform: ['', Validators.required],
+      url: ['', [Validators.required, Validators.pattern('https?://.*')]]
+    });
+  }
+
+  createMediaAssetFormGroup(): FormGroup {
+    return this.fb.group({
+      url: ['', [Validators.required, Validators.pattern('https?://.*')]],
+      mediaType: ['', Validators.required],
+      title: [''],
+      description: [''],
+      sizeBytes: [null],
+      metadata: ['{}']
+    });
+  }
+
+  // Methods to add/remove dynamic fields
+  addSocialLink() {
+    this.socialLinks.push(this.createSocialLinkFormGroup());
+  }
+
+  removeSocialLink(index: number) {
+    this.socialLinks.removeAt(index);
+  }
+
+  addMediaAsset() {
+    this.mediaAssets.push(this.createMediaAssetFormGroup());
+  }
+
+  removeMediaAsset(index: number) {
+    this.mediaAssets.removeAt(index);
+  }
+
+  submitInfluencerProfile() {
+    if (this.influencerForm.invalid) return;
+
+    const formValue = this.influencerForm.getRawValue() as InfluencerFormValue;
+    const request: InfluencerProfileRequestDTO = {
+      displayName: formValue.displayName,
+      bio: formValue.bio,
+      category: formValue.category,
+      country: formValue.country,
+      followersCount: formValue.followersCount,
+      socialLinks: formValue.socialLinks,
+      mediaAssets: formValue.mediaAssets.map(asset => ({
+        ...asset,
+        metadata: asset.metadata ? JSON.parse(asset.metadata) : {}
+      }))
+    };
+
+    this.facade.createInfluencerProfile(request).pipe(
+      tap(() => {
+        this.snack.open(
+          this.translatePipe.transform('profile.setup.success'),
+          this.translatePipe.transform('common.ok'),
+          { duration: 3000 }
+        );
+        this.router.navigate(['/dashboard']);
+      }),
+      catchError(err => {
+        this.snack.open(
+          this.translatePipe.transform('profile.setup.error'),
+          this.translatePipe.transform('common.ok'),
+          { duration: 3000 }
+        );
+        return of(err);
+      })
+    ).subscribe();
+  }
+
+  submitBrandProfile() {
+    if (this.brandForm.invalid) return;
+
+    const formValue = this.brandForm.getRawValue();
+    const request: BrandProfileRequestDTO = {
+      companyName: formValue.companyName || '',
+      description: formValue.description || '',
+      industry: formValue.industry || '',
+      websiteUrl: formValue.websiteUrl || '',
+      logoUrl: formValue.logoUrl || ''
+    };
+
+    this.facade.createBrandProfile(request).pipe(
+      tap(() => {
+        this.snack.open(
+          this.translatePipe.transform('profile.setup.success'),
+          this.translatePipe.transform('common.ok'),
+          { duration: 3000 }
+        );
+        this.router.navigate(['/dashboard']);
+      }),
+      catchError(err => {
+        this.snack.open(
+          this.translatePipe.transform('profile.setup.error'),
+          this.translatePipe.transform('common.ok'),
+          { duration: 3000 }
+        );
+        return of(err);
+      })
+    ).subscribe();
+  }
+}
+
+
+
+import { Routes } from '@angular/router';
+import { ProfileSetupComponent } from './profile-setup.component';
+
+export const profileSetupRoutes: Routes = [
+  { path: '', component: ProfileSetupComponent },
+];
+
+
+
+import { Role } from "@app/core/domain/auth/enums/role.enum";
 
 export interface RegisterRequestDTO {
   email: string;
   password: string;
   role: Role;
 }
-import { Role } from '../../../../core/domain/auth/value-objects/role.vo';
 
 export interface RegisterResponseDTO {
-  id: string;
+  userId: number;
   email: string;
-  role: Role;
-  createdAt: string;
+  role: string;
+  token: string;
+  hasProfile: boolean;
+  message: string;
 }
+
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RegisterUserUseCase } from '@core/domain/auth/use-cases/register-user.usecase';
 import { RegisterResponseDTO } from '@features/register/application/dtos/register-response.dto';
+import { RegisterRequestDTO } from '@features/register/application/dtos/register-request.dto';
+import { Role } from '@core/domain/auth/enums/role.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -118,40 +1332,129 @@ export class RegisterFacade {
   constructor(private readonly registerUseCase: RegisterUserUseCase) {}
 
   submit(form: FormGroup): Observable<RegisterResponseDTO> {
-    return this.registerUseCase.execute({
+    const payload: RegisterRequestDTO = {
       email: form.get('email')?.value,
       password: form.get('password')?.value,
-      role: form.get('role')?.value,
-    });
+      role: form.get('userType')?.value as Role,
+    };
+
+    return this.registerUseCase.execute(payload);
   }
 }
+<app-language-selector></app-language-selector>
+
 <mat-card class="register-card">
-    <h1 i18n="@@register.title">Crear cuenta</h1>
-  
+  <mat-card-header>
+    <mat-card-title>
+      <h1>{{ 'register.title' | translate }}</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label i18n="@@register.email">Correo electrónico</mat-label>
-        <input matInput formControlName="email" type="email" required />
+        <mat-label>{{ 'register.email.label' | translate }}</mat-label>
+        <input 
+          matInput 
+          formControlName="email" 
+          type="email" 
+          required
+          autocomplete="email"
+          [placeholder]="'register.email.placeholder' | translate" />
+        <mat-error *ngIf="form.get('email')?.hasError('required')">
+          {{ 'register.email.required' | translate }}
+        </mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">
+          {{ 'register.email.invalid' | translate }}
+        </mat-error>
       </mat-form-field>
-  
+
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label i18n="@@register.password">Contraseña</mat-label>
-        <input matInput formControlName="password" type="password" required />
+        <mat-label>{{ 'register.password.label' | translate }}</mat-label>
+        <input 
+          matInput 
+          formControlName="password" 
+          [type]="hidePassword ? 'password' : 'text'"
+          required
+          autocomplete="new-password"
+          [placeholder]="'register.password.placeholder' | translate" />
+        <button 
+          mat-icon-button 
+          matSuffix 
+          (click)="hidePassword = !hidePassword" 
+          [attr.aria-label]="'Hide password'" 
+          [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('password')?.hasError('required')">
+          {{ 'register.password.required' | translate }}
+        </mat-error>
+        <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+          {{ 'register.password.minLength' | translate }}
+        </mat-error>
       </mat-form-field>
-  
+
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label i18n="@@register.role">Tipo de usuario</mat-label>
-        <mat-select formControlName="role">
-          <mat-option value="BRAND" i18n="@@register.roleBrand">Marca</mat-option>
-          <mat-option value="INFLUENCER" i18n="@@register.roleInfluencer">Influencer</mat-option>
+        <mat-label>{{ 'register.confirmPassword.label' | translate }}</mat-label>
+        <input 
+          matInput 
+          formControlName="confirmPassword" 
+          [type]="hideConfirmPassword ? 'password' : 'text'"
+          required
+          autocomplete="new-password"
+          [placeholder]="'register.confirmPassword.placeholder' | translate" />
+        <button 
+          mat-icon-button 
+          matSuffix 
+          (click)="hideConfirmPassword = !hideConfirmPassword" 
+          [attr.aria-label]="'Hide password'" 
+          [attr.aria-pressed]="hideConfirmPassword">
+          <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">
+          {{ 'register.confirmPassword.required' | translate }}
+        </mat-error>
+        <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
+          {{ 'register.confirmPassword.match' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'register.userType.label' | translate }}</mat-label>
+        <mat-select formControlName="userType" required>
+          <mat-option value="INFLUENCER">{{ 'register.userType.options.influencer' | translate }}</mat-option>
+          <mat-option value="BRAND">{{ 'register.userType.options.brand' | translate }}</mat-option>
         </mat-select>
+        <mat-error *ngIf="form.get('userType')?.hasError('required')">
+          {{ 'register.userType.required' | translate }}
+        </mat-error>
       </mat-form-field>
-  
-      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" i18n="@@register.submit">
-        Registrarse
+
+      <button 
+        mat-raised-button 
+        color="primary" 
+        type="submit" 
+        [disabled]="form.invalid"
+        class="submit-button">
+        {{ 'register.submit' | translate }}
       </button>
+
+      <div class="login-link">
+        <span>{{ 'register.hasAccount' | translate }}</span>
+        <button 
+          mat-button 
+          color="accent" 
+          type="button" 
+          (click)="goToLogin()">
+          {{ 'register.login' | translate }}
+        </button>
+      </div>
     </form>
-  </mat-card>
+  </mat-card-content>
+</mat-card>
+
+
+
 :host {
   display: flex;
   align-items: center;
@@ -179,7 +1482,7 @@ export class RegisterFacade {
     flex-direction: column;
     gap: 1rem;
 
-    button {
+    button[type="submit"] {
       margin-top: 1rem;
       padding: 0.75rem;
       font-size: 1rem;
@@ -189,12 +1492,16 @@ export class RegisterFacade {
   .full-width {
     width: 100%;
   }
+
+  .login-link {
+    margin-top: 1rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
 }
-
-
-
-
-
 
 import { TestBed } from '@angular/core/testing';
 import { RegisterComponent } from './register.component';
@@ -211,53 +1518,110 @@ describe('RegisterComponent', () => {
     const component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
-});import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+});
+
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RegisterFacade } from '@features/register/application/facades/register.facade';
 import { MaterialModule } from '@shared/material/material.module';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LanguageSelectorComponent } from '@shared/language/language-selector.component';
+import { TranslatePipe } from '@shared/translation/translate.pipe';
+import { TranslationService } from '@shared/services/translation.service';
+import { RegisterFacade } from '@features/register/application/facades/register.facade';
 import { catchError, tap } from 'rxjs/operators';
-import { TranslationModule } from '@shared/translation/translation.module';
+import { Role } from '@core/domain/auth/enums/role.enum';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     MaterialModule,
-    TranslationModule
+    ReactiveFormsModule,
+    MatIconModule,
+    LanguageSelectorComponent,
+    TranslatePipe
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
+  providers: [TranslatePipe]
 })
-export class RegisterComponent {
-  private readonly fb = inject(FormBuilder);
+export class RegisterComponent implements OnInit {
+  form: FormGroup;
+  hidePassword = true;
+  hideConfirmPassword = true;
+  readonly Role = Role; // Para usar en el template
+
   private readonly facade = inject(RegisterFacade);
-  private readonly snack = inject(MatSnackBar);
+  private readonly snackBar = inject(MatSnackBar);
 
-  form = this.fb.nonNullable.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
-    role: ['BRAND', [Validators.required]],
-  });
-
-  onSubmit(): void {
-    if (this.form.invalid) return;
-
-    this.facade
-      .submit(this.form)
-      .pipe(
-        tap(() => this.snack.open($localize`Registro exitoso`, undefined, { duration: 2500 })),
-        catchError((err) => {
-          this.snack.open($localize`Error en el registro`, undefined, { duration: 2500 });
-          throw err;
-        }),
-      )
-      .subscribe();
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private translationService: TranslationService
+  ) {
+    this.form = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]],
+      userType: [Role.BRAND, [Validators.required]] // Valor por defecto: BRAND
+    }, {
+      validators: this.passwordMatchValidator
+    });
   }
-}import { Routes } from '@angular/router';
+
+  ngOnInit() {
+    // Ensure translations are loaded
+    const currentLang = localStorage.getItem('language') || 'es';
+    this.translationService.setLanguage(currentLang).subscribe({
+      error: (err) => console.error('Error loading translations:', err)
+    });
+  }
+
+  private passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password');
+    const confirmPassword = form.get('confirmPassword');
+
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      confirmPassword.setErrors({ passwordMismatch: true });
+    } else if (confirmPassword?.hasError('passwordMismatch')) {
+      confirmPassword.setErrors(null);
+    }
+    return null;
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      this.facade.submit(this.form).pipe(
+        tap((response) => {
+          // Guardar el token y datos del usuario
+          localStorage.setItem('user', JSON.stringify({
+            userId: response.userId,
+            email: response.email,
+            role: response.role,
+            token: response.token,
+            hasProfile: false // Usuario recién registrado no tiene perfil
+          }));
+          this.snackBar.open('register.success', 'OK', { duration: 3000 });
+          this.router.navigate(['/profile-setup']);
+        }),
+        catchError((error) => {
+          this.snackBar.open(error.message, 'OK', { duration: 3000 });
+          throw error;
+        })
+      ).subscribe();
+    }
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
+}
+
+import { Routes } from '@angular/router';
 import { RegisterComponent } from './register.component';
 
 export const registerRoutes: Routes = [
@@ -266,26 +1630,142 @@ export const registerRoutes: Routes = [
     component: RegisterComponent,
   },
 ];
+
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { AuthRepository } from '@core/domain/auth/repositories/auth.repository';
+
 import { RegisterRequestDTO } from '@features/register/application/dtos/register-request.dto';
 import { RegisterResponseDTO } from '@features/register/application/dtos/register-response.dto';
-import { environment } from '../../../environments/environment';
+import { LoginRequestDTO } from '@features/login/application/dtos/login-request.dto';
+import { LoginResponseDTO } from '@app/features/login/application/dtos/login-response.dto';
+
+@Injectable({ providedIn: 'root' })
+export class AuthHttpRepository extends AuthRepository {
+  constructor(private readonly http: HttpClient) { super(); }
+
+  register(request: RegisterRequestDTO): Observable<RegisterResponseDTO> {
+    return this.http.post<RegisterResponseDTO>(
+      `${environment.apiUrl}/auth/register`, request
+    );
+  }
+
+  login(request: LoginRequestDTO): Observable<LoginResponseDTO> {
+    return this.http.post<LoginResponseDTO>(
+      `${environment.apiUrl}/auth/login`, request
+    );
+  }
+}
+
+
+import { HttpInterceptorFn } from '@angular/common/http';
+
+export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
+  const userInfo = localStorage.getItem('user');
+  
+  if (userInfo) {
+    const user = JSON.parse(userInfo);
+    if (user.token) {
+      const authReq = req.clone({
+        headers: req.headers.set('Authorization', `Bearer ${user.token}`)
+      });
+      return next(authReq);
+    }
+  }
+  
+  return next(req);
+};
+
+
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { ProfileRepository } from '@core/domain/profile/repositories/profile.repository';
+import { InfluencerProfileRequestDTO } from '../../features/profile-setup/application/dtos/influencer-profile-request.dto';
+import { InfluencerProfileResponseDTO } from '../../features/profile-setup/application/dtos/influencer-profile-response.dto';
+import { BrandProfileRequestDTO } from '../../features/profile-setup/application/dtos/brand-profile-request.dto';
+import { BrandProfileResponseDTO } from '../../features/profile-setup/application/dtos/brand-profile-response.dto';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthHttpRepository extends AuthRepository {
-  constructor(private readonly http: HttpClient) {
-    super();
+export class ProfileHttpRepository implements ProfileRepository {
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = environment.apiUrl;
+
+  createInfluencerProfile(request: InfluencerProfileRequestDTO): Observable<InfluencerProfileResponseDTO> {
+    return this.http.post<InfluencerProfileResponseDTO>(`${this.baseUrl}/influencers`, request);
   }
 
-  register(request: RegisterRequestDTO): Observable<RegisterResponseDTO> {
-    return this.http.post<RegisterResponseDTO>(`${environment.apiUrl}/auth/register`, request);
+  createBrandProfile(request: BrandProfileRequestDTO): Observable<BrandProfileResponseDTO> {
+    return this.http.post<BrandProfileResponseDTO>(`${this.baseUrl}/brands`, request);
   }
-}import { NgModule } from '@angular/core';
+}
+
+
+<button mat-icon-button [matMenuTriggerFor]="menu" class="language-button">
+  <mat-icon>language</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="changeLanguage('es')" i18n="@@lang.spanish">
+    Español
+  </button>
+  <button mat-menu-item (click)="changeLanguage('en')" i18n="@@lang.english">
+    English
+  </button>
+</mat-menu> 
+
+.language-button {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+} 
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../material/material.module';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { TranslationService } from '../services/translation.service';
+import { Observable } from 'rxjs';
+
+@Component({
+  selector: 'app-language-selector',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MaterialModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule
+  ],
+  templateUrl: './language-selector.component.html',
+  styleUrls: ['./language-selector.component.scss']
+})
+export class LanguageSelectorComponent implements OnInit {
+  currentLang$!: Observable<string>;
+
+  constructor(private translationService: TranslationService) {}
+
+  ngOnInit() {
+    this.currentLang$ = this.translationService.currentLang$;
+  }
+
+  changeLanguage(lang: string) {
+    this.translationService.setLanguage(lang).subscribe({
+      error: (err) => console.error('Error changing language:', err)
+    });
+  }
+} 
+
+
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -293,6 +1773,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatStepperModule } from '@angular/material/stepper';
+
 
 const materialModules = [
   MatInputModule,
@@ -300,6 +1782,7 @@ const materialModules = [
   MatSelectModule,
   MatCardModule,
   MatIconModule,
+  MatStepperModule,
   MatSnackBarModule
 ];
 
@@ -313,442 +1796,159 @@ const materialModules = [
     ...materialModules
   ]
 })
-export class MaterialModule { }import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import {
-  TranslateLoader,
-  TranslateModule,
-} from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+export class MaterialModule { }
 
-export function loaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+
+interface Translations {
+  [key: string]: any;
 }
 
-@NgModule({
-  imports: [
-    HttpClientModule,
-    TranslateModule.forRoot({
-      defaultLanguage: 'es',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: loaderFactory,
-        deps: [HttpClient],
-      },
-    }),
-  ],
-  exports: [TranslateModule],
+@Injectable({
+  providedIn: 'root'
 })
-export class TranslationModule {}import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
+export class TranslationService {
+  private translations = new BehaviorSubject<Translations>({});
+  private currentLangSubject = new BehaviorSubject<string>('es');
+  currentLang$ = this.currentLangSubject.asObservable();
 
+  constructor(private http: HttpClient) {
+    this.initializeTranslations();
+  }
+
+  private async initializeTranslations() {
+    const savedLang = localStorage.getItem('language') || 'es';
+    try {
+      const translations = await firstValueFrom(
+        this.http.get<Translations>(`/assets/i18n/${savedLang}.json`)
+      );
+      this.translations.next(translations);
+      this.currentLangSubject.next(savedLang);
+    } catch (error) {
+      console.error('Error loading initial translations:', error);
+    }
+  }
+
+  setLanguage(lang: string): Observable<Translations> {
+    return this.http.get<Translations>(`/assets/i18n/${lang}.json`).pipe(
+      tap(translations => {
+        this.translations.next(translations);
+        this.currentLangSubject.next(lang);
+        localStorage.setItem('language', lang);
+      }),
+      catchError(error => {
+        console.error(`Error loading translations for ${lang}:`, error);
+        throw error;
+      })
+    );
+  }
+
+  translate(key: string): string {
+    const translations = this.translations.getValue();
+    if (!translations) return key;
+
+    const value = this.getNestedValue(translations, key);
+    return value || key;
+  }
+
+  private getNestedValue(obj: any, path: string): string {
+    try {
+      return path.split('.').reduce((prev, curr) => {
+        if (!prev) return '';
+        return prev[curr];
+      }, obj);
+    } catch (e) {
+      console.error(`Error accessing translation key: ${path}`, e);
+      return '';
+    }
+  }
+} 
+
+import { Pipe, PipeTransform, OnDestroy } from '@angular/core';
+import { TranslationService } from '../services/translation.service';
+import { Subscription } from 'rxjs';
+
+@Pipe({
+  name: 'translate',
+  standalone: true,
+  pure: false
+})
+export class TranslatePipe implements PipeTransform, OnDestroy {
+  private value: string = '';
+  private lastKey: string = '';
+  private subscription?: Subscription;
+
+  constructor(private translationService: TranslationService) {}
+
+  transform(key: string): string {
+    if (key !== this.lastKey) {
+      this.lastKey = key;
+      this.subscription?.unsubscribe();
+      this.subscription = this.translationService.currentLang$.subscribe(() => {
+        const translated = this.translationService.translate(key);
+        if (translated !== this.value) {
+          this.value = translated;
+        }
+      });
+    }
+    return this.value || key;
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
+} 
+
+
+import { ApplicationConfig, LOCALE_ID } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { AuthInterceptor } from './infrastructure/auth/auth.interceptor';
 import { routes } from './app.routes';
 import { AuthRepository } from '@core/domain/auth/repositories/auth.repository';
 import { AuthHttpRepository } from './infrastructure/auth/auth-http.repository';
+import { ProfileRepository } from './core/domain/profile/repositories/profile.repository';
+import { ProfileHttpRepository } from './infrastructure/profile/profile-http.repository';
+
+// Import locales
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import localeEn from '@angular/common/locales/en';
+
+// Register locales
+registerLocaleData(localeEs, 'es');
+registerLocaleData(localeEn, 'en');
+
+// Function to get the current language from URL or default to 'es'
+function getCurrentLanguage(): string {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('lang') || 'es';
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptors([AuthInterceptor])
+    ),
     provideAnimations(),
     {
       provide: AuthRepository,
       useClass: AuthHttpRepository
-    }
-  ]
-};<router-outlet></router-outlet>
-import { Routes } from '@angular/router';
-
-export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'register',
-    pathMatch: 'full',
-  },
-  {
-    path: 'register',
-    loadChildren: () => import('./features/register/presentation/register.routes').then(m => m.registerRoutes),
-  },
-];
-:host {
-  display: block;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}import { TestBed } from '@angular/core/testing';
-import { App } from './app';
-
-describe('App', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [App],
-    }).compileComponents();
-  });
-
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(App);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, influ-match-web');
-  });
-});
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-
-@Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.scss'
-})
-export class App {}
-{
-    "register": {
-      "title": "Sign up",
-      "email": "Email",
-      "password": "Password",
-      "role": "User type",
-      "roleBrand": "Brand",
-      "roleInfluencer": "Influencer",
-      "submit": "Register",
-      "success": "Registration successful!"
-    }
-  }{
-    "register": {
-      "title": "Crear cuenta",
-      "email": "Correo electrónico",
-      "password": "Contraseña",
-      "role": "Tipo de usuario",
-      "roleBrand": "Marca",
-      "roleInfluencer": "Influencer",
-      "submit": "Registrarse",
-      "success": "¡Registro exitoso!"
-    }
-  }{
-    "register": {
-      "title": "Crear cuenta",
-      "email": "Correo electrónico",
-      "password": "Contraseña",
-      "role": "Tipo de usuario",
-      "roleBrand": "Marca",
-      "roleInfluencer": "Influencer",
-      "submit": "Registrarse",
-      "success": "¡Registro exitoso!"
-    }
-  }
-export const environment = {
-    production: false,
-    apiUrl: 'http://192.168.100.2:8080/api',
-  };export const environment = {
-  production: true,
-  apiUrl: 'https://api.influmatch.com/api'
-}; <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>InfluMatchWeb</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
-<body class="mat-typography">
-  <app-root></app-root>
-</body>
-</html>
-import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { App } from './app/app';
-
-bootstrapApplication(App, appConfig)
-  .catch((err) => console.error(err));
-import '@angular/localize/init';
-
-// ... existing code ... /* You can add global styles to this file, and also import other style files */
-
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #f5f5f5;
-}
-
-/* Material theme is loaded from angular.json */
-{
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
-  "newProjectRoot": "projects",
-  "projects": {
-    "influ-match-web": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "",
-      "sourceRoot": "src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular/build:application",
-          "options": {
-            "browser": "src/main.ts",
-            "polyfills": [
-              "@angular/localize/init",
-              "zone.js"
-            ],
-            "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
-            "styles": [
-              "@angular/material/prebuilt-themes/azure-blue.css",
-              "src/styles.scss"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve": {
-          "builder": "@angular/build:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "influ-match-web:build:production"
-            },
-            "development": {
-              "buildTarget": "influ-match-web:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
-        },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "polyfills": [
-              "@angular/localize/init",
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
-            "styles": [
-              "@angular/material/prebuilt-themes/azure-blue.css",
-              "src/styles.scss"
-            ]
-          }
-        }
-      }
-    }
-  }
-}
-{
-  "name": "influ-match-web",
-  "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
-  },
-  "private": true,
-  "dependencies": {
-    "@angular/animations": "^20.0.2",
-    "@angular/cdk": "^20.0.2",
-    "@angular/common": "^20.0.0",
-    "@angular/compiler": "^20.0.0",
-    "@angular/core": "^20.0.0",
-    "@angular/forms": "^20.0.0",
-    "@angular/localize": "^20.0.2",
-    "@angular/material": "^20.0.2",
-    "@angular/platform-browser": "^20.0.0",
-    "@angular/router": "^20.0.0",
-    "@ngx-translate/core": "^16.0.4",
-    "@ngx-translate/http-loader": "^16.0.1",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.15.0"
-  },
-  "devDependencies": {
-    "@angular/build": "^20.0.1",
-    "@angular/cli": "^20.0.1",
-    "@angular/compiler-cli": "^20.0.0",
-    "@types/jasmine": "~5.1.0",
-    "jasmine-core": "~5.7.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.8.2"
-  }
-}
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./out-tsc/app",
-    "types": []
-  },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "src/**/*.spec.ts"
-  ]
-}
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./out-tsc/spec",
-    "types": [
-      "jasmine"
-    ]
-  },
-  "include": [
-    "src/**/*.ts"
-  ]
-}
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
-{
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@app/*": ["src/app/*"],
-      "@core/*": ["src/app/core/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@features/*": ["src/app/features/*"]
-    },
-    "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "ES2022",
-    "module": "ES2022",
-    "lib": ["ES2022", "dom"],
-    "moduleResolution": "node"
-  },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "typeCheckHostBindings": true,
-    "strictTemplates": true
-  },
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
     },
     {
-      "path": "./tsconfig.spec.json"
+      provide: ProfileRepository,
+      useClass: ProfileHttpRepository
+    },
+    {
+      provide: LOCALE_ID,
+      useFactory: getCurrentLanguage
     }
   ]
-}
-src/
-├── main.ts
-├── styles.scss
-├── index.html
-├── polyfills.ts
-├── environments/
-│   ├── environment.ts
-│   ├── environment.prod.ts
-│   └── environment.development.ts
-└── app/
-    ├── app.config.ts
-    ├── app.html
-    ├── app.scss
-    ├── app.ts
-    ├── app.routes.ts
-    ├── app.spec.ts
-    ├── features/
-    │   └── register/
-    │       ├── presentation/
-    │       │   ├── register.component.ts
-    │       │   ├── register.component.html
-    │       │   ├── register.component.scss
-    │       │   ├── register.component.spec.ts
-    │       │   └── register.routes.ts
-    │       └── application/
-    │           ├── facades/
-    │           │   └── register.facade.ts
-    │           └── dtos/
-    │               ├── register-request.dto.ts
-    │               └── register-response.dto.ts
-    ├── core/
-    │   └── domain/
-    │       └── auth/
-    │           ├── entities/
-    │           │   └── user.entity.ts
-    │           ├── repositories/
-    │           │   └── auth.repository.ts
-    │           ├── use-cases/
-    │           │   └── register-user.usecase.ts
-    │           └── value-objects/
-    │               ├── email.vo.ts
-    │               ├── password.vo.ts
-    │               └── role.vo.ts
-    ├── infrastructure/
-    │   └── auth/
-    │       └── auth-http.repository.ts
-    └── shared/
-        ├── material/
-        │   └── material.module.ts
-        └── translation/
-            └── translation.module.ts
+};
+
+
