@@ -86,6 +86,7 @@ export class OnboardingComponent implements OnInit {
   profilePhotoPreview: string | null = null;
   console = console; // Para poder usar console.log en el template
   isBrand: boolean;
+  isSubmitting: boolean = false;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
   // Dropdown states
@@ -397,28 +398,19 @@ export class OnboardingComponent implements OnInit {
     return 'DOCUMENT';
   }
 
-  submit(): void {
-    // Debug: Imprimir el estado completo del formulario
-    console.log('Submitting form...');
-    console.log('Form State:', this.form.value);
-    console.log('Form Valid:', this.form.valid);
-    console.log('Form Errors:', this.form.errors);
-
-    if (!this.isFormValid) {
-      const missingFields = this.getMissingFields();
-      console.log('Missing Fields:', missingFields);
-      this.snack.open(
-        this.translate.instant('onboarding.missingFields', { fields: missingFields.join(', ') }),
-        'OK',
-        { duration: 5000 }
-      );
-      return;
-    }
-
-    this.loading = true;
-    const formValue = this.form.value;
-
+  async submit(): Promise<void> {
+    if (this.form.invalid) return;
+    
+    this.isSubmitting = true;
     try {
+      // Debug: Imprimir el estado completo del formulario
+      console.log('Submitting form...');
+      console.log('Form State:', this.form.value);
+      console.log('Form Valid:', this.form.valid);
+      console.log('Form Errors:', this.form.errors);
+
+      const formValue = this.form.value;
+
       if (this.isBrand) {
         const brandProfile = new BrandProfileVO(
           formValue.name,
@@ -435,32 +427,7 @@ export class OnboardingComponent implements OnInit {
 
         console.log('Creating brand profile:', brandProfile);
 
-        this.profileApi.createBrandProfile(brandProfile).subscribe({
-          next: (response: any) => {
-            this.loading = false;
-            // Update user data with profile completion status
-            const updatedUser = {
-              ...this.auth.currentUser,
-              profileCompleted: true
-            };
-            this.auth.updateUserData(updatedUser);
-            this.snack.open(
-              this.translate.instant('onboarding.success'),
-              'OK',
-              { duration: 3000 }
-            );
-            this.router.navigate(['/dashboard']);
-          },
-          error: (error: any) => {
-            console.error('Error creating brand profile:', error);
-            this.loading = false;
-            this.snack.open(
-              this.translate.instant('onboarding.error'),
-              'OK',
-              { duration: 5000 }
-            );
-          }
-        });
+        await this.profileApi.createBrandProfile(brandProfile);
       } else {
         const influencerProfile = new InfluencerProfileVO(
           formValue.name,
@@ -478,33 +445,21 @@ export class OnboardingComponent implements OnInit {
 
         console.log('Creating influencer profile:', influencerProfile);
 
-        this.profileApi.createInfluencerProfile(influencerProfile).subscribe({
-          next: (response: any) => {
-            this.loading = false;
-            // Update user data with profile completion status
-            const updatedUser = {
-              ...this.auth.currentUser,
-              profileCompleted: true
-            };
-            this.auth.updateUserData(updatedUser);
-            this.snack.open(
-              this.translate.instant('onboarding.success'),
-              'OK',
-              { duration: 3000 }
-            );
-            this.router.navigate(['/dashboard']);
-          },
-          error: (error: any) => {
-            console.error('Error creating influencer profile:', error);
-            this.loading = false;
-            this.snack.open(
-              this.translate.instant('onboarding.error'),
-              'OK',
-              { duration: 5000 }
-            );
-          }
-        });
+        await this.profileApi.createInfluencerProfile(influencerProfile);
       }
+
+      // Update user data with profile completion status
+      const updatedUser = {
+        ...this.auth.currentUser,
+        profileCompleted: true
+      };
+      await this.auth.updateUserData(updatedUser);
+      this.snack.open(
+        this.translate.instant('onboarding.success'),
+        'OK',
+        { duration: 3000 }
+      );
+      this.router.navigate(['/dashboard']);
     } catch (error: any) {
       console.error('Error in submit:', error);
       this.loading = false;
@@ -513,6 +468,8 @@ export class OnboardingComponent implements OnInit {
         'OK',
         { duration: 5000 }
       );
+    } finally {
+      this.isSubmitting = false;
     }
   }
 
