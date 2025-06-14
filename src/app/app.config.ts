@@ -5,11 +5,14 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { corsInterceptor } from './core/interceptors/cors.interceptor';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([corsInterceptor])),
+    provideHttpClient(
+      withInterceptors([corsInterceptor, authInterceptor])
+    ),
     provideAnimations(),
   ],
 };
