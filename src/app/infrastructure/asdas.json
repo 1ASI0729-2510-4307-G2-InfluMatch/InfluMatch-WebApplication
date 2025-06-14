@@ -241,3 +241,43 @@ Y EN EL ONBOARD LO LLEVAS DEPEDNEIDNO DE "profileType": "INFLUENCER" O "profileT
   "createdAt": "2025-06-14T01:46:17",
   "updatedAt": "2025-06-14T01:46:17"
 }
+
+
+
+
+
+
+
+{
+  "name": "sdasd",
+  "niches": [
+      "Viajes",
+      "Belleza",
+      "Fitness"
+  ],
+  "bio": "adas",
+  "country": "asdasda",
+  "photo": "",//foto en base 64
+  "profilePhoto": "",//foto en base 64
+  "followers": 213120,
+  "socialLinks": [
+      {
+          "platform": "FACEBOOK",
+          "url": "https://base64.guru/converter/encode/image"
+      }
+  ],
+  "location": "sadas",
+  "links": [
+      {
+          "title": "adsaas",
+          "url": "https://base64.guru/converter/encode/image"
+      }
+  ],
+  "attachments": [
+      {
+          "title": "Captura de pantalla 2025-06-08 215352.png",
+          "description": "adsasdsad",
+          "mediaType": "PHOTO",
+          "data": "sadasdsa"//foto en base 64}
+  ]
+}

@@ -63,20 +63,23 @@
       <ng-container *ngIf="!isBrand">
         <div class="form-group">
           <label>{{ 'ONBOARDING.NICHES' | translate }}</label>
-          <mat-chip-grid #chipGrid aria-label="Enter niches">
-            <mat-chip-row
-              *ngFor="let niche of form.get('niches')?.value"
-              (removed)="removeNiche(niche)">
-              {{niche}}
-              <button matChipRemove>
-                <mat-icon>cancel</mat-icon>
-              </button>
-            </mat-chip-row>
-          </mat-chip-grid>
-          <input placeholder="New niche..."
-                 [matChipInputFor]="chipGrid"
-                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 (matChipInputTokenEnd)="addNiche($event)">
+          <mat-form-field class="full-width">
+            <mat-select multiple formControlName="niches" required>
+              <mat-option value="Moda">Moda</mat-option>
+              <mat-option value="Lifestyle">Lifestyle</mat-option>
+              <mat-option value="Viajes">Viajes</mat-option>
+              <mat-option value="Belleza">Belleza</mat-option>
+              <mat-option value="Fitness">Fitness</mat-option>
+              <mat-option value="Comida">Comida</mat-option>
+              <mat-option value="Tecnología">Tecnología</mat-option>
+              <mat-option value="Gaming">Gaming</mat-option>
+              <mat-option value="Música">Música</mat-option>
+              <mat-option value="Deportes">Deportes</mat-option>
+            </mat-select>
+            <div class="error-message" *ngIf="form.get('niches')?.hasError('required')">
+              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
+            </div>
+          </mat-form-field>
         </div>
 
         <div class="form-group">
@@ -168,24 +171,35 @@
       </div>
 
       <!-- Attachments Section -->
-      <div class="links-section">
+      <div class="file-upload-section">
         <h2>{{ 'ONBOARDING.ATTACHMENTS' | translate }}</h2>
         <div formArrayName="attachments">
-          <div *ngFor="let attachment of attachments.controls; let i = index" [formGroupName]="i" class="link-group">
-            <input type="text" formControlName="title" required placeholder="{{ 'ONBOARDING.ATTACHMENT_TITLE' | translate }}">
-            <textarea formControlName="description" placeholder="{{ 'ONBOARDING.ATTACHMENT_DESCRIPTION' | translate }}"></textarea>
-            <select formControlName="mediaType" required>
-              <option value="PHOTO">Photo</option>
-              <option value="VIDEO">Video</option>
-              <option value="DOCUMENT">Document</option>
-            </select>
-            <input type="file" [accept]="getAcceptType(i)" (change)="onAttachmentSelected($event)">
-            <button type="button" class="remove-button" (click)="removeAttachment(i)">
-              <mat-icon>delete</mat-icon>
-            </button>
+          <div *ngFor="let attachment of attachments.controls; let i = index" [formGroupName]="i" class="upload-group">
+            <div class="attachment-header">
+              <input type="text" formControlName="title" required placeholder="{{ 'ONBOARDING.ATTACHMENT_TITLE' | translate }}">
+              <textarea formControlName="description" placeholder="{{ 'ONBOARDING.ATTACHMENT_DESCRIPTION' | translate }}"></textarea>
+              <select formControlName="mediaType" required>
+                <option value="PHOTO">Photo</option>
+                <option value="VIDEO">Video</option>
+                <option value="DOCUMENT">Document</option>
+              </select>
+              <button type="button" class="remove-button" (click)="removeAttachment(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+            <div class="upload-area">
+              <input #attachmentInputs type="file" [accept]="getAcceptType(i)" (change)="onAttachmentSelected($event, i)" style="display: none">
+              <div class="upload-content" (click)="attachmentInputs.click()">
+                <mat-icon class="upload-icon">cloud_upload</mat-icon>
+                <p class="upload-text">{{ 'ONBOARDING.UPLOAD_FILE' | translate }}</p>
+              </div>
+            </div>
+            <img *ngIf="attachment.get('preview')?.value" 
+                 [src]="attachment.get('preview')?.value" 
+                 alt="Preview" 
+                 class="preview-image">
           </div>
         </div>
-
         <button type="button" class="add-button" (click)="addAttachment()">
           <mat-icon>add</mat-icon>
           {{ 'ONBOARDING.ADD_ATTACHMENT' | translate }}

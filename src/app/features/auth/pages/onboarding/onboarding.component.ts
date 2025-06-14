@@ -6,6 +6,8 @@ import {
   Output,
   EventEmitter,
   HostListener,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -181,6 +183,8 @@ export class OnboardingComponent implements OnInit {
     { value: 'ongoing', label: 'Colaboración continua' },
   ];
 
+  @ViewChildren('attachmentInputs') attachmentInputs!: QueryList<ElementRef<HTMLInputElement>>;
+
   constructor(
     private fb: FormBuilder,
     private profileApi: ProfileApi,
@@ -221,7 +225,7 @@ export class OnboardingComponent implements OnInit {
     } else {
       this.form = this.fb.group({
         name: ['', Validators.required],
-        niches: this.fb.array([]),
+        niches: [[], Validators.required],
         description: ['', Validators.required],
         country: ['', Validators.required],
         photo: [''],
@@ -239,6 +243,8 @@ export class OnboardingComponent implements OnInit {
 
     // Add initial link for both types
     this.addLink();
+    // Add initial attachment
+    this.addAttachment();
   }
 
   get socialLinks() {
@@ -300,7 +306,7 @@ export class OnboardingComponent implements OnInit {
     const attachment = this.fb.group({
       title: ['', Validators.required],
       description: [''],
-      mediaType: ['DOCUMENT', Validators.required],
+      mediaType: ['PHOTO', Validators.required],
       data: [''],
       preview: ['']
     });
@@ -352,7 +358,7 @@ export class OnboardingComponent implements OnInit {
     }
   }
 
-  onAttachmentSelected(event: Event): void {
+  onAttachmentSelected(event: Event, index: number): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       // Validate file size (10MB limit)
@@ -370,27 +376,14 @@ export class OnboardingComponent implements OnInit {
         const base64 = (reader.result as string).split(',')[1]; // Remove data URL prefix
         const mediaType = this.getMediaType(file.type);
         
-        // Si ya existe un attachment con el mismo título, actualizarlo
-        const existingAttachment = this.attachments.controls.find(
-          control => control.get('title')?.value === file.name
-        );
-
-        if (existingAttachment) {
-          existingAttachment.patchValue({
-            data: base64,
-            preview: reader.result as string,
-            mediaType: mediaType
-          });
-        } else {
-          const attachment = this.fb.group({
-            title: [file.name, Validators.required],
-            description: [''],
-            mediaType: [mediaType, Validators.required],
-            data: [base64],
-            preview: [reader.result as string]
-          });
-          this.attachments.push(attachment);
-        }
+        // Update the existing attachment
+        const attachment = this.attachments.at(index);
+        attachment.patchValue({
+          title: file.name,
+          mediaType: mediaType,
+          data: base64,
+          preview: reader.result as string
+        });
       };
       reader.readAsDataURL(file);
     }
@@ -439,12 +432,12 @@ export class OnboardingComponent implements OnInit {
             title: link.title,
             url: link.url
           })),
-          formValue.attachments?.map((attachment: any) => ({
+          formValue.attachments.map((attachment: any) => ({
             title: attachment.title,
             description: attachment.description,
             mediaType: attachment.mediaType,
             data: attachment.data
-          })) || []
+          }))
         );
 
         const response = await this.profileApi.createBrandProfile(brandProfile).toPromise();
@@ -467,12 +460,12 @@ export class OnboardingComponent implements OnInit {
             title: link.title,
             url: link.url
           })),
-          formValue.attachments?.map((attachment: any) => ({
+          formValue.attachments.map((attachment: any) => ({
             title: attachment.title,
             description: attachment.description,
             mediaType: attachment.mediaType,
             data: attachment.data
-          })) || []
+          }))
         );
 
         const response = await this.profileApi.createInfluencerProfile(influencerProfile).toPromise();
