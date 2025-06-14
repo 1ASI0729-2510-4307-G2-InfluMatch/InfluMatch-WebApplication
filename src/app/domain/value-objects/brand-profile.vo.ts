@@ -23,4 +23,19 @@ export class BrandProfileVO {
     public links: Link[],
     public attachments: Attachment[]
   ) {}
+
+  toJSON() {
+    return {
+      name: this.name,
+      sector: this.sector,
+      country: this.country,
+      description: this.description,
+      logo: this.logo,
+      profilePhoto: this.profilePhoto,
+      websiteUrl: this.websiteUrl,
+      location: this.location,
+      links: this.links,
+      attachments: this.attachments
+    };
+  }
 }

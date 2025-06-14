@@ -21,7 +21,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { RegisterUseCase } from '../../../../application/use-cases/register.usecase';
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../../infrastructure/services/auth.service';
+import { User } from '../../../../domain/entities/user.entity';
 
 interface RegisterResponse {
   accessToken: string;
@@ -107,17 +108,24 @@ export class RegisterComponent implements OnInit, OnDestroy {
         next: (response: RegisterResponse) => {
           console.log('Registration successful:', response);
           
+          // Map response to User entity
+          const user: User = {
+            accessToken: response.accessToken,
+            refreshToken: response.refreshToken,
+            profileCompleted: response.profileCompleted,
+            userId: response.userId,
+            name: response.name || '',
+            photoUrl: response.photoUrl || '',
+            email: email,
+            user_type: role === 'BRAND' ? 'marca' : 'influencer',
+            profileType: response.profileType as 'BRAND' | 'INFLUENCER'
+          };
+          
+          this.auth.save(user);
+          
           if (!response.profileCompleted) {
-            // Store tokens and redirect to onboarding
-            localStorage.setItem('accessToken', response.accessToken);
-            localStorage.setItem('refreshToken', response.refreshToken);
-            localStorage.setItem('userId', response.userId.toString());
-            localStorage.setItem('profileType', response.profileType);
-            
             this.router.navigate(['/onboarding']);
           } else {
-            // Store complete profile data
-            localStorage.setItem('userProfile', JSON.stringify(response));
             this.router.navigate(['/dashboard']);
           }
         },

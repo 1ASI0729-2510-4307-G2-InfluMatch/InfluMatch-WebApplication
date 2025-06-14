@@ -13,30 +13,30 @@ export class ProfileApi {
   constructor(private http: HttpClient) {}
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('access_token');
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   createBrandProfile(profile: BrandProfileVO): Observable<any> {
-    return this.http.post(`${this.url}/brand`, profile, {
+    return this.http.post(`${this.url}/brand`, profile.toJSON(), {
       headers: this.getHeaders()
     });
   }
 
   createInfluencerProfile(profile: InfluencerProfileVO): Observable<any> {
-    return this.http.post(`${this.url}/influencer`, profile, {
+    return this.http.post(`${this.url}/influencer`, profile.toJSON(), {
       headers: this.getHeaders()
     });
   }
 
   updateBrandProfile(profile: BrandProfileVO): Observable<any> {
-    return this.http.put(`${this.url}/brand`, profile, {
+    return this.http.put(`${this.url}/brand`, profile.toJSON(), {
       headers: this.getHeaders()
     });
   }
 
   updateInfluencerProfile(profile: InfluencerProfileVO): Observable<any> {
-    return this.http.put(`${this.url}/influencer`, profile, {
+    return this.http.put(`${this.url}/influencer`, profile.toJSON(), {
       headers: this.getHeaders()
     });
   }

@@ -19,7 +19,17 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { LoginUseCase } from '../../../../application/use-cases/login.usecase';
 import { AuthService } from '../../../../infrastructure/services/auth.service';
-import { UserCredentials } from '../../../../domain/value-objects/user-credentials.vo';
+import { User } from '../../../../domain/entities/user.entity';
+
+interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
+  profileCompleted: boolean;
+  userId: number;
+  profileType: string;
+  name?: string;
+  photoUrl?: string;
+}
 
 @Component({
   selector: 'app-login',
@@ -86,15 +96,39 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.form.valid) {
-      const data = this.form.value;
-      this.loginUC.execute(data.email, data.password).subscribe({
-        next: (response) => {
+      this.loading = true;
+      const { email, password } = this.form.value;
+      
+      this.loginUC.execute(email, password).subscribe({
+        next: (response: LoginResponse) => {
           console.log('Login successful:', response);
-          this.router.navigate(['/dashboard']);
+          
+          // Map response to User entity
+          const user: User = {
+            accessToken: response.accessToken,
+            refreshToken: response.refreshToken,
+            profileCompleted: response.profileCompleted,
+            userId: response.userId,
+            name: response.name || '',
+            photoUrl: response.photoUrl || '',
+            email: email,
+            user_type: response.profileType === 'BRAND' ? 'marca' : 'influencer',
+            profileType: response.profileType as 'BRAND' | 'INFLUENCER'
+          };
+          
+          this.auth.save(user);
+          
+          if (!response.profileCompleted) {
+            this.router.navigate(['/onboarding']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         },
         error: (error) => {
           console.error('Login error:', error);
+          this.loading = false;
           this.errorMessage = error.error?.message || 'Error during login';
+          this.showErrorMessage();
         }
       });
     }

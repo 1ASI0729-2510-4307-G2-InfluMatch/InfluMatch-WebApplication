@@ -4,7 +4,7 @@ export interface Link {
 }
 
 export interface SocialLink {
-  platform: 'INSTAGRAM' | 'FACEBOOK' | 'TWITTER' | 'LINKEDIN' | 'YOUTUBE' | 'TIKTOK';
+  platform: 'INSTAGRAM' | 'YOUTUBE' | 'TIKTOK' | 'FACEBOOK' | 'TWITTER';
   url: string;
 }
 
@@ -29,4 +29,20 @@ export class InfluencerProfileVO {
     public links: Link[],
     public attachments: Attachment[]
   ) {}
+
+  toJSON() {
+    return {
+      name: this.name,
+      niches: this.niches,
+      bio: this.bio,
+      country: this.country,
+      photo: this.photo,
+      profilePhoto: this.profilePhoto,
+      followers: this.followers,
+      socialLinks: this.socialLinks,
+      location: this.location,
+      links: this.links,
+      attachments: this.attachments
+    };
+  }
 }

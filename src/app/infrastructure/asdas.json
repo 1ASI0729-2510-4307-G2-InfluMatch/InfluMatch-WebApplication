@@ -135,7 +135,7 @@ public enum AttachmentType {
 } 
 
 
-
+estp responde el login 
 
 {
   "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXR0aGlwZXJ3cWVvM0BleGFtcGxlLmNvbSIsImlhdCI6MTc0OTg4MDQ3MywiZXhwIjoxNzQ5OTY2ODczfQ.jfm-XSf_C80A9fB4srY7UwJbevHyw-LQQIlcxE3dv7Y",
@@ -143,6 +143,17 @@ public enum AttachmentType {
   "profileCompleted": false,
   "userId": 21,
   "profileType": "INFLUENCER"
+}
+
+
+o tmabien puede repsonder 
+
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYWJyaXRlczJAZ2FtaWwuY29tIiwiaWF0IjoxNzQ5ODcyMDYxLCJleHAiOjE3NDk5NTg0NjF9.JJgypFqADJBy5no9tqr9ITzo-RJ8eISfqtyNPdAlGrI",
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYWJyaXRlczJAZ2FtaWwuY29tIiwiaWF0IjoxNzQ5ODcyMDYxLCJleHAiOjE3NTA0NzY4NjF9.62cvGZ3Zocw2IkTTHphjJ3HAJP-81TgASJcyu9rV5_k",
+  "profileCompleted": false,
+  "userId": 17,
+  "profileType": "BRAND"
 }
 
 si reposnde que no tiene el eprfdil completo lo llevas a onboard
@@ -158,7 +169,32 @@ si reepodne qeu tiene el perfil lleno entonces guardas este objeot en local stor
   "userId": 17,
   "profileType": "BRAND",
   "name": "Nike Colombia",
-  "photoUrl": "sadas"//foto en base 64 }
+  "photoUrl": "sadas"//foto en base 64 
+  }
 
 
+  o tambiaen puede responder {
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYWJyaXRlczJAZ2FtaWwuY29tIiwiaWF0IjoxNzQ5ODczMzU1LCJleHAiOjE3NDk5NTk3NTV9.ZI65mM2UE7OqHyO8duWLIXxwhnOuh-aWo4WMj-L3A5s",
+    "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYWJyaXRlczJAZ2FtaWwuY29tIiwiaWF0IjoxNzQ5ODczMzU1LCJleHAiOjE3NTA0NzgxNTV9.s6P38sGXh_qfQyl7amkSbJYQZNf8OMxoqm0UUXmKdQs",
+    "profileCompleted": true,
+    "userId": 17,
+    "profileType": "INFLUENCER",
+    "name": "Nike Colombia",
+    "photoUrl": "sadas"//foto en base 64 
+    }
+  
 
+
+LEUGO EL REGISTRE TMABIEN DEVUVEL ESTO 
+
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2Rhc2RhQGFrc2RqLmNvbSIsImlhdCI6MTc0OTg4MTA0OSwiZXhwIjoxNzQ5OTY3NDQ5fQ.Q3a9ebAjv-sg5vv7YtTLXk2HF30eaGBiNkin5s6nlYc",
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2Rhc2RhQGFrc2RqLmNvbSIsImlhdCI6MTc0OTg4MTA0OSwiZXhwIjoxNzUwNDg1ODQ5fQ.g4O3pbHeCOwx4Q2fMp06-PrUvRIWpJL7WmADDvZoUDc",
+  "profileCompleted": false,
+  "userId": 23,
+  "profileType": "INFLUENCER"
+}
+
+SI DICE  "profileCompleted": false, ENTONCES LO LLEVAS AL ONBOARD 
+
+Y EN EL ONBOARD LO LLEVAS DEPEDNEIDNO DE "profileType": "INFLUENCER" O "profileType": "BRAND"

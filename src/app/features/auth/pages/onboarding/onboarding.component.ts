@@ -16,7 +16,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,6 +25,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 import { AuthService } from '../../../../infrastructure/services/auth.service';
 import { UpdateProfileUseCase } from '../../../../application/use-cases/update-profile.usecase';
@@ -65,13 +67,15 @@ export class ClickOutsideDirective {
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatChipsModule
   ],
   templateUrl: './onboarding.component.html',
   styleUrls: ['./onboarding.component.scss'],
 })
 export class OnboardingComponent implements OnInit {
-  form: FormGroup;
+  form!: FormGroup;
   loading = false;
   hidePassword = true;
   user_type: 'influencer' | 'marca' = 'marca'; // Default to marca
@@ -80,6 +84,7 @@ export class OnboardingComponent implements OnInit {
   imagePreview: string | null = null;
   console = console; // Para poder usar console.log en el template
   isBrand: boolean;
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
   // Dropdown states
   nicheDropdownOpen = false;
@@ -182,7 +187,7 @@ export class OnboardingComponent implements OnInit {
     private translate: TranslateService
   ) {
     this.isBrand = this.auth.currentUser?.profileType === 'BRAND';
-    this.form = this.initForm();
+    this.initForm();
   }
 
   ngOnInit(): void {
@@ -196,34 +201,25 @@ export class OnboardingComponent implements OnInit {
     }
   }
 
-  private initForm(): FormGroup {
-    const baseForm = {
-      name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      country: ['', [Validators.required]],
-      location: ['', [Validators.required]],
+  private initForm(): void {
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+      country: ['', Validators.required],
+      location: ['', Validators.required],
+      description: ['', Validators.required],
+      logo: [''],
+      profilePhoto: [''],
+      websiteUrl: ['', [Validators.required, Validators.pattern('https?://.+')]],
+      sector: [''],
+      niches: [[]],
+      followers: [0, [Validators.required, Validators.min(0)]],
       socialLinks: this.fb.array([]),
       links: this.fb.array([]),
       attachments: this.fb.array([])
-    };
+    });
 
-    if (this.isBrand) {
-      return this.fb.group({
-        ...baseForm,
-        sector: ['', [Validators.required]],
-        websiteUrl: ['', [Validators.required, Validators.pattern('https?://.+')]],
-        logo: [''],
-        profilePhoto: ['']
-      });
-    } else {
-      return this.fb.group({
-        ...baseForm,
-        niches: ['', [Validators.required]],
-        followers: [0, [Validators.required, Validators.min(0)]],
-        photo: [''],
-        profilePhoto: ['']
-      });
-    }
+    // Add initial social link
+    this.addSocialLink();
   }
 
   get socialLinks() {
@@ -238,7 +234,7 @@ export class OnboardingComponent implements OnInit {
     return this.form.get('attachments') as FormArray;
   }
 
-  addSocialLink() {
+  addSocialLink(): void {
     const socialLink = this.fb.group({
       platform: ['', Validators.required],
       url: ['', [Validators.required, Validators.pattern('https?://.+')]]
@@ -246,11 +242,11 @@ export class OnboardingComponent implements OnInit {
     this.socialLinks.push(socialLink);
   }
 
-  removeSocialLink(index: number) {
+  removeSocialLink(index: number): void {
     this.socialLinks.removeAt(index);
   }
 
-  addLink() {
+  addLink(): void {
     const link = this.fb.group({
       title: ['', Validators.required],
       url: ['', [Validators.required, Validators.pattern('https?://.+')]]
@@ -258,98 +254,128 @@ export class OnboardingComponent implements OnInit {
     this.links.push(link);
   }
 
-  removeLink(index: number) {
+  removeLink(index: number): void {
     this.links.removeAt(index);
   }
 
-  async onFileSelected(event: any, field: string) {
-    const file = event.target.files[0];
+  removeAttachment(index: number): void {
+    this.attachments.removeAt(index);
+  }
+
+  onFileSelected(event: Event, type: 'logo' | 'photo' | 'profilePhoto'): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
-      try {
-        const base64 = await this.fileToBase64(file);
-        this.form.patchValue({ [field]: base64 });
-      } catch (error) {
-        this.snack.open(
-          this.translate.instant('ERRORS.FILE_UPLOAD'),
-          'OK',
-          { duration: 3000 }
-        );
-      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = (reader.result as string).split(',')[1]; // Remove data URL prefix
+        this.form.patchValue({ [type]: base64 });
+      };
+      reader.readAsDataURL(file);
     }
   }
 
-  private fileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = error => reject(error);
-    });
-  }
-
-  async onAttachmentSelected(event: any) {
-    const file = event.target.files[0];
+  onAttachmentSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
-      try {
-        const base64 = await this.fileToBase64(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = (reader.result as string).split(',')[1]; // Remove data URL prefix
         const attachment = this.fb.group({
           title: [file.name, Validators.required],
           description: [''],
           mediaType: [this.getMediaType(file.type), Validators.required],
-          data: [base64, Validators.required]
+          data: [base64]
         });
         this.attachments.push(attachment);
-      } catch (error) {
-        this.snack.open(
-          this.translate.instant('ERRORS.FILE_UPLOAD'),
-          'OK',
-          { duration: 3000 }
-        );
-      }
+      };
+      reader.readAsDataURL(file);
     }
   }
 
-  private getMediaType(mimeType: string): 'PHOTO' | 'VIDEO' | 'DOCUMENT' {
-    if (mimeType.startsWith('image/')) return 'PHOTO';
-    if (mimeType.startsWith('video/')) return 'VIDEO';
+  private getMediaType(fileType: string): 'PHOTO' | 'VIDEO' | 'DOCUMENT' {
+    if (fileType.startsWith('image/')) return 'PHOTO';
+    if (fileType.startsWith('video/')) return 'VIDEO';
     return 'DOCUMENT';
   }
 
-  removeAttachment(index: number) {
-    this.attachments.removeAt(index);
-  }
-
   submit(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+    if (this.form.valid) {
+      this.loading = true;
+      const profileData = this.form.value;
 
-    this.loading = true;
-    const profileData = this.form.value;
-
-    const request = this.isBrand
-      ? this.profileApi.createBrandProfile(profileData as BrandProfileVO)
-      : this.profileApi.createInfluencerProfile(profileData as InfluencerProfileVO);
-
-    request.subscribe({
-      next: () => {
-        const updatedUser = {
-          ...this.auth.currentUser,
-          profileCompleted: true
-        };
-        this.auth.updateUserData(updatedUser);
-        this.router.navigate(['/dashboard']);
-      },
-      error: (error) => {
-        this.loading = false;
-        this.snack.open(
-          this.translate.instant('ERRORS.PROFILE_CREATION'),
-          'OK',
-          { duration: 3000 }
+      if (this.isBrand) {
+        const brandProfile = new BrandProfileVO(
+          profileData.name,
+          profileData.sector,
+          profileData.country,
+          profileData.description,
+          profileData.logo || '',
+          profileData.profilePhoto || '',
+          profileData.websiteUrl,
+          profileData.location,
+          profileData.links || [],
+          profileData.attachments || []
         );
+
+        this.profileApi.createBrandProfile(brandProfile).subscribe({
+          next: (response: any) => {
+            this.loading = false;
+            // Update user data with profile completion status
+            const updatedUser = {
+              ...this.auth.currentUser,
+              profileCompleted: true
+            };
+            this.auth.updateUserData(updatedUser);
+            this.router.navigate(['/dashboard']);
+          },
+          error: (error: any) => {
+            this.loading = false;
+            console.error('Error creating brand profile:', error);
+            this.snack.open(
+              this.translate.instant('ERRORS.PROFILE_CREATION'),
+              'OK',
+              { duration: 3000 }
+            );
+          }
+        });
+      } else {
+        const influencerProfile = new InfluencerProfileVO(
+          profileData.name,
+          profileData.niches || [],
+          profileData.description, // Using description as bio
+          profileData.country,
+          profileData.photo || '',
+          profileData.profilePhoto || '',
+          profileData.followers || 0,
+          profileData.socialLinks || [],
+          profileData.location,
+          profileData.links || [],
+          profileData.attachments || []
+        );
+
+        this.profileApi.createInfluencerProfile(influencerProfile).subscribe({
+          next: (response: any) => {
+            this.loading = false;
+            // Update user data with profile completion status
+            const updatedUser = {
+              ...this.auth.currentUser,
+              profileCompleted: true
+            };
+            this.auth.updateUserData(updatedUser);
+            this.router.navigate(['/dashboard']);
+          },
+          error: (error: any) => {
+            this.loading = false;
+            console.error('Error creating influencer profile:', error);
+            this.snack.open(
+              this.translate.instant('ERRORS.PROFILE_CREATION'),
+              'OK',
+              { duration: 3000 }
+            );
+          }
+        });
       }
-    });
+    }
   }
 
   // Métodos para obtener nombres de opciones
@@ -437,5 +463,24 @@ export class OnboardingComponent implements OnInit {
 
   selectDuration(value: string): void {
     this.form.patchValue({ campaign_duration: value });
+  }
+
+  addNiche(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      const niches = this.form.get('niches')?.value || [];
+      niches.push(value);
+      this.form.patchValue({ niches });
+    }
+    event.chipInput!.clear();
+  }
+
+  removeNiche(niche: string): void {
+    const niches = this.form.get('niches')?.value || [];
+    const index = niches.indexOf(niche);
+    if (index >= 0) {
+      niches.splice(index, 1);
+      this.form.patchValue({ niches });
+    }
   }
 }

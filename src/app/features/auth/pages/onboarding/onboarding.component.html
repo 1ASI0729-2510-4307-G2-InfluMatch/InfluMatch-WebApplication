@@ -66,10 +66,20 @@
         <ng-container *ngIf="!isBrand">
           <mat-form-field appearance="outline">
             <mat-label>{{ 'ONBOARDING.NICHES' | translate }}</mat-label>
-            <input matInput formControlName="niches" required>
-            <mat-error *ngIf="form.get('niches')?.hasError('required')">
-              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-            </mat-error>
+            <mat-chip-grid #chipGrid aria-label="Enter niches">
+              <mat-chip-row
+                *ngFor="let niche of form.get('niches')?.value"
+                (removed)="removeNiche(niche)">
+                {{niche}}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            </mat-chip-grid>
+            <input placeholder="New niche..."
+                   [matChipInputFor]="chipGrid"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   (matChipInputTokenEnd)="addNiche($event)">
           </mat-form-field>
 
           <mat-form-field appearance="outline">
