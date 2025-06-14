@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { DashboardProfileVO } from '../../../../domain/value-objects/dashboard-profile.vo';
 
 @Component({
   selector: 'app-profile-card',
@@ -13,22 +14,13 @@ import { MatCardModule } from '@angular/material/card';
   styleUrls: ['./profile-card.component.scss'],
 })
 export class ProfileCardComponent {
-  @Input() profile: any;
+  @Input() profile!: DashboardProfileVO;
   @Input() type: 'influencer' | 'brand' = 'influencer';
 
   constructor(private router: Router) {}
 
   viewDetails(): void {
-    this.router.navigate(['/dashboard/profile', this.profile.id]);
-  }
-
-  getTotalFollowers(): number {
-    if (!this.profile.followers) return 0;
-
-    return Object.values(this.profile.followers).reduce(
-      (sum: number, val: any) => sum + (Number(val) || 0),
-      0
-    );
+    this.router.navigate(['/dashboard/profile', this.profile.userId]);
   }
 
   formatNumber(num: number): string {

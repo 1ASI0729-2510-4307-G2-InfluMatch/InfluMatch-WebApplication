@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
-import { InfluencerProfileVO } from '../../domain/value-objects/influencer-profile.vo';
-import { ProfileRepository } from '../../domain/repositories/profile-repository';
+import { Observable } from 'rxjs';
+import { DashboardRepository } from '../../domain/repositories/dashboard-repository';
+import { DashboardProfileVO } from '../../domain/value-objects/dashboard-profile.vo';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class ListInfluencersUseCase {
-  constructor(private repo: ProfileRepository) {}
+  constructor(private repository: DashboardRepository) {}
 
-  execute(): Observable<InfluencerProfileVO[]> {
-    return this.repo.getInfluencerProfile().pipe(
-      map(response => Array.isArray(response) ? response : [response])
-    );
+  execute(): Observable<DashboardProfileVO[]> {
+    return this.repository.getInfluencers();
   }
 }

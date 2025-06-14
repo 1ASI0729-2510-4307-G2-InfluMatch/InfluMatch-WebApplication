@@ -2,12 +2,12 @@
   <div class="profile-header">
     <div class="profile-avatar">
       <img
-        [src]="profile.avatar_url || 'assets/images/default-avatar.png'"
+        [src]="profile.photoUrl || '/assets/default-avatar.png'"
         alt="Profile Avatar"
       />
     </div>
     <div class="profile-info">
-      <h3 class="profile-name">{{ profile.display_name || profile.name }}</h3>
+      <h3 class="profile-name">{{ profile.name }}</h3>
       <span class="profile-type">{{
         type === "influencer" ? "Influencer" : "Marca"
       }}</span>
@@ -19,33 +19,21 @@
 
     <!-- Información específica para influencers -->
     <div *ngIf="type === 'influencer'" class="profile-metrics">
-      <div class="metric" *ngIf="profile.followers">
+      <div class="metric">
         <mat-icon>people</mat-icon>
-        <span>{{ formatNumber(getTotalFollowers()) }} seguidores</span>
+        <span>{{ formatNumber(profile.followersCount) }} seguidores</span>
       </div>
-      <div class="metric" *ngIf="profile.engagement_rate">
-        <mat-icon>trending_up</mat-icon>
-        <span>{{ profile.engagement_rate }}% engagement</span>
-      </div>
-      <div class="metric" *ngIf="profile.niche">
+      <div class="metric">
         <mat-icon>category</mat-icon>
-        <span>{{ profile.niche }}</span>
+        <span>{{ profile.mainNiche }}</span>
       </div>
     </div>
 
     <!-- Información específica para marcas -->
     <div *ngIf="type === 'brand'" class="profile-metrics">
-      <div class="metric" *ngIf="profile.sector">
-        <mat-icon>business</mat-icon>
-        <span>{{ profile.sector }}</span>
-      </div>
-      <div class="metric" *ngIf="profile.budget_range">
-        <mat-icon>attach_money</mat-icon>
-        <span>{{ profile.budget_range }}</span>
-      </div>
-      <div class="metric" *ngIf="profile.content_s">
-        <mat-icon>video_library</mat-icon>
-        <span>{{ profile.content_s }}</span>
+      <div class="metric">
+        <mat-icon>location_on</mat-icon>
+        <span>{{ profile.country }}</span>
       </div>
     </div>
   </div>

@@ -6,6 +6,8 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { corsInterceptor } from './core/interceptors/cors.interceptor';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { DashboardRepository } from './domain/repositories/dashboard-repository';
+import { DashboardRepositoryImpl } from './infrastructure/repositories/dashboard.repository';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,5 +16,9 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([corsInterceptor, authInterceptor])
     ),
     provideAnimations(),
+    {
+      provide: DashboardRepository,
+      useClass: DashboardRepositoryImpl,
+    },
   ],
 };
