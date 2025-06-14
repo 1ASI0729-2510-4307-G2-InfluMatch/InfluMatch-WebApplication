@@ -1,19 +1,26 @@
-export interface BrandProfileVO {
-  user_id: string;
-  display_name: string;
-  avatar_url: string;
-  bio: string;
-  location: string;
-  contact_email: string;
-  sector: string;
-  website?: string;
-  budget_range: string;
-  objectives: string;
-  contact_name?: string;
-  contact_position?: string;
-  content_s?: string;
-  influencer_s?: string;
-  campaign_duration?: string;
-  additional_info?: string;
-  social_links?: Record<string, string>;
+export interface Link {
+  title: string;
+  url: string;
+}
+
+export interface Attachment {
+  title: string;
+  description: string;
+  mediaType: 'PHOTO' | 'VIDEO' | 'DOCUMENT';
+  data: string;
+}
+
+export class BrandProfileVO {
+  constructor(
+    public name: string,
+    public sector: string,
+    public country: string,
+    public description: string,
+    public logo: string,
+    public profilePhoto: string,
+    public websiteUrl: string,
+    public location: string,
+    public links: Link[],
+    public attachments: Attachment[]
+  ) {}
 }

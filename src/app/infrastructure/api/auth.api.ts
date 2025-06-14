@@ -12,9 +12,7 @@ import { UserAssembler, RegisterResponse } from '../assemblers/user.assembler';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApi {
-  private readonly resource = 'auth';
-
-  private readonly url = `${environment.apiBase}/${this.resource}`;
+  private readonly baseUrl = `${environment.apiBase}/auth`;
 
   constructor(private http: HttpClient) {}
 
@@ -23,30 +21,15 @@ export class AuthApi {
     return throwError(() => error);
   }
 
-  login(creds: UserCredentials): Observable<User | null> {
-    return this.http.post<RegisterResponse>(`${this.url}/login`, creds, {
-      withCredentials: true
-    }).pipe(
-      map(response => response ? UserAssembler.toUser(response) : null),
-      catchError(this.handleError)
-    );
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/login`, { email, password });
   }
 
-  register(data: NewUserVO): Observable<User> {
-    return this.http.post<RegisterResponse>(`${this.url}/register`, data, {
-      withCredentials: true
-    }).pipe(
-      map(response => UserAssembler.toUser(response)),
-      catchError(this.handleError)
-    );
+  register(email: string, password: string, role: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, { email, password, role });
   }
 
-  updateProfile(data: ProfileVO): Observable<User> {
-    return this.http.put<RegisterResponse>(`${this.url}/profile`, data, {
-      withCredentials: true
-    }).pipe(
-      map(response => UserAssembler.toUser(response)),
-      catchError(this.handleError)
-    );
+  updateProfile(data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/profile`, data);
   }
 }

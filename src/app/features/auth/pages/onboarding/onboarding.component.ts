@@ -16,10 +16,23 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../../infrastructure/services/auth.service';
 import { UpdateProfileUseCase } from '../../../../application/use-cases/update-profile.usecase';
 import { ProfileVO } from '../../../../domain/value-objects/profile.vo';
+import { ProfileApi } from '../../../../infrastructure/api/profile.api';
+import { BrandProfileVO } from '../../../../domain/value-objects/brand-profile.vo';
+import { User } from '../../../../domain/entities/user.entity';
+import { InfluencerProfileVO } from '../../../../domain/value-objects/influencer-profile.vo';
 
 @Directive({
   selector: '[clickOutside]',
@@ -42,17 +55,31 @@ export class ClickOutsideDirective {
 @Component({
   selector: 'app-onboarding',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './onboarding.component.html',
   styleUrls: ['./onboarding.component.scss'],
 })
 export class OnboardingComponent implements OnInit {
-  form!: FormGroup;
+  form: FormGroup;
+  loading = false;
+  hidePassword = true;
   user_type: 'influencer' | 'marca' = 'marca'; // Default to marca
   userId!: number;
   currentStep = 1;
   imagePreview: string | null = null;
   console = console; // Para poder usar console.log en el template
+  isBrand: boolean;
 
   // Dropdown states
   nicheDropdownOpen = false;
@@ -148,157 +175,180 @@ export class OnboardingComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private profileApi: ProfileApi,
     private auth: AuthService,
-    private updateProfile: UpdateProfileUseCase,
-    private router: Router
-  ) {}
+    private router: Router,
+    private snack: MatSnackBar,
+    private translate: TranslateService
+  ) {
+    this.isBrand = this.auth.currentUser?.profileType === 'BRAND';
+    this.form = this.initForm();
+  }
 
-  ngOnInit() {
-    const user = this.auth.currentUser;
-    if (user) {
-      this.userId = user.userId;
-      this.user_type = user.user_type;
-      this.form = this.fb.group({
-        name: [user.name || '', [Validators.required]],
-        description: ['', [Validators.required]],
+  ngOnInit(): void {
+    if (!this.auth.currentUser) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    if (this.auth.currentUser.profileCompleted) {
+      this.router.navigate(['/dashboard']);
+    }
+  }
+
+  private initForm(): FormGroup {
+    const baseForm = {
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      location: ['', [Validators.required]],
+      socialLinks: this.fb.array([]),
+      links: this.fb.array([]),
+      attachments: this.fb.array([])
+    };
+
+    if (this.isBrand) {
+      return this.fb.group({
+        ...baseForm,
         sector: ['', [Validators.required]],
-        audience: ['', [Validators.required]],
-        avatar_url: [user.photoUrl || ''],
-        social_media: this.fb.group({
-          instagram: [''],
-          tiktok: [''],
-          youtube: [''],
-        }),
-        contact_info: this.fb.group({
-          contact_email: [user.email || '', [Validators.required, Validators.email]],
-          phone: [''],
-          website: [''],
-        }),
+        websiteUrl: ['', [Validators.required, Validators.pattern('https?://.+')]],
+        logo: [''],
+        profilePhoto: ['']
+      });
+    } else {
+      return this.fb.group({
+        ...baseForm,
+        niches: ['', [Validators.required]],
+        followers: [0, [Validators.required, Validators.min(0)]],
+        photo: [''],
+        profilePhoto: ['']
       });
     }
   }
 
-  // Getter para acceder fácilmente al FormArray de portfolio_urls
-  get portfolioUrls() {
-    return this.form.get('portfolio_urls') as FormArray;
+  get socialLinks() {
+    return this.form.get('socialLinks') as FormArray;
   }
 
-  // Método para añadir una nueva URL al portafolio
-  addPortfolioUrl() {
-    if (this.user_type === 'influencer') {
-      this.portfolioUrls.push(this.fb.control(''));
+  get links() {
+    return this.form.get('links') as FormArray;
+  }
+
+  get attachments() {
+    return this.form.get('attachments') as FormArray;
+  }
+
+  addSocialLink() {
+    const socialLink = this.fb.group({
+      platform: ['', Validators.required],
+      url: ['', [Validators.required, Validators.pattern('https?://.+')]]
+    });
+    this.socialLinks.push(socialLink);
+  }
+
+  removeSocialLink(index: number) {
+    this.socialLinks.removeAt(index);
+  }
+
+  addLink() {
+    const link = this.fb.group({
+      title: ['', Validators.required],
+      url: ['', [Validators.required, Validators.pattern('https?://.+')]]
+    });
+    this.links.push(link);
+  }
+
+  removeLink(index: number) {
+    this.links.removeAt(index);
+  }
+
+  async onFileSelected(event: any, field: string) {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        const base64 = await this.fileToBase64(file);
+        this.form.patchValue({ [field]: base64 });
+      } catch (error) {
+        this.snack.open(
+          this.translate.instant('ERRORS.FILE_UPLOAD'),
+          'OK',
+          { duration: 3000 }
+        );
+      }
     }
   }
 
-  // Método para eliminar una URL del portafolio
-  removePortfolioUrl(index: number) {
-    this.portfolioUrls.removeAt(index);
-  }
-
-  // Método para manejar la selección de archivos
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length) {
-      const file = input.files[0];
-
-      // Validar tipo y tamaño
-      if (!file.type.includes('image/')) {
-        alert('Por favor, selecciona una imagen válida');
-        return;
-      }
-
-      if (file.size > 5 * 1024 * 1024) {
-        // 2MB
-        alert('La imagen no debe superar los 2MB');
-        return;
-      }
-
-      // Crear vista previa
+  private fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result as string;
-        // En un caso real, aquí subirías la imagen al servidor
-        // y guardarías la URL en el formulario
-        this.form.patchValue({
-          avatar_url: this.imagePreview,
-        });
-      };
       reader.readAsDataURL(file);
-    }
-  }
-
-  // Método para eliminar la imagen
-  removeImage() {
-    this.imagePreview = null;
-    this.form.patchValue({
-      avatar_url: '',
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
     });
   }
 
-  // Navegación entre pasos
-  nextStep() {
-    if (this.currentStep < 3) {
-      this.currentStep++;
-      window.scrollTo(0, 0);
+  async onAttachmentSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        const base64 = await this.fileToBase64(file);
+        const attachment = this.fb.group({
+          title: [file.name, Validators.required],
+          description: [''],
+          mediaType: [this.getMediaType(file.type), Validators.required],
+          data: [base64, Validators.required]
+        });
+        this.attachments.push(attachment);
+      } catch (error) {
+        this.snack.open(
+          this.translate.instant('ERRORS.FILE_UPLOAD'),
+          'OK',
+          { duration: 3000 }
+        );
+      }
     }
   }
 
-  prevStep() {
-    if (this.currentStep > 1) {
-      this.currentStep--;
-      window.scrollTo(0, 0);
-    }
+  private getMediaType(mimeType: string): 'PHOTO' | 'VIDEO' | 'DOCUMENT' {
+    if (mimeType.startsWith('image/')) return 'PHOTO';
+    if (mimeType.startsWith('video/')) return 'VIDEO';
+    return 'DOCUMENT';
   }
 
-  submit() {
-    if (this.form.invalid) return;
+  removeAttachment(index: number) {
+    this.attachments.removeAt(index);
+  }
 
-    console.log('Form data:', this.form.value);
-
-    const formData = this.form.value;
-    const payload: ProfileVO = {
-      user_id: this.userId,
-      profile_completed: true,
-      display_name: formData.name,
-      avatar_url: formData.avatar_url,
-      bio: formData.description,
-      location: '',
-      contact_email: formData.contact_info.contact_email,
-    };
-
-    // Añadir campos específicos según el tipo de usuario
-    if (this.user_type === 'influencer') {
-      Object.assign(payload, {
-        niche: formData.niche,
-        followers: formData.social_media,
-        rate_per_post: 0,
-        engagement_rate: '',
-        main_audience: formData.audience,
-        languages: [],
-        social_links: formData.social_media,
-        portfolio_urls: formData.portfolio_urls,
-        previous_experience: '',
-        preferred_categories: [],
-      });
-    } else {
-      Object.assign(payload, {
-        sector: formData.sector,
-        website: formData.contact_info.website,
-        budget_range: '',
-        objectives: '',
-        contact_name: '',
-        contact_position: '',
-        content_s: [],
-        influencer_s: [],
-        campaign_duration: '',
-        additional_info: '',
-        social_links: formData.social_media,
-      });
+  submit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
 
-    this.updateProfile.execute(payload).subscribe((u) => {
-      this.auth.save(u);
-      this.router.navigateByUrl('/dashboard');
+    this.loading = true;
+    const profileData = this.form.value;
+
+    const request = this.isBrand
+      ? this.profileApi.createBrandProfile(profileData as BrandProfileVO)
+      : this.profileApi.createInfluencerProfile(profileData as InfluencerProfileVO);
+
+    request.subscribe({
+      next: () => {
+        const updatedUser = {
+          ...this.auth.currentUser,
+          profileCompleted: true
+        };
+        this.auth.updateUserData(updatedUser);
+        this.router.navigate(['/dashboard']);
+      },
+      error: (error) => {
+        this.loading = false;
+        this.snack.open(
+          this.translate.instant('ERRORS.PROFILE_CREATION'),
+          'OK',
+          { duration: 3000 }
+        );
+      }
     });
   }
 

@@ -12,519 +12,125 @@
 
 // Contenedor principal
 .onboarding-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
   min-height: 100vh;
-  background-color: #f2f2f7;
+  background-color: #f5f5f5;
+}
+
+.onboarding-content {
+  width: 100%;
+  max-width: 800px;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  p {
+    color: #666;
+    margin-bottom: 2rem;
+  }
+}
+
+.onboarding-form {
+  .form-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    h2 {
+      margin-bottom: 1.5rem;
+      color: #333;
+      font-size: 1.25rem;
+    }
+  }
+
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+
+.photo-upload {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  .photo-field {
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #666;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+.social-link,
+.link,
+.attachment {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: start;
+}
+
+.attachment-upload {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
-
-  .onboarding-card {
-    width: 100%;
-    max-width: 800px;
-    background-color: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    overflow: hidden;
-    position: relative;
-
-    // Header
-    .card-header {
-      padding: 32px;
-      background-color: #77b0e9;
-      color: #ffffff;
-      position: relative;
-
-      .logo {
-        position: absolute;
-        top: 32px;
-        right: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-
-        img {
-          height: 24px;
-        }
-      }
-
-      h1 {
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 12px;
-        letter-spacing: -0.5px;
-      }
-
-      p {
-        font-size: 16px;
-        font-weight: 400;
-        margin: 0;
-        opacity: 0.9;
-        max-width: 80%;
-      }
-    }
-
-    // Progress Steps
-    .steps-progress {
-      display: flex;
-      padding: 0 32px;
-      margin-top: -15px;
-      position: relative;
-      z-index: 10;
-
-      .step-item {
-        flex: 1;
-        text-align: center;
-        position: relative;
-
-        &:not(:last-child)::after {
-          content: "";
-          position: absolute;
-          top: 16px;
-          left: 50%;
-          width: 100%;
-          height: 2px;
-          background-color: #e5e5ea;
-          z-index: -1;
-          transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        &:not(:last-child).completed::after {
-          background-color: #0071e3;
-        }
-
-        .step-circle {
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          background-color: #e5e5ea;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 8px;
-          color: #8e8e93;
-          font-weight: 600;
-          font-size: 14px;
-          transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          position: relative;
-          z-index: 2;
-
-          &.active {
-            background-color: #0071e3;
-            color: #ffffff;
-            transform: scale(1.1);
-          }
-
-          &.completed {
-            background-color: #0071e3;
-            color: #ffffff;
-          }
-        }
-
-        .step-label {
-          font-size: 13px;
-          color: #8e8e93;
-          font-weight: 500;
-          transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          margin-bottom: 16px;
-
-          &.active {
-            color: #0071e3;
-            font-weight: 600;
-          }
-
-          &.completed {
-            color: #0071e3;
-          }
-        }
-      }
-    }
-
-    // Form Content
-    .card-body {
-      padding: 32px;
-
-      .step-content {
-        animation: fadeIn 0.5s ease;
-
-        .step-title {
-          font-size: 22px;
-          font-weight: 600;
-          margin-bottom: 24px;
-          color: #1d1d1f;
-          display: flex;
-          align-items: center;
-          letter-spacing: -0.3px;
-
-          .step-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 12px;
-            background-color: rgba(#0071e3, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            font-size: 18px;
-            color: #0071e3;
-          }
-        }
-      }
-
-      // Form Grid
-      .form-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 24px;
-
-        @media (max-width: 767px) {
-          grid-template-columns: 1fr;
-        }
-
-        .form-field-full {
-          grid-column: 1 / -1;
-        }
-      }
-
-      // Form Fields
-      .form-field {
-        margin-bottom: 24px;
-
-        label {
-          display: block;
-          margin-bottom: 8px;
-          font-size: 14px;
-          color: #48484a;
-          font-weight: 500;
-
-          .required {
-            color: #ff3b30;
-            margin-left: 3px;
-          }
-        }
-
-        input,
-        textarea,
-        select {
-          width: 100%;
-          padding: 12px 16px;
-          border: 1px solid #d1d1d6;
-          border-radius: 12px;
-          font-size: 15px;
-          transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          background-color: #ffffff;
-          color: #1d1d1f;
-          font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-            "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-          -webkit-appearance: none;
-          appearance: none;
-
-          &:focus {
-            outline: none;
-            border-color: #0071e3;
-            box-shadow: 0 0 0 2px rgba(#0071e3, 0.2);
-          }
-
-          &.ng-invalid.ng-touched {
-            border-color: #ff3b30;
-
-            &:focus {
-              box-shadow: 0 0 0 2px rgba(#ff3b30, 0.2);
-            }
-          }
-
-          &::placeholder {
-            color: #aeaeb2;
-          }
-        }
-
-        textarea {
-          min-height: 120px;
-          resize: vertical;
-          line-height: 1.5;
-        }
-
-        select {
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-          background-repeat: no-repeat;
-          background-position: right 12px center;
-          padding-right: 40px;
-        }
-
-        .error-message {
-          color: #ff3b30;
-          font-size: 12px;
-          margin-top: 6px;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-
-          &::before {
-            content: "⚠️";
-            margin-right: 5px;
-            font-size: 11px;
-          }
-        }
-
-        .field-hint {
-          font-size: 12px;
-          color: #8e8e93;
-          margin-top: 6px;
-        }
-      }
-
-      // Image Upload
-      .image-upload {
-        .preview-container {
-          width: 100%;
-          height: 220px;
-          border-radius: 12px;
-          overflow: hidden;
-          margin-bottom: 12px;
-          position: relative;
-          background-color: #f2f2f7;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid #d1d1d6;
-          transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-          &:hover {
-            border-color: #0071e3;
-          }
-
-          .preview-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
-
-          .upload-placeholder {
-            text-align: center;
-            padding: 30px;
-
-            p {
-              color: #8e8e93;
-              margin: 0;
-              font-size: 15px;
-              font-weight: 500;
-            }
-          }
-
-          .remove-image {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background-color: rgba(#ffffff, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            color: #636366;
-
-            &:hover {
-              background-color: #ffffff;
-              transform: scale(1.1);
-              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-              color: #ff3b30;
-            }
-          }
-        }
-
-        .upload-button {
-          width: 100%;
-          padding: 12px 16px;
-          border-radius: 12px;
-          background-color: #f2f2f7;
-          border: 1px solid #d1d1d6;
-          color: #0071e3;
-          font-size: 14px;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          &:hover {
-            background-color: rgba(#0071e3, 0.05);
-            border-color: #0071e3;
-          }
-        }
-      }
-
-      // Portfolio Items (usado para URLs, seguidores y redes sociales)
-      .portfolio-items {
-        .portfolio-item {
-          display: flex;
-          align-items: center;
-          margin-bottom: 12px;
-          background-color: #ffffff;
-          border-radius: 12px;
-          border: 1px solid #e5e5ea;
-          padding: 8px 12px;
-          transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-          &:hover {
-            border-color: #d1d1d6;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-          }
-
-          .platform-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            flex-shrink: 0;
-            color: white;
-
-            &.instagram {
-              background: #e4405f;
-            }
-
-            &.tiktok {
-              background: #000000;
-            }
-
-            &.youtube {
-              background: #ff0000;
-            }
-
-            &.twitter {
-              background: #1da1f2;
-            }
-
-            &.facebook {
-              background: #1877f2;
-            }
-          }
-
-          input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            box-shadow: none;
-            padding: 8px 0;
-
-            &:focus {
-              box-shadow: none;
-            }
-          }
-
-          .remove-btn {
-            border: none;
-            background: none;
-            padding: 0;
-            margin: 0;
-            font: inherit;
-            color: inherit;
-            cursor: pointer;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background-color: #f2f2f7;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 8px;
-            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            color: #8e8e93;
-
-            &:hover {
-              background-color: rgba(#ff3b30, 0.1);
-              color: #ff3b30;
-            }
-          }
-        }
-      }
-
-      // Portfolio Section
-      .portfolio-section {
-        .add-portfolio-btn {
-          border: none;
-          background: none;
-          padding: 0;
-          margin: 0;
-          font: inherit;
-          color: inherit;
-          cursor: pointer;
-          display: inline-flex;
-          align-items: center;
-          padding: 10px 16px;
-          border-radius: 12px;
-          background-color: #f2f2f7;
-          color: #0071e3;
-          font-size: 14px;
-          font-weight: 500;
-          margin-top: 8px;
-          transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-          &:hover {
-            background-color: rgba(#0071e3, 0.1);
-          }
-        }
-      }
-    }
-
-    // Footer
-    .card-footer {
-      padding: 24px 32px;
-      border-top: 1px solid #e5e5ea;
-      display: flex;
-      justify-content: space-between;
-      background-color: #f9f9f9;
-
-      button {
-        padding: 12px 24px;
-        border-radius: 12px;
-        font-size: 15px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-        &.btn-back {
-          background-color: #ffffff;
-          border: 1px solid #d1d1d6;
-          color: #636366;
-
-          &:hover:not(:disabled) {
-            background-color: #f2f2f7;
-            border-color: #c7c7cc;
-          }
-
-          &:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-          }
-        }
-
-        &.btn-next,
-        &.btn-submit {
-          background-color: #0071e3;
-          border: none;
-          color: #ffffff;
-
-          &:hover:not(:disabled) {
-            background-color: #0051a2;
-          }
-
-          &:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-          }
-        }
-      }
-    }
+  gap: 1rem;
+
+  input[type="file"] {
+    display: none;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+
+  button {
+    min-width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .onboarding-container {
+    padding: 1rem;
+  }
+
+  .onboarding-content {
+    padding: 1rem;
+  }
+
+  .social-link,
+  .link,
+  .attachment {
+    grid-template-columns: 1fr;
   }
 }
 

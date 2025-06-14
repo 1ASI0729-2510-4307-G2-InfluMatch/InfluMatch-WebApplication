@@ -1,12 +1,10 @@
 // src/app/infrastructure/repositories/profile.repository.ts
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-
+import { Observable } from 'rxjs';
 import { ProfileRepository } from '../../domain/repositories/profile-repository';
 import { ProfileApi } from '../api/profile.api';
 import { InfluencerProfileVO } from '../../domain/value-objects/influencer-profile.vo';
 import { BrandProfileVO } from '../../domain/value-objects/brand-profile.vo';
-import { Profile } from '../../domain/entities/profile.entity';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileRepositoryImpl extends ProfileRepository {
@@ -14,31 +12,27 @@ export class ProfileRepositoryImpl extends ProfileRepository {
     super();
   }
 
-  listInfluencers(): Observable<InfluencerProfileVO[]> {
-    return this.api.listInfluencers();
+  createBrandProfile(profile: BrandProfileVO): Observable<any> {
+    return this.api.createBrandProfile(profile);
   }
 
-  listBrands(): Observable<BrandProfileVO[]> {
-    return this.api.listBrands();
+  createInfluencerProfile(profile: InfluencerProfileVO): Observable<any> {
+    return this.api.createInfluencerProfile(profile);
   }
 
-  // *** Implementaciones obligatorias ***
-
-  loadForUser(userId: string): Observable<Profile> {
-    // si tu ProfileApi tiene un método getByUser:
-    // return this.api.loadForUser(userId);
-    return throwError(() => new Error('loadForUser no implementado aún'));
+  updateBrandProfile(profile: BrandProfileVO): Observable<any> {
+    return this.api.updateBrandProfile(profile);
   }
 
-  saveInfluencer(data: InfluencerProfileVO): Observable<Profile> {
-    // si el API expone algo como create/update:
-    // return this.api.saveInfluencer(data);
-    return throwError(() => new Error('saveInfluencer no implementado aún'));
+  updateInfluencerProfile(profile: InfluencerProfileVO): Observable<any> {
+    return this.api.updateInfluencerProfile(profile);
   }
 
-  saveBrand(data: BrandProfileVO): Observable<Profile> {
-    // idem:
-    // return this.api.saveBrand(data);
-    return throwError(() => new Error('saveBrand no implementado aún'));
+  getBrandProfile(): Observable<any> {
+    return this.api.getBrandProfile();
+  }
+
+  getInfluencerProfile(): Observable<any> {
+    return this.api.getInfluencerProfile();
   }
 }

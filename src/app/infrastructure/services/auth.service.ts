@@ -15,11 +15,12 @@ export class AuthService {
     // Guardar datos del usuario
     localStorage.setItem(this.USER_KEY, JSON.stringify({
       userId: user.userId,
-      name: user.name,
-      photoUrl: user.photoUrl,
-      email: user.email,
+      name: user.name || '',
+      photoUrl: user.photoUrl || '',
+      email: user.email || '',
       user_type: user.user_type,
-      profileCompleted: user.profileCompleted
+      profileCompleted: user.profileCompleted,
+      profileType: user.profileType
     }));
 
     // Guardar tokens
@@ -27,7 +28,7 @@ export class AuthService {
     localStorage.setItem(this.REFRESH_TOKEN_KEY, user.refreshToken);
   }
 
-  getCurrentUser(): User | null {
+  get currentUser(): User | null {
     const userStr = localStorage.getItem(this.USER_KEY);
     const accessToken = localStorage.getItem(this.TOKEN_KEY);
     const refreshToken = localStorage.getItem(this.REFRESH_TOKEN_KEY);
@@ -63,7 +64,7 @@ export class AuthService {
   }
 
   updateUserData(userData: Partial<User>): void {
-    const currentUser = this.getCurrentUser();
+    const currentUser = this.currentUser;
     if (currentUser) {
       const updatedUser = { ...currentUser, ...userData };
       this.save(updatedUser);

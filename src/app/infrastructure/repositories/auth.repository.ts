@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { AuthRepository } from '../../domain/repositories/auth-repository';
 import { AuthApi } from '../api/auth.api';
@@ -14,15 +14,20 @@ export class AuthRepositoryImpl extends AuthRepository {
     super();
   }
 
-  login(creds: UserCredentials): Observable<User | null> {
-    return this.api.login(creds);
+  login(email: string, password: string): Observable<any> {
+    return this.api.login(email, password);
   }
 
-  register(data: NewUserVO): Observable<User> {
-    return this.api.register(data);
+  register(email: string, password: string, role: string): Observable<any> {
+    return this.api.register(email, password, role);
   }
 
-  updateProfile(data: ProfileVO): Observable<User> {
+  logout(): Observable<any> {
+    localStorage.removeItem('token');
+    return of(null);
+  }
+
+  updateProfile(data: any): Observable<any> {
     return this.api.updateProfile(data);
   }
 }

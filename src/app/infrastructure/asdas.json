@@ -1,0 +1,164 @@
+
+
+
+http://localhost:8080/api/profiles/brand
+
+
+
+a la amrca si el pefil esta incompleto lo llevas a onboard y tiene que modifcarlo apra enviarle esto en post 
+
+
+le envias 
+
+
+{
+  "name": "Nike Colombia",
+  "sector": "Deportes y Moda",
+  "country": "CO",
+  "description": "Nike es una marca líder en calzado, ropa y equipamiento deportivo. En Colombia, ofrecemos las últimas innovaciones en tecnología deportiva.",
+  "logo": "BAQAAAQABAAD/2wB"// imagen , video o docuemnto en base 64},
+  "profilePhoto": "BAQAAAQABAAD/2wB"// imagen , video o docuemnto en base 64},
+  "websiteUrl": "https://www.nike.com/co",
+  "location": "Bogotá, Colombia",
+  "links": [
+    {
+      "title": "Instagram",
+      "url": "https://instagram.com/nikecolombia"
+    },
+    {
+      "title": "Facebook",
+      "url": "https://facebook.com/nikecolombia"
+    }
+  ],
+  "attachments": [
+    {
+      "title": "Catálogo Primavera 2024",
+      "description": "Nueva colección de zapatillas deportivas",
+      "mediaType": "DOCUMENT",
+      "data": "BAQAAAQABAAD/2wB"// imagen , video o docuemnto en base 64}
+  ]
+}
+
+y esto responde 
+
+le tiene qeu pasar el token que debe estar  guardado en el local sotrage 
+
+{
+  "id": 5,
+  "name": "Nike Colombia",
+  "sector": "Deportes y Moda",
+  "country": "CO",
+  "description": "Nike es una marca líder en calzado, ropa y equipamiento deportivo. En Colombia, ofrecemos las últimas innovaciones en tecnología deportiva.",
+  "logo": "",
+  "profilePhoto": "",
+  "websiteUrl": "https://www.nike.com/co",
+  "location": "Bogotá, Colombia",
+  "links": [
+      {
+          "title": "Instagram",
+          "url": "https://instagram.com/nikecolombia"
+      },
+      {
+          "title": "Facebook",
+          "url": "https://facebook.com/nikecolombia"
+      }
+  ],
+  "attachments": [
+      {
+          "title": "Catálogo Primavera 2024",
+          "description": "Nueva colección de zapatillas deportivas",
+          "mediaType": "DOCUMENT",
+          "data": ""
+         }
+  ],
+  "createdAt": "2025-06-13T22:55:03",
+  "updatedAt": "2025-06-13T22:55:03"
+}
+
+
+ahroa para influencer: esta la ruta post http://localhost:8080/api/profiles/influencer
+
+le envias token tambien tiene qeu enviarle esto 
+
+
+{
+  "name": "María García",
+  "niches": ["Fitness", "Bienestar", "Nutrición"],
+  "bio": "Entrenadora personal certificada y nutricionista. Compartiendo consejos de salud y bienestar.",
+  "country": "CO",
+  "photo":  "BAQAAAQABAAD/2wB"// imagen , video o docuemnto en base 64} ,
+  "profilePhoto": "data": "BAQAAAQABAAD/2wB"// imagen , video o docuemnto en base 64},
+   "followers": 50000,
+  "socialLinks": [
+    {
+      "platform": "INSTAGRAM",
+      "url": "https://instagram.com/mariagarcia"
+    },
+    {
+      "platform": "YOUTUBE",
+      "url": "https://youtube.com/mariagarcia"
+    }
+  ],
+  "location": "Medellín, Colombia",
+  "links": [
+    {
+      "title": "Mi Blog",
+      "url": "https://mariagarcia.com"
+    },
+    {
+      "title": "Tienda Online",
+      "url": "https://mariagarcia.com/tienda"
+    }
+  ],
+  "attachments": [
+    {
+      "title": "Portafolio de Trabajos",
+      "description": "Colaboraciones y proyectos destacados",
+      "mediaType": "DOCUMENT",
+     "data": "BAQAAAQABAAD/2wB"// imagen , video o docuemnto en base 64}
+      },
+    {
+      "title": "Video de Presentación",
+      "description": "Conoce más sobre mi trabajo",
+      "mediaType": "VIDEO",
+      "data": "BAQAAAQABAAD/2wB"// imagen , video o docuemnto en base 64}
+      }
+  ]
+}
+
+ell enum de los tipos de docuemntos esat aqui 
+
+public enum AttachmentType {
+    PHOTO,
+    VIDEO,
+    DOCUMENT
+} 
+
+
+
+
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXR0aGlwZXJ3cWVvM0BleGFtcGxlLmNvbSIsImlhdCI6MTc0OTg4MDQ3MywiZXhwIjoxNzQ5OTY2ODczfQ.jfm-XSf_C80A9fB4srY7UwJbevHyw-LQQIlcxE3dv7Y",
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXR0aGlwZXJ3cWVvM0BleGFtcGxlLmNvbSIsImlhdCI6MTc0OTg4MDQ3MywiZXhwIjoxNzUwNDg1MjczfQ.SYC80hAVSVLgrsppIatmgzoiKOZ5UdyEL1NM3Mzv1Do",
+  "profileCompleted": false,
+  "userId": 21,
+  "profileType": "INFLUENCER"
+}
+
+si reposnde que no tiene el eprfdil completo lo llevas a onboard
+
+
+si reepodne qeu tiene el perfil lleno entonces guardas este objeot en local storage para luego lenar los demas campos
+
+
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYWJyaXRlczJAZ2FtaWwuY29tIiwiaWF0IjoxNzQ5ODczMzU1LCJleHAiOjE3NDk5NTk3NTV9.ZI65mM2UE7OqHyO8duWLIXxwhnOuh-aWo4WMj-L3A5s",
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYWJyaXRlczJAZ2FtaWwuY29tIiwiaWF0IjoxNzQ5ODczMzU1LCJleHAiOjE3NTA0NzgxNTV9.s6P38sGXh_qfQyl7amkSbJYQZNf8OMxoqm0UUXmKdQs",
+  "profileCompleted": true,
+  "userId": 17,
+  "profileType": "BRAND",
+  "name": "Nike Colombia",
+  "photoUrl": "sadas"//foto en base 64 }
+
+
+

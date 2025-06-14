@@ -1,14 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User } from '../../domain/entities/user.entity';
-import { UserCredentials } from '../../domain/value-objects/user-credentials.vo';
+import { Observable, tap } from 'rxjs';
 import { AuthRepository } from '../../domain/repositories/auth-repository';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class LoginUseCase {
-  constructor(private readonly repo: AuthRepository) {}
+  constructor(
+    private repo: AuthRepository,
+    private router: Router
+  ) {}
 
-  execute(creds: UserCredentials): Observable<User | null> {
-    return this.repo.login(creds);
+  execute(email: string, password: string): Observable<any> {
+    return this.repo.login(email, password).pipe(
+      tap(response => {
+        if (response.accessToken) {
+          localStorage.setItem('token', response.accessToken);
+          
+          if (!response.profileCompleted) {
+            this.router.navigate(['/onboard']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
+        }
+      })
+    );
   }
 }

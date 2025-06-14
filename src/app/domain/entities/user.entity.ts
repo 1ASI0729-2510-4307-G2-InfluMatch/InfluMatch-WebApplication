@@ -7,4 +7,5 @@ export interface User {
   photoUrl: string;
   email: string;
   user_type: 'influencer' | 'marca';
+  profileType: 'BRAND' | 'INFLUENCER';
 }

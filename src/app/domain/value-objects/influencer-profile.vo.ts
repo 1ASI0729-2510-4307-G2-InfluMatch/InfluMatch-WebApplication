@@ -1,18 +1,32 @@
-export interface InfluencerProfileVO {
-  user_id: string;
-  display_name: string;
-  avatar_url: string;
-  bio: string;
-  location: string;
-  contact_email: string;
-  niche: string;
-  followers: { instagram: number; tiktok: number; youtube: number };
-  rate_per_post: number;
-  engagement_rate?: number;
-  main_audience?: string;
-  languages?: string;
-  social_links?: Record<string, string>;
-  portfolio_urls?: string[];
-  previous_experience?: string;
-  preferred_categories?: string;
+export interface Link {
+  title: string;
+  url: string;
+}
+
+export interface SocialLink {
+  platform: 'INSTAGRAM' | 'FACEBOOK' | 'TWITTER' | 'LINKEDIN' | 'YOUTUBE' | 'TIKTOK';
+  url: string;
+}
+
+export interface Attachment {
+  title: string;
+  description: string;
+  mediaType: 'PHOTO' | 'VIDEO' | 'DOCUMENT';
+  data: string;
+}
+
+export class InfluencerProfileVO {
+  constructor(
+    public name: string,
+    public niches: string[],
+    public bio: string,
+    public country: string,
+    public photo: string,
+    public profilePhoto: string,
+    public followers: number,
+    public socialLinks: SocialLink[],
+    public location: string,
+    public links: Link[],
+    public attachments: Attachment[]
+  ) {}
 }

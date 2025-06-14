@@ -22,12 +22,15 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { RegisterUseCase } from '../../../../application/use-cases/register.usecase';
 import { AuthService } from '../../../../core/services/auth.service';
-import { NewUserVO } from '../../../../domain/value-objects/new-user.vo';
 
-// Interfaz para las opciones de rol
-interface RolOption {
-  value: string; // Valor que se enviará al backend (siempre en español)
-  translationKey: string; // Clave para la traducción
+interface RegisterResponse {
+  accessToken: string;
+  refreshToken: string;
+  profileCompleted: boolean;
+  userId: number;
+  profileType: string;
+  name?: string;
+  photoUrl?: string;
 }
 
 @Component({
@@ -56,11 +59,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   loading = false;
   private langSubscription: Subscription | null = null;
 
-  rolOptions: RolOption[] = [
-    { value: 'influencer', translationKey: 'REGISTER.ACCOUNT_TYPE_INFLUENCER' },
-    { value: 'marca', translationKey: 'REGISTER.ACCOUNT_TYPE_BRAND' },
+  roleOptions = [
+    { value: 'BRAND', translationKey: 'REGISTER.ACCOUNT_TYPE_BRAND' },
+    { value: 'INFLUENCER', translationKey: 'REGISTER.ACCOUNT_TYPE_INFLUENCER' },
   ];
-  // Opciones de rol (siempre en español)
 
   constructor(
     private fb: FormBuilder,
@@ -79,7 +81,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Initialize language
     this.currentLang = this.translate.currentLang || 'es';
     this.langSubscription = this.translate.onLangChange.subscribe((event) => {
       this.currentLang = event.lang;
@@ -97,37 +98,39 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
   }
 
-  submit(): void {
-    if (this.form.invalid) {
-      console.log('Form invalid:', this.form.errors);
-      console.log('Form values:', this.form.value);
-      return;
-    }
-
-    this.loading = true;
-    const { acceptTerms, ...userData } = this.form.value;
-    
-    const data: NewUserVO = {
-      email: userData.email,
-      password: userData.password,
-      role: userData.role
-    };
-
-    this.registerUC.execute(data).subscribe({
-      next: (user) => {
-        if (user) {
-          this.auth.save(user);
-          this.router.navigateByUrl('/onboarding');
+  onSubmit() {
+    if (this.form.valid) {
+      const { email, password, role } = this.form.value;
+      this.loading = true;
+      
+      this.registerUC.execute(email, password, role).subscribe({
+        next: (response: RegisterResponse) => {
+          console.log('Registration successful:', response);
+          
+          if (!response.profileCompleted) {
+            // Store tokens and redirect to onboarding
+            localStorage.setItem('accessToken', response.accessToken);
+            localStorage.setItem('refreshToken', response.refreshToken);
+            localStorage.setItem('userId', response.userId.toString());
+            localStorage.setItem('profileType', response.profileType);
+            
+            this.router.navigate(['/onboarding']);
+          } else {
+            // Store complete profile data
+            localStorage.setItem('userProfile', JSON.stringify(response));
+            this.router.navigate(['/dashboard']);
+          }
+        },
+        error: (error) => {
+          console.error('Registration failed:', error);
+          this.showErrorMessage();
+          this.loading = false;
+        },
+        complete: () => {
+          this.loading = false;
         }
-      },
-      error: (error) => {
-        console.error('Registration error:', error);
-        this.showErrorMessage();
-      },
-      complete: () => {
-        this.loading = false;
-      }
-    });
+      });
+    }
   }
 
   private showErrorMessage(): void {

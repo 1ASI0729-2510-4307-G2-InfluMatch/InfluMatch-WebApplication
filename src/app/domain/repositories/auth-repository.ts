@@ -5,7 +5,8 @@ import { NewUserVO } from '../value-objects/new-user.vo';
 import { ProfileVO } from '../value-objects/profile.vo';
 
 export abstract class AuthRepository {
-  abstract login(creds: UserCredentials): Observable<User | null>;
-  abstract register(data: NewUserVO): Observable<User>;
+  abstract login(email: string, password: string): Observable<any>;
+  abstract register(email: string, password: string, role: string): Observable<any>;
+  abstract logout(): Observable<any>;
   abstract updateProfile(data: ProfileVO): Observable<User>;
 }

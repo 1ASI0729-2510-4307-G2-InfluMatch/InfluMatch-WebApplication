@@ -18,7 +18,7 @@ import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { LoginUseCase } from '../../../../application/use-cases/login.usecase';
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../../infrastructure/services/auth.service';
 import { UserCredentials } from '../../../../domain/value-objects/user-credentials.vo';
 
 @Component({
@@ -40,10 +40,13 @@ import { UserCredentials } from '../../../../domain/value-objects/user-credentia
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  form!: FormGroup;
-  hide = true;
+  form: FormGroup;
+  hidePassword = true;
   currentLang = 'es';
+  loading = false;
+  hide = true;
   private langSubscription: Subscription | null = null;
+  errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -55,11 +58,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    if (this.auth.currentUser) {
+      this.router.navigate(['/dashboard']);
+    }
     // Initialize language
     this.currentLang = this.translate.currentLang || 'es';
     this.langSubscription = this.translate.onLangChange.subscribe((event) => {
@@ -67,7 +73,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
@@ -78,37 +84,25 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
   }
 
-  submit(): void {
-    if (this.form.invalid) return;
-
-    const creds = this.form.value as UserCredentials;
-    this.loginUC.execute(creds).subscribe({
-      next: (user) => {
-        if (user) {
-          this.auth.save(user);
-          if (!user.profileCompleted) {
-            this.router.navigateByUrl('/onboarding');
-          } else {
-            this.router.navigateByUrl('/dashboard');
-          }
-        } else {
-          this.showErrorMessage('Credenciales inválidas');
+  onSubmit(): void {
+    if (this.form.valid) {
+      const data = this.form.value;
+      this.loginUC.execute(data.email, data.password).subscribe({
+        next: (response) => {
+          console.log('Login successful:', response);
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          console.error('Login error:', error);
+          this.errorMessage = error.error?.message || 'Error during login';
         }
-      },
-      error: (error) => {
-        console.error('Login error:', error);
-        if (error.status === 403) {
-          this.showErrorMessage('Acceso denegado. Por favor, verifica tus credenciales.');
-        } else {
-          this.showErrorMessage('Error al iniciar sesión. Por favor, intenta de nuevo.');
-        }
-      }
-    });
+      });
+    }
   }
 
-  private showErrorMessage(message: string): void {
+  private showErrorMessage(): void {
     this.snack.open(
-      message,
+      this.translate.instant('LOGIN.ERROR'),
       this.translate.instant('LOGIN.CLOSE'),
       {
         duration: 3000,

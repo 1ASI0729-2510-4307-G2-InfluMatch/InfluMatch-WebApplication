@@ -1,0 +1,200 @@
+<div class="onboard-container">
+  <div class="onboard-content">
+    <h1>Complete Your Profile</h1>
+    <p class="subtitle">Tell us more about your {{ profileType === 'BRAND' ? 'brand' : 'influencer' }} profile</p>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+      <!-- Brand Profile Form -->
+      <div *ngIf="profileType === 'BRAND'">
+        <div class="form-group">
+          <label for="name">Brand Name</label>
+          <input type="text" id="name" formControlName="name" placeholder="Enter your brand name">
+        </div>
+
+        <div class="form-group">
+          <label for="sector">Sector</label>
+          <input type="text" id="sector" formControlName="sector" placeholder="Enter your business sector">
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country</label>
+          <select id="country" formControlName="country">
+            <option value="CO">Colombia</option>
+            <option value="MX">México</option>
+            <option value="AR">Argentina</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" formControlName="description" rows="4" placeholder="Describe your brand"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="logo">Logo</label>
+          <input type="file" id="logo" (change)="onLogoChange($event)" accept="image/*">
+        </div>
+
+        <div class="form-group">
+          <label for="profilePhoto">Profile Photo</label>
+          <input type="file" id="profilePhoto" (change)="onProfilePhotoChange($event)" accept="image/*">
+        </div>
+
+        <div class="form-group">
+          <label for="websiteUrl">Website URL</label>
+          <input type="url" id="websiteUrl" formControlName="websiteUrl" placeholder="https://your-website.com">
+        </div>
+
+        <div class="form-group">
+          <label for="location">Location</label>
+          <input type="text" id="location" formControlName="location" placeholder="City, Country">
+        </div>
+
+        <!-- Links Section -->
+        <div class="form-section">
+          <h3>Links</h3>
+          <div formArrayName="links">
+            <div *ngFor="let link of links.controls; let i = index" [formGroupName]="i" class="link-item">
+              <input type="text" formControlName="title" placeholder="Link Title">
+              <input type="url" formControlName="url" placeholder="https://">
+              <button type="button" (click)="removeLink(i)" class="remove-btn">Remove</button>
+            </div>
+          </div>
+          <button type="button" (click)="addLink()" class="add-btn">Add Link</button>
+        </div>
+
+        <!-- Attachments Section -->
+        <div class="form-section">
+          <h3>Attachments</h3>
+          <div formArrayName="attachments">
+            <div *ngFor="let attachment of attachments.controls; let i = index" [formGroupName]="i" class="attachment-item">
+              <input type="text" formControlName="title" placeholder="Attachment Title">
+              <textarea formControlName="description" placeholder="Attachment Description"></textarea>
+              <select formControlName="mediaType">
+                <option value="PHOTO">Photo</option>
+                <option value="VIDEO">Video</option>
+                <option value="DOCUMENT">Document</option>
+              </select>
+              <input type="file" [accept]="getAcceptType(i)" (change)="onAttachmentChange($event, i)">
+              <button type="button" (click)="removeAttachment(i)" class="remove-btn">Remove</button>
+            </div>
+          </div>
+          <button type="button" (click)="addAttachment()" class="add-btn">Add Attachment</button>
+        </div>
+      </div>
+
+      <!-- Influencer Profile Form -->
+      <div *ngIf="profileType === 'INFLUENCER'">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" formControlName="name" placeholder="Enter your name">
+        </div>
+
+        <div class="form-group">
+          <label for="bio">Bio</label>
+          <textarea id="bio" formControlName="bio" rows="4" placeholder="Tell us about yourself"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country</label>
+          <select id="country" formControlName="country">
+            <option value="CO">Colombia</option>
+            <option value="MX">México</option>
+            <option value="AR">Argentina</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="photo">Photo</label>
+          <input type="file" id="photo" (change)="onPhotoChange($event)" accept="image/*">
+        </div>
+
+        <div class="form-group">
+          <label for="profilePhoto">Profile Photo</label>
+          <input type="file" id="profilePhoto" (change)="onProfilePhotoChange($event)" accept="image/*">
+        </div>
+
+        <div class="form-group">
+          <label for="followers">Number of Followers</label>
+          <input type="number" id="followers" formControlName="followers" min="0">
+        </div>
+
+        <div class="form-group">
+          <label for="location">Location</label>
+          <input type="text" id="location" formControlName="location" placeholder="City, Country">
+        </div>
+
+        <!-- Niches Section -->
+        <div class="form-section">
+          <h3>Niches</h3>
+          <div formArrayName="niches">
+            <div *ngFor="let niche of niches.controls; let i = index" class="niche-item">
+              <input type="text" [formControlName]="i" placeholder="Enter a niche">
+              <button type="button" (click)="removeNiche(i)" class="remove-btn">Remove</button>
+            </div>
+          </div>
+          <button type="button" (click)="addNiche()" class="add-btn">Add Niche</button>
+        </div>
+
+        <!-- Social Links Section -->
+        <div class="form-section">
+          <h3>Social Media Links</h3>
+          <div formArrayName="socialLinks">
+            <div *ngFor="let socialLink of socialLinks.controls; let i = index" [formGroupName]="i" class="social-link-item">
+              <select formControlName="platform">
+                <option value="INSTAGRAM">Instagram</option>
+                <option value="YOUTUBE">YouTube</option>
+                <option value="TIKTOK">TikTok</option>
+                <option value="FACEBOOK">Facebook</option>
+                <option value="TWITTER">Twitter</option>
+              </select>
+              <input type="url" formControlName="url" placeholder="https://">
+              <button type="button" (click)="removeSocialLink(i)" class="remove-btn">Remove</button>
+            </div>
+          </div>
+          <button type="button" (click)="addSocialLink()" class="add-btn">Add Social Link</button>
+        </div>
+
+        <!-- Links Section -->
+        <div class="form-section">
+          <h3>Links</h3>
+          <div formArrayName="links">
+            <div *ngFor="let link of links.controls; let i = index" [formGroupName]="i" class="link-item">
+              <input type="text" formControlName="title" placeholder="Link Title">
+              <input type="url" formControlName="url" placeholder="https://">
+              <button type="button" (click)="removeLink(i)" class="remove-btn">Remove</button>
+            </div>
+          </div>
+          <button type="button" (click)="addLink()" class="add-btn">Add Link</button>
+        </div>
+
+        <!-- Attachments Section -->
+        <div class="form-section">
+          <h3>Attachments</h3>
+          <div formArrayName="attachments">
+            <div *ngFor="let attachment of attachments.controls; let i = index" [formGroupName]="i" class="attachment-item">
+              <input type="text" formControlName="title" placeholder="Attachment Title">
+              <textarea formControlName="description" placeholder="Attachment Description"></textarea>
+              <select formControlName="mediaType">
+                <option value="PHOTO">Photo</option>
+                <option value="VIDEO">Video</option>
+                <option value="DOCUMENT">Document</option>
+              </select>
+              <input type="file" [accept]="getAcceptType(i)" (change)="onAttachmentChange($event, i)">
+              <button type="button" (click)="removeAttachment(i)" class="remove-btn">Remove</button>
+            </div>
+          </div>
+          <button type="button" (click)="addAttachment()" class="add-btn">Add Attachment</button>
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" [disabled]="!profileForm.valid || loading" class="submit-btn">
+        {{ loading ? 'Saving...' : 'Save Profile' }}
+      </button>
+    </form>
+  </div>
+</div> 
