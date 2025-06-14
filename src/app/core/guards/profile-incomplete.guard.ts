@@ -1,13 +1,13 @@
 import { inject } from '@angular/core';
 import { Router, type CanActivateFn } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../infrastructure/services/auth.service';
 
 export const profileIncompleteGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
   // Primero verificamos si el usuario está autenticado
-  if (!authService.isAuthenticated) {
+  if (!authService.isAuthenticated()) {
     router.navigate(['/login']);
     return false;
   }

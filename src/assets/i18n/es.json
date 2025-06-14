@@ -262,5 +262,27 @@
     "NEWSLETTER_TEXT": "Mantente actualizado con las últimas tendencias en marketing de influencers y características de la plataforma.",
     "EMAIL_PLACEHOLDER": "Ingresa tu correo electrónico",
     "SUBSCRIBE": "Suscribirse"
+  },
+  "onboarding": {
+    "missingFields": "Por favor, completa los siguientes campos: {{fields}}",
+    "success": "¡Perfil completado exitosamente!",
+    "error": "Error al guardar el perfil. Por favor, inténtalo de nuevo.",
+    "fields": {
+      "name": "Nombre",
+      "sector": "Sector",
+      "country": "País",
+      "description": "Descripción",
+      "logo": "Logo",
+      "profilePhoto": "Foto de perfil",
+      "websiteUrl": "URL del sitio web",
+      "location": "Ubicación",
+      "links": "Enlaces",
+      "attachments": "Archivos adjuntos",
+      "niches": "Nichos",
+      "bio": "Biografía",
+      "photo": "Foto",
+      "followers": "Seguidores",
+      "socialLinks": "Enlaces sociales"
+    }
   }
 }

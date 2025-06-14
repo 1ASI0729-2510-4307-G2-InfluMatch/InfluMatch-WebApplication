@@ -17,7 +17,7 @@ export class LoginUseCase {
           localStorage.setItem('token', response.accessToken);
           
           if (!response.profileCompleted) {
-            this.router.navigate(['/onboard']);
+            this.router.navigate(['/onboarding']);
           } else {
             this.router.navigate(['/dashboard']);
           }

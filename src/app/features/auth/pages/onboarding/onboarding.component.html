@@ -102,15 +102,47 @@
         <div class="photo-upload">
           <div class="photo-field">
             <label>{{ isBrand ? ('ONBOARDING.LOGO' | translate) : ('ONBOARDING.PHOTO' | translate) }}</label>
-            <input type="file" (change)="onFileSelected($event, isBrand ? 'logo' : 'photo')" accept="image/*">
-    </div>
+            <div class="file-upload-container">
+              <input type="file" (change)="onFileSelected($event, isBrand ? 'logo' : 'photo')" accept="image/*" class="file-input">
+              <div class="upload-button">
+                <mat-icon>cloud_upload</mat-icon>
+                <span>{{ 'ONBOARDING.UPLOAD_FILE' | translate }}</span>
+              </div>
+              <div class="file-info" *ngIf="form.get(isBrand ? 'logo' : 'photo')?.value">
+                <mat-icon>image</mat-icon>
+                <span>{{ 'ONBOARDING.FILE_SELECTED' | translate }}</span>
+              </div>
+            </div>
+            <div class="image-preview" *ngIf="isBrand ? logoPreview : photoPreview">
+              <img [src]="isBrand ? logoPreview : photoPreview" alt="Preview">
+              <button type="button" class="remove-image" (click)="removeImage(isBrand ? 'logo' : 'photo')">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
 
           <div class="photo-field">
             <label>{{ 'ONBOARDING.PROFILE_PHOTO' | translate }}</label>
-            <input type="file" (change)="onFileSelected($event, 'profilePhoto')" accept="image/*">
+            <div class="file-upload-container">
+              <input type="file" (change)="onFileSelected($event, 'profilePhoto')" accept="image/*" class="file-input">
+              <div class="upload-button">
+                <mat-icon>cloud_upload</mat-icon>
+                <span>{{ 'ONBOARDING.UPLOAD_FILE' | translate }}</span>
+              </div>
+              <div class="file-info" *ngIf="form.get('profilePhoto')?.value">
+                <mat-icon>image</mat-icon>
+                <span>{{ 'ONBOARDING.FILE_SELECTED' | translate }}</span>
+              </div>
+            </div>
+            <div class="image-preview" *ngIf="profilePhotoPreview">
+              <img [src]="profilePhotoPreview" alt="Preview">
+              <button type="button" class="remove-image" (click)="removeImage('profilePhoto')">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
       <!-- Enlaces sociales -->
       <div class="form-section">
@@ -150,8 +182,8 @@
         <button type="button" mat-stroked-button (click)="addSocialLink()">
           <mat-icon>add</mat-icon>
           {{ 'ONBOARDING.ADD_SOCIAL_LINK' | translate }}
-                  </button>
-            </div>
+        </button>
+      </div>
 
       <!-- Enlaces adicionales -->
       <div class="form-section">
@@ -180,15 +212,15 @@
 
             <button type="button" mat-icon-button color="warn" (click)="removeLink(i)">
               <mat-icon>delete</mat-icon>
-                    </button>
-                  </div>
+            </button>
+          </div>
         </div>
 
         <button type="button" mat-stroked-button (click)="addLink()">
           <mat-icon>add</mat-icon>
           {{ 'ONBOARDING.ADD_LINK' | translate }}
-                </button>
-              </div>
+        </button>
+      </div>
 
       <!-- Archivos adjuntos -->
       <div class="form-section">
@@ -196,38 +228,66 @@
         
         <div formArrayName="attachments">
           <div *ngFor="let attachment of attachments.controls; let i = index" [formGroupName]="i" class="attachment">
-            <mat-form-field appearance="outline">
-              <mat-label>{{ 'ONBOARDING.ATTACHMENT_TITLE' | translate }}</mat-label>
-              <input matInput formControlName="title" required>
-              <mat-error *ngIf="attachment.get('title')?.hasError('required')">
-                {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-              </mat-error>
-            </mat-form-field>
+            <div class="attachment-header">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'ONBOARDING.ATTACHMENT_TITLE' | translate }}</mat-label>
+                <input matInput formControlName="title" required>
+                <mat-error *ngIf="attachment.get('title')?.hasError('required')">
+                  {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
+                </mat-error>
+              </mat-form-field>
+
+              <button type="button" mat-icon-button color="warn" (click)="removeAttachment(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
 
             <mat-form-field appearance="outline">
               <mat-label>{{ 'ONBOARDING.DESCRIPTION' | translate }}</mat-label>
               <textarea matInput formControlName="description" rows="2"></textarea>
             </mat-form-field>
 
-            <button type="button" mat-icon-button color="warn" (click)="removeAttachment(i)">
-              <mat-icon>delete</mat-icon>
-            </button>
+            <div class="file-upload-container">
+              <input type="file" (change)="onAttachmentSelected($event)" class="file-input">
+              <div class="upload-button">
+                <mat-icon>cloud_upload</mat-icon>
+                <span>{{ 'ONBOARDING.UPLOAD_FILE' | translate }}</span>
+              </div>
+              <div class="file-info" *ngIf="attachment.get('data')?.value">
+                <mat-icon>{{ attachment.get('mediaType')?.value === 'PHOTO' ? 'image' : 
+                           attachment.get('mediaType')?.value === 'VIDEO' ? 'videocam' : 'description' }}</mat-icon>
+                <span>{{ attachment.get('title')?.value }}</span>
               </div>
             </div>
 
-        <div class="attachment-upload">
-          <input type="file" (change)="onAttachmentSelected($event)" accept="image/*,video/*,.pdf,.doc,.docx">
-          <button type="button" mat-stroked-button>
-            <mat-icon>attach_file</mat-icon>
-            {{ 'ONBOARDING.ADD_ATTACHMENT' | translate }}
-          </button>
+            <div class="attachment-preview" *ngIf="attachment.get('preview')?.value">
+              <ng-container [ngSwitch]="attachment.get('mediaType')?.value">
+                <img *ngSwitchCase="'PHOTO'" [src]="attachment.get('preview')?.value" alt="Preview">
+                <video *ngSwitchCase="'VIDEO'" [src]="attachment.get('preview')?.value" controls></video>
+                <div *ngSwitchCase="'DOCUMENT'" class="document-preview">
+                  <mat-icon>description</mat-icon>
+                  <span>{{ attachment.get('title')?.value }}</span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
         </div>
+
+        <button type="button" mat-stroked-button (click)="addAttachment()">
+          <mat-icon>add</mat-icon>
+          {{ 'ONBOARDING.ADD_ATTACHMENT' | translate }}
+        </button>
       </div>
 
-      <!-- Botón de envío -->
-      <div class="form-actions">
-        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
-          <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+      <!-- Botón de submit -->
+      <div class="form-section">
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="loading"
+          (click)="submit()"
+        >
+          <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
           <span *ngIf="!loading">{{ 'ONBOARDING.SUBMIT' | translate }}</span>
         </button>
       </div>
