@@ -48,8 +48,8 @@ export class ClickOutsideDirective {
 })
 export class OnboardingComponent implements OnInit {
   form!: FormGroup;
-  user_type!: 'influencer' | 'marca';
-  userId!: string;
+  user_type: 'influencer' | 'marca' = 'marca'; // Default to marca
+  userId!: number;
   currentStep = 1;
   imagePreview: string | null = null;
   console = console; // Para poder usar console.log en el template
@@ -154,78 +154,27 @@ export class OnboardingComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const user = this.auth.currentUser!;
-    this.user_type = user.user_type as any;
-    this.userId = user.id;
-
-    // Crear formulario base con campos comunes
-    this.form = this.fb.group({
-      display_name: [user.name, Validators.required],
-      avatar_url: [user.avatar_url || ''],
-      bio: ['', Validators.required],
-      location: ['', Validators.required],
-      contact_email: [user.email, [Validators.required, Validators.email]],
-    });
-
-    // Añadir campos específicos según el tipo de usuario
-    if (this.user_type === 'influencer') {
-      this.form.addControl('niche', this.fb.control('', Validators.required));
-      this.form.addControl(
-        'followers',
-        this.fb.group({
-          instagram: [0],
-          tiktok: [0],
-          youtube: [0],
-        })
-      );
-      this.form.addControl(
-        'rate_per_post',
-        this.fb.control(0, Validators.required)
-      );
-      this.form.addControl('engagement_rate', this.fb.control(''));
-      this.form.addControl('main_audience', this.fb.control(''));
-      this.form.addControl('languages', this.fb.control([]));
-      this.form.addControl(
-        'social_links',
-        this.fb.group({
+    const user = this.auth.currentUser;
+    if (user) {
+      this.userId = user.userId;
+      this.user_type = user.user_type;
+      this.form = this.fb.group({
+        name: [user.name || '', [Validators.required]],
+        description: ['', [Validators.required]],
+        sector: ['', [Validators.required]],
+        audience: ['', [Validators.required]],
+        avatar_url: [user.photoUrl || ''],
+        social_media: this.fb.group({
           instagram: [''],
           tiktok: [''],
           youtube: [''],
-          twitter: [''],
-          facebook: [''],
-        })
-      );
-      this.form.addControl('portfolio_urls', this.fb.array([]));
-      this.form.addControl('previous_experience', this.fb.control(''));
-      this.form.addControl('preferred_categories', this.fb.control([]));
-
-      // Añadir una URL de portafolio por defecto
-      this.addPortfolioUrl();
-    } else {
-      // Campos para marcas
-      this.form.addControl('sector', this.fb.control('', Validators.required));
-      this.form.addControl('website', this.fb.control(''));
-      this.form.addControl(
-        'budget_range',
-        this.fb.control('', Validators.required)
-      );
-      this.form.addControl(
-        'objectives',
-        this.fb.control('', Validators.required)
-      );
-      this.form.addControl('contact_name', this.fb.control(''));
-      this.form.addControl('contact_position', this.fb.control(''));
-      this.form.addControl('content_s', this.fb.control([]));
-      this.form.addControl('influencer_s', this.fb.control([]));
-      this.form.addControl('campaign_duration', this.fb.control(''));
-      this.form.addControl('additional_info', this.fb.control(''));
-      this.form.addControl(
-        'social_links',
-        this.fb.group({
-          instagram: [''],
-          facebook: [''],
-        })
-      );
+        }),
+        contact_info: this.fb.group({
+          contact_email: [user.email || '', [Validators.required, Validators.email]],
+          phone: [''],
+          website: [''],
+        }),
+      });
     }
   }
 
@@ -310,40 +259,40 @@ export class OnboardingComponent implements OnInit {
     const payload: ProfileVO = {
       user_id: this.userId,
       profile_completed: true,
-      display_name: formData.display_name,
+      display_name: formData.name,
       avatar_url: formData.avatar_url,
-      bio: formData.bio,
-      location: formData.location,
-      contact_email: formData.contact_email,
+      bio: formData.description,
+      location: '',
+      contact_email: formData.contact_info.contact_email,
     };
 
     // Añadir campos específicos según el tipo de usuario
     if (this.user_type === 'influencer') {
       Object.assign(payload, {
         niche: formData.niche,
-        followers: formData.followers,
-        rate_per_post: formData.rate_per_post,
-        engagement_rate: formData.engagement_rate,
-        main_audience: formData.main_audience,
-        languages: formData.languages,
-        social_links: formData.social_links,
+        followers: formData.social_media,
+        rate_per_post: 0,
+        engagement_rate: '',
+        main_audience: formData.audience,
+        languages: [],
+        social_links: formData.social_media,
         portfolio_urls: formData.portfolio_urls,
-        previous_experience: formData.previous_experience,
-        preferred_categories: formData.preferred_categories,
+        previous_experience: '',
+        preferred_categories: [],
       });
     } else {
       Object.assign(payload, {
         sector: formData.sector,
-        website: formData.website,
-        budget_range: formData.budget_range,
-        objectives: formData.objectives,
-        contact_name: formData.contact_name,
-        contact_position: formData.contact_position,
-        content_s: formData.content_s,
-        influencer_s: formData.influencer_s,
-        campaign_duration: formData.campaign_duration,
-        additional_info: formData.additional_info,
-        social_links: formData.social_links,
+        website: formData.contact_info.website,
+        budget_range: '',
+        objectives: '',
+        contact_name: '',
+        contact_position: '',
+        content_s: [],
+        influencer_s: [],
+        campaign_duration: '',
+        additional_info: '',
+        social_links: formData.social_media,
       });
     }
 

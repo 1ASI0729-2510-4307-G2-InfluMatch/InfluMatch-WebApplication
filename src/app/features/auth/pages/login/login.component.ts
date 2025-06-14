@@ -82,27 +82,33 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.form.invalid) return;
 
     const creds = this.form.value as UserCredentials;
-    this.loginUC.execute(creds).subscribe(
-      (user) => {
+    this.loginUC.execute(creds).subscribe({
+      next: (user) => {
         if (user) {
           this.auth.save(user);
-          // ───────────── flujo condicional ─────────────
-          if (!user.profile_completed) {
+          if (!user.profileCompleted) {
             this.router.navigateByUrl('/onboarding');
           } else {
             this.router.navigateByUrl('/dashboard');
           }
         } else {
-          this.showErrorMessage();
+          this.showErrorMessage('Credenciales inválidas');
         }
       },
-      (error) => this.showErrorMessage()
-    );
+      error: (error) => {
+        console.error('Login error:', error);
+        if (error.status === 403) {
+          this.showErrorMessage('Acceso denegado. Por favor, verifica tus credenciales.');
+        } else {
+          this.showErrorMessage('Error al iniciar sesión. Por favor, intenta de nuevo.');
+        }
+      }
+    });
   }
 
-  private showErrorMessage(): void {
+  private showErrorMessage(message: string): void {
     this.snack.open(
-      this.translate.instant('LOGIN.CREDENTIALS_ERROR'),
+      message,
       this.translate.instant('LOGIN.CLOSE'),
       {
         duration: 3000,

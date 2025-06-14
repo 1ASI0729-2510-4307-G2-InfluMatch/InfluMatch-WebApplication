@@ -1,9 +1,10 @@
 export interface User {
-  id: string;
+  accessToken: string;
+  refreshToken: string;
+  profileCompleted: boolean;
+  userId: number;
+  name: string;
+  photoUrl: string;
   email: string;
-  name?: string;
-  profile_completed: boolean;
-  avatar_url?: string;
-  user_type?: string; // Este campo puede ser 'influencer' o 'brand'
-  // Otros campos que pueda tener el usuario
+  user_type: 'influencer' | 'marca';
 }

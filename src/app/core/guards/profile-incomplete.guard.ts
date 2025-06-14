@@ -14,7 +14,7 @@ export const profileIncompleteGuard: CanActivateFn = (route, state) => {
 
   // Luego verificamos si el perfil está incompleto
   const user = authService.currentUser;
-  if (user && user.profile_completed === false) {
+  if (user && user.profileCompleted === false) {
     return true; // Permitir acceso a onboarding si el perfil está incompleto
   }
 

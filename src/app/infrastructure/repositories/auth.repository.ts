@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { AuthRepository } from '../../domain/repositories/auth-repository';
 import { AuthApi } from '../api/auth.api';
@@ -15,28 +15,14 @@ export class AuthRepositoryImpl extends AuthRepository {
   }
 
   login(creds: UserCredentials): Observable<User | null> {
-    return this.api.login(creds).pipe(
-      map((user) =>
-        user
-          ? {
-              ...user,
-              role: user.user_type, // ya tenías esto
-              profile_completed: user.profile_completed ?? false, // ¡añadido!
-            }
-          : null
-      )
-    );
+    return this.api.login(creds);
   }
 
   register(data: NewUserVO): Observable<User> {
-    return this.api.register(data).pipe(
-      map((u) => ({ ...u, role: u.user_type ?? 'guest' })) // adapta el campo
-    );
+    return this.api.register(data);
   }
 
   updateProfile(data: ProfileVO): Observable<User> {
-    return this.api
-      .updateProfile(data)
-      .pipe(map((u) => ({ ...u, role: u.user_type, profile_completed: true })));
+    return this.api.updateProfile(data);
   }
 }

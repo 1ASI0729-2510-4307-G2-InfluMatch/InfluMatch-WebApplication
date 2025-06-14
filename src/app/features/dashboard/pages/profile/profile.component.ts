@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
     if (currentUser) {
       // Consultar la API para obtener los datos completos del perfil
       this.http
-        .get(`${environment.apiBase}/users-register/${currentUser.id}`)
+        .get(`${environment.apiBase}/users-register/${currentUser.userId}`)
         .subscribe({
           next: (userData: any) => {
             this.user = userData;
