@@ -348,5 +348,77 @@
         }
       }
     }
+  },
+  "ONBOARDING": {
+    "STEPS": {
+      "BASIC": "Información Básica",
+      "LOCATION": "Ubicación",
+      "PROFILE": "Perfil"
+    },
+    "BRAND_TITLE": "Completa tu perfil de marca",
+    "BRAND_SUBTITLE": "Ayúdanos a conocer mejor tu marca",
+    "INFLUENCER_TITLE": "Completa tu perfil de influencer",
+    "INFLUENCER_SUBTITLE": "Ayúdanos a conocer mejor tu perfil",
+    "BASIC_INFO": "Información Básica",
+    "LOCATION_INFO": "Información de Ubicación",
+    "BRAND_INFO": "Información de la Marca",
+    "INFLUENCER_INFO": "Información del Influencer",
+    "NAME": "Nombre",
+    "DESCRIPTION": "Descripción",
+    "COUNTRY": "País",
+    "LOCATION": "Ciudad",
+    "SECTOR": "Sector",
+    "WEBSITE": "Sitio Web",
+    "LOGO": "Logo de la marca",
+    "PHOTO": "Foto",
+    "PROFILE_PHOTO": "Foto de perfil",
+    "NICHES": {
+      "LABEL": "Nichos",
+      "FASHION": "Moda",
+      "LIFESTYLE": "Estilo de vida",
+      "TRAVEL": "Viajes",
+      "BEAUTY": "Belleza",
+      "FITNESS": "Fitness",
+      "FOOD": "Comida",
+      "TECH": "Tecnología",
+      "GAMING": "Gaming",
+      "MUSIC": "Música",
+      "SPORTS": "Deportes"
+    },
+    "FOLLOWERS": "Número de seguidores",
+    "SOCIAL_LINKS": "Redes Sociales",
+    "PLATFORM": "Plataforma",
+    "URL": "URL",
+    "ADDITIONAL_LINKS": "Enlaces Adicionales",
+    "LINK_TITLE": "Título del enlace",
+    "ATTACHMENTS": "Archivos adjuntos",
+    "ATTACHMENT_TITLE": "Título del archivo",
+    "ATTACHMENT_DESCRIPTION": "Descripción del archivo",
+    "MEDIA_TYPE": "Tipo de archivo",
+    "MEDIA_TYPES": {
+      "PHOTO": "Foto",
+      "VIDEO": "Video",
+      "DOCUMENT": "Documento"
+    },
+    "UPLOAD_LOGO": "Subir logo",
+    "CHANGE_LOGO": "Cambiar logo",
+    "UPLOAD_PHOTO": "Subir foto",
+    "CHANGE_PHOTO": "Cambiar foto",
+    "UPLOAD_FILE": "Subir archivo",
+    "ADD_SOCIAL_LINK": "Agregar red social",
+    "ADD_LINK": "Agregar enlace",
+    "ADD_ATTACHMENT": "Agregar archivo",
+    "REQUIRED_FIELD": "Este campo es obligatorio",
+    "INVALID_URL": "Por favor, introduce una URL válida",
+    "INVALID_FOLLOWERS": "El número de seguidores debe ser mayor que 0",
+    "PREVIOUS": "Anterior",
+    "NEXT": "Siguiente",
+    "SUBMIT": "Finalizar",
+    "SUCCESS": "¡Perfil creado exitosamente!",
+    "ERROR": "Ha ocurrido un error al crear el perfil"
+  },
+  "ERRORS": {
+    "INVALID_FILE_TYPE": "Tipo de archivo no válido",
+    "FILE_TOO_LARGE": "El archivo es demasiado grande"
   }
 }

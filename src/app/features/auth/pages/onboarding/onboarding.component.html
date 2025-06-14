@@ -1,215 +1,353 @@
 <div class="onboarding-container">
   <div class="onboarding-content">
-    <h1>{{ (isBrand ? 'ONBOARDING.BRAND_TITLE' : 'ONBOARDING.INFLUENCER_TITLE') | translate }}</h1>
-    <p class="subtitle">{{ (isBrand ? 'ONBOARDING.BRAND_SUBTITLE' : 'ONBOARDING.INFLUENCER_SUBTITLE') | translate }}</p>
-
-    <form [formGroup]="form" (ngSubmit)="submit()" class="profile-form">
-      <!-- Basic Information -->
-      <div class="form-group">
-        <label>{{ 'ONBOARDING.NAME' | translate }}</label>
-        <input type="text" formControlName="name" required>
-        <div class="error-message" *ngIf="form.get('name')?.hasError('required')">
-          {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-        </div>
+    <!-- Language Selector -->
+    <div class="top-actions">
+      <div class="language-selector">
+        <button
+          class="lang-btn"
+          [class.active]="currentLang === 'es'"
+          (click)="changeLang('es')"
+        >
+          ES
+        </button>
+        <div class="lang-divider"></div>
+        <button
+          class="lang-btn"
+          [class.active]="currentLang === 'en'"
+          (click)="changeLang('en')"
+        >
+          EN
+        </button>
       </div>
+    </div>
 
-      <div class="form-group">
-        <label>{{ 'ONBOARDING.DESCRIPTION' | translate }}</label>
-        <textarea formControlName="description" rows="4" required></textarea>
-        <div class="error-message" *ngIf="form.get('description')?.hasError('required')">
-          {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-        </div>
+    <div class="onboarding-header">
+      <div class="logo">
+        <img
+          src="../../../../../assets/images/logo-dark.png"
+          alt="InfluMatch Logo"
+        />
       </div>
+      <h1>{{ (isBrand ? 'ONBOARDING.BRAND_TITLE' : 'ONBOARDING.INFLUENCER_TITLE') | translate }}</h1>
+      <p class="subtitle">{{ (isBrand ? 'ONBOARDING.BRAND_SUBTITLE' : 'ONBOARDING.INFLUENCER_SUBTITLE') | translate }}</p>
+    </div>
 
-      <div class="form-group">
-        <label>{{ 'ONBOARDING.COUNTRY' | translate }}</label>
-        <input type="text" formControlName="country" required>
-        <div class="error-message" *ngIf="form.get('country')?.hasError('required')">
-          {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
+    <!-- Steps Progress -->
+    <div class="steps-progress">
+      <div class="step" 
+           *ngFor="let step of steps; let i = index"
+           [class.active]="currentStep === i + 1"
+           [class.completed]="currentStep > i + 1">
+        <div class="step-number">
+          <span *ngIf="currentStep <= i + 1">{{i + 1}}</span>
+          <mat-icon *ngIf="currentStep > i + 1">check</mat-icon>
         </div>
+        <span class="step-label">{{step | translate}}</span>
+        <div class="step-connector" *ngIf="i < steps.length - 1"></div>
       </div>
+    </div>
 
-      <div class="form-group">
-        <label>{{ 'ONBOARDING.LOCATION' | translate }}</label>
-        <input type="text" formControlName="location" required>
-        <div class="error-message" *ngIf="form.get('location')?.hasError('required')">
-          {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-        </div>
-      </div>
-
-      <!-- Brand specific fields -->
-      <ng-container *ngIf="isBrand">
-        <div class="form-group">
-          <label>{{ 'ONBOARDING.SECTOR' | translate }}</label>
-          <input type="text" formControlName="sector" required>
-          <div class="error-message" *ngIf="form.get('sector')?.hasError('required')">
-            {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>{{ 'ONBOARDING.WEBSITE' | translate }}</label>
-          <input type="url" formControlName="websiteUrl" required>
-          <div class="error-message" *ngIf="form.get('websiteUrl')?.hasError('required')">
-            {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-          </div>
-          <div class="error-message" *ngIf="form.get('websiteUrl')?.hasError('pattern')">
-            {{ 'ONBOARDING.INVALID_URL' | translate }}
-          </div>
-        </div>
-      </ng-container>
-
-      <!-- Influencer specific fields -->
-      <ng-container *ngIf="!isBrand">
-        <div class="form-group">
-          <label>{{ 'ONBOARDING.NICHES' | translate }}</label>
-          <mat-form-field class="full-width">
-            <mat-select multiple formControlName="niches" required>
-              <mat-option value="Moda">Moda</mat-option>
-              <mat-option value="Lifestyle">Lifestyle</mat-option>
-              <mat-option value="Viajes">Viajes</mat-option>
-              <mat-option value="Belleza">Belleza</mat-option>
-              <mat-option value="Fitness">Fitness</mat-option>
-              <mat-option value="Comida">Comida</mat-option>
-              <mat-option value="Tecnología">Tecnología</mat-option>
-              <mat-option value="Gaming">Gaming</mat-option>
-              <mat-option value="Música">Música</mat-option>
-              <mat-option value="Deportes">Deportes</mat-option>
-            </mat-select>
-            <div class="error-message" *ngIf="form.get('niches')?.hasError('required')">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="onboarding-form">
+      <!-- Step 1: Basic Information -->
+      <div class="form-step" *ngIf="currentStep === 1">
+        <div class="form-section">
+          <h2>{{ 'ONBOARDING.BASIC_INFO' | translate }}</h2>
+          
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'ONBOARDING.NAME' | translate }}</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+            <input matInput formControlName="name" required>
+            <mat-error *ngIf="form.get('name')?.hasError('required')">
               {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-            </div>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'ONBOARDING.DESCRIPTION' | translate }}</mat-label>
+            <mat-icon matPrefix>description</mat-icon>
+            <textarea matInput formControlName="description" rows="4" required></textarea>
+            <mat-error *ngIf="form.get('description')?.hasError('required')">
+              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
+            </mat-error>
           </mat-form-field>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label>{{ 'ONBOARDING.FOLLOWERS' | translate }}</label>
-          <input type="number" formControlName="followers" required>
-          <div class="error-message" *ngIf="form.get('followers')?.hasError('required')">
-            {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-          </div>
-          <div class="error-message" *ngIf="form.get('followers')?.hasError('min')">
-            {{ 'ONBOARDING.INVALID_FOLLOWERS' | translate }}
-          </div>
-        </div>
-      </ng-container>
+      <!-- Step 2: Location Information -->
+      <div class="form-step" *ngIf="currentStep === 2">
+        <div class="form-section">
+          <h2>{{ 'ONBOARDING.LOCATION_INFO' | translate }}</h2>
 
-      <!-- Photos -->
-      <div class="file-upload-section">
-        <div class="upload-group">
-          <label>{{ isBrand ? ('ONBOARDING.LOGO' | translate) : ('ONBOARDING.PHOTO' | translate) }}</label>
-          <div class="upload-area" (click)="fileInput.click()">
-            <input #fileInput type="file" (change)="onFileSelected($event, isBrand ? 'logo' : 'photo')" accept="image/*" style="display: none">
-            <mat-icon class="upload-icon">cloud_upload</mat-icon>
-            <p class="upload-text">{{ 'ONBOARDING.UPLOAD_FILE' | translate }}</p>
-          </div>
-          <img *ngIf="isBrand ? logoPreview : photoPreview" 
-               [src]="isBrand ? logoPreview : photoPreview" 
-               alt="Preview" 
-               class="preview-image">
-        </div>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'ONBOARDING.COUNTRY' | translate }}</mat-label>
+            <mat-icon matPrefix>public</mat-icon>
+            <input matInput formControlName="country" required>
+            <mat-error *ngIf="form.get('country')?.hasError('required')">
+              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
+            </mat-error>
+          </mat-form-field>
 
-        <div class="upload-group">
-          <label>{{ 'ONBOARDING.PROFILE_PHOTO' | translate }}</label>
-          <div class="upload-area" (click)="profilePhotoInput.click()">
-            <input #profilePhotoInput type="file" (change)="onFileSelected($event, 'profilePhoto')" accept="image/*" style="display: none">
-            <mat-icon class="upload-icon">cloud_upload</mat-icon>
-            <p class="upload-text">{{ 'ONBOARDING.UPLOAD_FILE' | translate }}</p>
-          </div>
-          <img *ngIf="profilePhotoPreview" 
-               [src]="profilePhotoPreview" 
-               alt="Preview" 
-               class="preview-image">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'ONBOARDING.LOCATION' | translate }}</mat-label>
+            <mat-icon matPrefix>location_on</mat-icon>
+            <input matInput formControlName="location" required>
+            <mat-error *ngIf="form.get('location')?.hasError('required')">
+              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
+            </mat-error>
+          </mat-form-field>
         </div>
       </div>
 
-      <!-- Social Links -->
-      <div class="social-links-section" *ngIf="!isBrand">
-        <h2>{{ 'ONBOARDING.SOCIAL_LINKS' | translate }}</h2>
-        <div formArrayName="socialLinks">
-          <div *ngFor="let link of socialLinks.controls; let i = index" [formGroupName]="i" class="link-group">
-            <select formControlName="platform" required>
-              <option value="INSTAGRAM">Instagram</option>
-              <option value="FACEBOOK">Facebook</option>
-              <option value="TWITTER">Twitter</option>
-              <option value="LINKEDIN">LinkedIn</option>
-              <option value="YOUTUBE">YouTube</option>
-              <option value="TIKTOK">TikTok</option>
-            </select>
+      <!-- Step 3: Profile Specific Information -->
+      <div class="form-step" *ngIf="currentStep === 3">
+        <!-- Brand specific fields -->
+        <div class="form-section" *ngIf="isBrand">
+          <h2>{{ 'ONBOARDING.BRAND_INFO' | translate }}</h2>
+          
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'ONBOARDING.SECTOR' | translate }}</mat-label>
+            <mat-icon matPrefix>business</mat-icon>
+            <input matInput formControlName="sector" required>
+            <mat-error *ngIf="form.get('sector')?.hasError('required')">
+              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
+            </mat-error>
+          </mat-form-field>
 
-            <input type="url" formControlName="url" required placeholder="{{ 'ONBOARDING.URL' | translate }}">
-            
-            <button type="button" class="remove-button" (click)="removeSocialLink(i)">
-              <mat-icon>delete</mat-icon>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'ONBOARDING.WEBSITE' | translate }}</mat-label>
+            <mat-icon matPrefix>language</mat-icon>
+            <input matInput type="url" formControlName="websiteUrl" required>
+            <mat-error *ngIf="form.get('websiteUrl')?.hasError('required')">
+              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
+            </mat-error>
+            <mat-error *ngIf="form.get('websiteUrl')?.hasError('pattern')">
+              {{ 'ONBOARDING.INVALID_URL' | translate }}
+            </mat-error>
+          </mat-form-field>
+
+          <div class="file-upload-section">
+            <div class="upload-field">
+              <label>{{ 'ONBOARDING.LOGO' | translate }}</label>
+              <div class="upload-container" (click)="logoInput.click()">
+                <input #logoInput type="file" hidden (change)="onFileSelected($event, 'logo')" accept="image/*">
+                <mat-icon>cloud_upload</mat-icon>
+                <span>{{ logoPreview ? 'ONBOARDING.CHANGE_LOGO' : 'ONBOARDING.UPLOAD_LOGO' | translate }}</span>
+              </div>
+              <img *ngIf="logoPreview" [src]="logoPreview" class="preview-image" alt="Logo preview">
+            </div>
+
+            <div class="upload-field">
+              <label>{{ 'ONBOARDING.PROFILE_PHOTO' | translate }}</label>
+              <div class="upload-container" (click)="profilePhotoInput.click()">
+                <input #profilePhotoInput type="file" hidden (change)="onFileSelected($event, 'profilePhoto')" accept="image/*">
+                <mat-icon>cloud_upload</mat-icon>
+                <span>{{ profilePhotoPreview ? 'ONBOARDING.CHANGE_PHOTO' : 'ONBOARDING.UPLOAD_PHOTO' | translate }}</span>
+              </div>
+              <img *ngIf="profilePhotoPreview" [src]="profilePhotoPreview" class="preview-image" alt="Profile photo preview">
+            </div>
+          </div>
+        </div>
+
+        <!-- Influencer specific fields -->
+        <div class="form-section" *ngIf="!isBrand">
+          <h2>{{ 'ONBOARDING.INFLUENCER_INFO' | translate }}</h2>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'ONBOARDING.NICHES' | translate }}</mat-label>
+            <mat-icon matPrefix>category</mat-icon>
+            <mat-select multiple formControlName="niches" required>
+              <mat-option *ngFor="let niche of nicheOptions" [value]="niche.value">
+                {{ niche.label | translate }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('niches')?.hasError('required')">
+              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'ONBOARDING.FOLLOWERS' | translate }}</mat-label>
+            <mat-icon matPrefix>group</mat-icon>
+            <input matInput type="number" formControlName="followers" required>
+            <mat-error *ngIf="form.get('followers')?.hasError('required')">
+              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
+            </mat-error>
+            <mat-error *ngIf="form.get('followers')?.hasError('min')">
+              {{ 'ONBOARDING.INVALID_FOLLOWERS' | translate }}
+            </mat-error>
+          </mat-form-field>
+
+          <div class="file-upload-section">
+            <div class="upload-field">
+              <label>{{ 'ONBOARDING.PHOTO' | translate }}</label>
+              <div class="upload-container" (click)="photoInput.click()">
+                <input #photoInput type="file" hidden (change)="onFileSelected($event, 'photo')" accept="image/*">
+                <mat-icon>cloud_upload</mat-icon>
+                <span>{{ photoPreview ? 'ONBOARDING.CHANGE_PHOTO' : 'ONBOARDING.UPLOAD_PHOTO' | translate }}</span>
+              </div>
+              <img *ngIf="photoPreview" [src]="photoPreview" class="preview-image" alt="Photo preview">
+            </div>
+
+            <div class="upload-field">
+              <label>{{ 'ONBOARDING.PROFILE_PHOTO' | translate }}</label>
+              <div class="upload-container" (click)="profilePhotoInput.click()">
+                <input #profilePhotoInput type="file" hidden (change)="onFileSelected($event, 'profilePhoto')" accept="image/*">
+                <mat-icon>cloud_upload</mat-icon>
+                <span>{{ profilePhotoPreview ? 'ONBOARDING.CHANGE_PHOTO' : 'ONBOARDING.UPLOAD_PHOTO' | translate }}</span>
+              </div>
+              <img *ngIf="profilePhotoPreview" [src]="profilePhotoPreview" class="preview-image" alt="Profile photo preview">
+            </div>
+          </div>
+
+          <!-- Social Links -->
+          <div class="social-links-section">
+            <h3>{{ 'ONBOARDING.SOCIAL_LINKS' | translate }}</h3>
+            <div formArrayName="socialLinks">
+              <div *ngFor="let link of socialLinks.controls; let i = index" [formGroupName]="i" class="link-group">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'ONBOARDING.PLATFORM' | translate }}</mat-label>
+                  <mat-select formControlName="platform" required>
+                    <mat-option value="INSTAGRAM">Instagram</mat-option>
+                    <mat-option value="FACEBOOK">Facebook</mat-option>
+                    <mat-option value="TWITTER">Twitter</mat-option>
+                    <mat-option value="LINKEDIN">LinkedIn</mat-option>
+                    <mat-option value="YOUTUBE">YouTube</mat-option>
+                    <mat-option value="TIKTOK">TikTok</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'ONBOARDING.URL' | translate }}</mat-label>
+                  <input matInput type="url" formControlName="url" required>
+                </mat-form-field>
+                
+                <button type="button" mat-icon-button color="warn" (click)="removeSocialLink(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <button type="button" mat-stroked-button (click)="addSocialLink()">
+              <mat-icon>add</mat-icon>
+              {{ 'ONBOARDING.ADD_SOCIAL_LINK' | translate }}
             </button>
           </div>
         </div>
 
-        <button type="button" class="add-button" (click)="addSocialLink()">
-          <mat-icon>add</mat-icon>
-          {{ 'ONBOARDING.ADD_SOCIAL_LINK' | translate }}
-        </button>
-      </div>
+        <!-- Additional Links (for both types) -->
+        <div class="links-section">
+          <h3>{{ 'ONBOARDING.ADDITIONAL_LINKS' | translate }}</h3>
+          <div formArrayName="links">
+            <div *ngFor="let link of links.controls; let i = index" [formGroupName]="i" class="link-group">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'ONBOARDING.LINK_TITLE' | translate }}</mat-label>
+                <input matInput formControlName="title" required>
+              </mat-form-field>
 
-      <!-- Additional Links -->
-      <div class="links-section">
-        <h2>{{ 'ONBOARDING.ADDITIONAL_LINKS' | translate }}</h2>
-        <div formArrayName="links">
-          <div *ngFor="let link of links.controls; let i = index" [formGroupName]="i" class="link-group">
-            <input type="text" formControlName="title" required placeholder="{{ 'ONBOARDING.LINK_TITLE' | translate }}">
-            <input type="url" formControlName="url" required placeholder="{{ 'ONBOARDING.URL' | translate }}">
-            <button type="button" class="remove-button" (click)="removeLink(i)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </div>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ 'ONBOARDING.URL' | translate }}</mat-label>
+                <input matInput type="url" formControlName="url" required>
+              </mat-form-field>
 
-        <button type="button" class="add-button" (click)="addLink()">
-          <mat-icon>add</mat-icon>
-          {{ 'ONBOARDING.ADD_LINK' | translate }}
-        </button>
-      </div>
-
-      <!-- Attachments Section -->
-      <div class="file-upload-section">
-        <h2>{{ 'ONBOARDING.ATTACHMENTS' | translate }}</h2>
-        <div formArrayName="attachments">
-          <div *ngFor="let attachment of attachments.controls; let i = index" [formGroupName]="i" class="upload-group">
-            <div class="attachment-header">
-              <input type="text" formControlName="title" required placeholder="{{ 'ONBOARDING.ATTACHMENT_TITLE' | translate }}">
-              <textarea formControlName="description" placeholder="{{ 'ONBOARDING.ATTACHMENT_DESCRIPTION' | translate }}"></textarea>
-              <select formControlName="mediaType" required>
-                <option value="PHOTO">Photo</option>
-                <option value="VIDEO">Video</option>
-                <option value="DOCUMENT">Document</option>
-              </select>
-              <button type="button" class="remove-button" (click)="removeAttachment(i)">
+              <button type="button" mat-icon-button color="warn" (click)="removeLink(i)">
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
-            <div class="upload-area">
-              <input #attachmentInputs type="file" [accept]="getAcceptType(i)" (change)="onAttachmentSelected($event, i)" style="display: none">
-              <div class="upload-content" (click)="attachmentInputs.click()">
-                <mat-icon class="upload-icon">cloud_upload</mat-icon>
-                <p class="upload-text">{{ 'ONBOARDING.UPLOAD_FILE' | translate }}</p>
-              </div>
-            </div>
-            <img *ngIf="attachment.get('preview')?.value" 
-                 [src]="attachment.get('preview')?.value" 
-                 alt="Preview" 
-                 class="preview-image">
           </div>
+
+          <button type="button" mat-stroked-button (click)="addLink()">
+            <mat-icon>add</mat-icon>
+            {{ 'ONBOARDING.ADD_LINK' | translate }}
+          </button>
         </div>
-        <button type="button" class="add-button" (click)="addAttachment()">
-          <mat-icon>add</mat-icon>
-          {{ 'ONBOARDING.ADD_ATTACHMENT' | translate }}
-        </button>
+
+        <!-- Attachments -->
+        <div class="attachments-section">
+          <h3>{{ 'ONBOARDING.ATTACHMENTS' | translate }}</h3>
+          <div formArrayName="attachments">
+            <div *ngFor="let attachment of attachments.controls; let i = index" [formGroupName]="i" class="attachment-group">
+              <div class="attachment-header">
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'ONBOARDING.ATTACHMENT_TITLE' | translate }}</mat-label>
+                  <input matInput formControlName="title" required>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'ONBOARDING.ATTACHMENT_DESCRIPTION' | translate }}</mat-label>
+                  <textarea matInput formControlName="description"></textarea>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ 'ONBOARDING.MEDIA_TYPE' | translate }}</mat-label>
+                  <mat-select formControlName="mediaType" required>
+                    <mat-option value="PHOTO">{{ 'ONBOARDING.MEDIA_TYPES.PHOTO' | translate }}</mat-option>
+                    <mat-option value="VIDEO">{{ 'ONBOARDING.MEDIA_TYPES.VIDEO' | translate }}</mat-option>
+                    <mat-option value="DOCUMENT">{{ 'ONBOARDING.MEDIA_TYPES.DOCUMENT' | translate }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <button type="button" mat-icon-button color="warn" (click)="removeAttachment(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+
+              <div class="upload-container" (click)="fileInput.click()">
+                <input #fileInput type="file" hidden [accept]="getAcceptType(i)" (change)="onAttachmentSelected($event, i)">
+                <mat-icon>cloud_upload</mat-icon>
+                <span>{{ 'ONBOARDING.UPLOAD_FILE' | translate }}</span>
+              </div>
+
+              <img *ngIf="attachment.get('preview')?.value" 
+                   [src]="attachment.get('preview')?.value" 
+                   alt="Preview" 
+                   class="preview-image">
+            </div>
+          </div>
+
+          <button type="button" mat-stroked-button (click)="addAttachment()">
+            <mat-icon>add</mat-icon>
+            {{ 'ONBOARDING.ADD_ATTACHMENT' | translate }}
+          </button>
+        </div>
       </div>
 
-      <button type="submit" class="submit-btn" [disabled]="form.invalid || isSubmitting">
-        <span *ngIf="!isSubmitting">{{ 'ONBOARDING.SUBMIT' | translate }}</span>
-        <mat-spinner *ngIf="isSubmitting" diameter="20"></mat-spinner>
-      </button>
+      <!-- Navigation Buttons -->
+      <div class="form-navigation">
+        <button
+          mat-stroked-button
+          type="button"
+          *ngIf="currentStep > 1"
+          (click)="previousStep()"
+          class="nav-button prev-button"
+        >
+          <mat-icon>arrow_back</mat-icon>
+          <span>{{ 'ONBOARDING.PREVIOUS' | translate }}</span>
+        </button>
+
+        <button
+          mat-flat-button
+          type="button"
+          *ngIf="currentStep < 3"
+          (click)="nextStep()"
+          class="nav-button next-button"
+          [disabled]="!isCurrentStepValid()"
+        >
+          <span>{{ 'ONBOARDING.NEXT' | translate }}</span>
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+
+        <button
+          mat-flat-button
+          type="submit"
+          *ngIf="currentStep === 3"
+          class="nav-button submit-button"
+          [disabled]="!form.valid || isSubmitting"
+        >
+          <span>{{ 'ONBOARDING.SUBMIT' | translate }}</span>
+          <mat-spinner *ngIf="isSubmitting" diameter="20"></mat-spinner>
+          <mat-icon *ngIf="!isSubmitting">check</mat-icon>
+        </button>
+      </div>
     </form>
   </div>
 </div>

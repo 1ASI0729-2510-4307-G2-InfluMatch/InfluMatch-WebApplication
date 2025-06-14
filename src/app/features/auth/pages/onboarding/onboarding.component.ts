@@ -6,8 +6,6 @@ import {
   Output,
   EventEmitter,
   HostListener,
-  ViewChildren,
-  QueryList,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -83,12 +81,13 @@ export class OnboardingComponent implements OnInit {
   user_type: 'influencer' | 'marca' = 'marca'; // Default to marca
   userId!: number;
   currentStep = 1;
+  currentLang = 'es';
   logoPreview: string | null = null;
   photoPreview: string | null = null;
   profilePhotoPreview: string | null = null;
   console = console; // Para poder usar console.log en el template
   isBrand: boolean;
-  isSubmitting: boolean = false;
+  isSubmitting = false;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
   // Dropdown states
@@ -101,17 +100,24 @@ export class OnboardingComponent implements OnInit {
   influencerTypeDropdownOpen = false;
   durationDropdownOpen = false;
 
+  steps = [
+    'ONBOARDING.STEPS.BASIC',
+    'ONBOARDING.STEPS.LOCATION',
+    'ONBOARDING.STEPS.PROFILE'
+  ];
+
   // Options for dropdowns
   nicheOptions = [
-    { value: 'moda', label: 'Moda' },
-    { value: 'belleza', label: 'Belleza' },
-    { value: 'lifestyle', label: 'Lifestyle' },
-    { value: 'fitness', label: 'Fitness' },
-    { value: 'viajes', label: 'Viajes' },
-    { value: 'tecnologia', label: 'Tecnología' },
-    { value: 'gastronomia', label: 'Gastronomía' },
-    { value: 'gaming', label: 'Gaming' },
-    { value: 'otro', label: 'Otro' },
+    { value: 'Moda', label: 'ONBOARDING.NICHES.FASHION' },
+    { value: 'Lifestyle', label: 'ONBOARDING.NICHES.LIFESTYLE' },
+    { value: 'Viajes', label: 'ONBOARDING.NICHES.TRAVEL' },
+    { value: 'Belleza', label: 'ONBOARDING.NICHES.BEAUTY' },
+    { value: 'Fitness', label: 'ONBOARDING.NICHES.FITNESS' },
+    { value: 'Comida', label: 'ONBOARDING.NICHES.FOOD' },
+    { value: 'Tecnología', label: 'ONBOARDING.NICHES.TECH' },
+    { value: 'Gaming', label: 'ONBOARDING.NICHES.GAMING' },
+    { value: 'Música', label: 'ONBOARDING.NICHES.MUSIC' },
+    { value: 'Deportes', label: 'ONBOARDING.NICHES.SPORTS' }
   ];
 
   sectorOptions = [
@@ -183,8 +189,6 @@ export class OnboardingComponent implements OnInit {
     { value: 'ongoing', label: 'Colaboración continua' },
   ];
 
-  @ViewChildren('attachmentInputs') attachmentInputs!: QueryList<ElementRef<HTMLInputElement>>;
-
   constructor(
     private fb: FormBuilder,
     private profileApi: ProfileApi,
@@ -193,6 +197,7 @@ export class OnboardingComponent implements OnInit {
     private snack: MatSnackBar,
     private translate: TranslateService
   ) {
+    this.currentLang = this.translate.currentLang || 'es';
     this.isBrand = this.auth.currentUser?.profileType === 'BRAND';
     this.initForm();
   }
@@ -212,38 +217,35 @@ export class OnboardingComponent implements OnInit {
     if (this.isBrand) {
       this.form = this.fb.group({
         name: ['', Validators.required],
-        sector: ['', Validators.required],
-        country: ['', Validators.required],
         description: ['', Validators.required],
+        country: ['', Validators.required],
+        location: ['', Validators.required],
+        sector: ['', Validators.required],
+        websiteUrl: ['', [Validators.required, Validators.pattern('https?://.+')]],
         logo: [''],
         profilePhoto: [''],
-        websiteUrl: ['', [Validators.required, Validators.pattern('https?://.+')]],
-        location: ['', Validators.required],
         links: this.fb.array([]),
         attachments: this.fb.array([])
       });
     } else {
       this.form = this.fb.group({
         name: ['', Validators.required],
-        niches: [[], Validators.required],
         description: ['', Validators.required],
         country: ['', Validators.required],
+        location: ['', Validators.required],
+        niches: [[], Validators.required],
+        followers: [0, [Validators.required, Validators.min(0)]],
         photo: [''],
         profilePhoto: [''],
-        followers: [0, [Validators.required, Validators.min(0)]],
         socialLinks: this.fb.array([]),
-        location: ['', Validators.required],
         links: this.fb.array([]),
         attachments: this.fb.array([])
       });
 
-      // Add initial social link for influencers
       this.addSocialLink();
     }
 
-    // Add initial link for both types
     this.addLink();
-    // Add initial attachment
     this.addAttachment();
   }
 
@@ -283,25 +285,6 @@ export class OnboardingComponent implements OnInit {
     this.links.removeAt(index);
   }
 
-  removeAttachment(index: number): void {
-    this.attachments.removeAt(index);
-  }
-
-  removeImage(type: 'logo' | 'photo' | 'profilePhoto'): void {
-    this.form.patchValue({ [type]: '' });
-    switch (type) {
-      case 'logo':
-        this.logoPreview = null;
-        break;
-      case 'photo':
-        this.photoPreview = null;
-        break;
-      case 'profilePhoto':
-        this.profilePhotoPreview = null;
-        break;
-    }
-  }
-
   addAttachment(): void {
     const attachment = this.fb.group({
       title: ['', Validators.required],
@@ -313,10 +296,13 @@ export class OnboardingComponent implements OnInit {
     this.attachments.push(attachment);
   }
 
+  removeAttachment(index: number): void {
+    this.attachments.removeAt(index);
+  }
+
   onFileSelected(event: Event, type: 'logo' | 'photo' | 'profilePhoto'): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
-      // Validate file type
       if (!file.type.startsWith('image/')) {
         this.snack.open(
           this.translate.instant('ERRORS.INVALID_FILE_TYPE'),
@@ -326,7 +312,6 @@ export class OnboardingComponent implements OnInit {
         return;
       }
 
-      // Validate file size (5MB limit)
       if (file.size > 5 * 1024 * 1024) {
         this.snack.open(
           this.translate.instant('ERRORS.FILE_TOO_LARGE'),
@@ -338,10 +323,9 @@ export class OnboardingComponent implements OnInit {
 
       const reader = new FileReader();
       reader.onload = () => {
-        const base64 = (reader.result as string).split(',')[1]; // Remove data URL prefix
+        const base64 = (reader.result as string).split(',')[1];
         this.form.patchValue({ [type]: base64 });
         
-        // Set preview based on type
         switch (type) {
           case 'logo':
             this.logoPreview = reader.result as string;
@@ -361,7 +345,6 @@ export class OnboardingComponent implements OnInit {
   onAttachmentSelected(event: Event, index: number): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
-      // Validate file size (10MB limit)
       if (file.size > 10 * 1024 * 1024) {
         this.snack.open(
           this.translate.instant('ERRORS.FILE_TOO_LARGE'),
@@ -373,10 +356,9 @@ export class OnboardingComponent implements OnInit {
 
       const reader = new FileReader();
       reader.onload = () => {
-        const base64 = (reader.result as string).split(',')[1]; // Remove data URL prefix
+        const base64 = (reader.result as string).split(',')[1];
         const mediaType = this.getMediaType(file.type);
         
-        // Update the existing attachment
         const attachment = this.attachments.at(index);
         attachment.patchValue({
           title: file.name,
@@ -410,13 +392,12 @@ export class OnboardingComponent implements OnInit {
     }
   }
 
-  async submit(): Promise<void> {
+  async onSubmit(): Promise<void> {
     if (this.form.invalid) return;
     
     this.isSubmitting = true;
     try {
       const formValue = this.form.value;
-      const token = localStorage.getItem('accessToken');
 
       if (this.isBrand) {
         const brandProfile = new BrandProfileVO(
@@ -440,8 +421,7 @@ export class OnboardingComponent implements OnInit {
           }))
         );
 
-        const response = await this.profileApi.createBrandProfile(brandProfile).toPromise();
-        console.log('Brand profile created:', response);
+        await this.profileApi.createBrandProfile(brandProfile).toPromise();
       } else {
         const influencerProfile = new InfluencerProfileVO(
           formValue.name,
@@ -468,11 +448,9 @@ export class OnboardingComponent implements OnInit {
           }))
         );
 
-        const response = await this.profileApi.createInfluencerProfile(influencerProfile).toPromise();
-        console.log('Influencer profile created:', response);
+        await this.profileApi.createInfluencerProfile(influencerProfile).toPromise();
       }
 
-      // Update user data with profile completion status
       const updatedUser = {
         ...this.auth.currentUser,
         profileCompleted: true
@@ -480,15 +458,15 @@ export class OnboardingComponent implements OnInit {
       await this.auth.updateUserData(updatedUser);
 
       this.snack.open(
-        this.translate.instant('onboarding.success'),
+        this.translate.instant('ONBOARDING.SUCCESS'),
         'OK',
         { duration: 3000 }
       );
       this.router.navigate(['/dashboard']);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error in submit:', error);
       this.snack.open(
-        this.translate.instant('onboarding.error'),
+        this.translate.instant('ONBOARDING.ERROR'),
         'OK',
         { duration: 5000 }
       );
@@ -689,5 +667,37 @@ export class OnboardingComponent implements OnInit {
       niches.splice(index, 1);
       this.form.patchValue({ niches });
     }
+  }
+
+  changeLang(lang: string): void {
+    this.currentLang = lang;
+    this.translate.use(lang);
+  }
+
+  nextStep(): void {
+    if (this.isCurrentStepValid() && this.currentStep < 3) {
+      this.currentStep++;
+    }
+  }
+
+  previousStep(): void {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
+
+  isCurrentStepValid(): boolean {
+    const stepControls = {
+      1: ['name', 'description'],
+      2: ['country', 'location'],
+      3: this.isBrand ? ['sector', 'websiteUrl'] : ['niches', 'followers']
+    };
+
+    return stepControls[this.currentStep as keyof typeof stepControls].every(
+      control => {
+        const formControl = this.form.get(control);
+        return formControl && formControl.valid;
+      }
+    );
   }
 }

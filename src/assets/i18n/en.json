@@ -326,5 +326,77 @@
         }
       }
     }
+  },
+  "ONBOARDING": {
+    "STEPS": {
+      "BASIC": "Basic Information",
+      "LOCATION": "Location",
+      "PROFILE": "Profile"
+    },
+    "BRAND_TITLE": "Complete your brand profile",
+    "BRAND_SUBTITLE": "Help us get to know your brand better",
+    "INFLUENCER_TITLE": "Complete your influencer profile",
+    "INFLUENCER_SUBTITLE": "Help us get to know your profile better",
+    "BASIC_INFO": "Basic Information",
+    "LOCATION_INFO": "Location Information",
+    "BRAND_INFO": "Brand Information",
+    "INFLUENCER_INFO": "Influencer Information",
+    "NAME": "Name",
+    "DESCRIPTION": "Description",
+    "COUNTRY": "Country",
+    "LOCATION": "City",
+    "SECTOR": "Sector",
+    "WEBSITE": "Website",
+    "LOGO": "Brand Logo",
+    "PHOTO": "Photo",
+    "PROFILE_PHOTO": "Profile Photo",
+    "NICHES": {
+      "LABEL": "Niches",
+      "FASHION": "Fashion",
+      "LIFESTYLE": "Lifestyle",
+      "TRAVEL": "Travel",
+      "BEAUTY": "Beauty",
+      "FITNESS": "Fitness",
+      "FOOD": "Food",
+      "TECH": "Technology",
+      "GAMING": "Gaming",
+      "MUSIC": "Music",
+      "SPORTS": "Sports"
+    },
+    "FOLLOWERS": "Number of followers",
+    "SOCIAL_LINKS": "Social Networks",
+    "PLATFORM": "Platform",
+    "URL": "URL",
+    "ADDITIONAL_LINKS": "Additional Links",
+    "LINK_TITLE": "Link title",
+    "ATTACHMENTS": "Attachments",
+    "ATTACHMENT_TITLE": "File title",
+    "ATTACHMENT_DESCRIPTION": "File description",
+    "MEDIA_TYPE": "File type",
+    "MEDIA_TYPES": {
+      "PHOTO": "Photo",
+      "VIDEO": "Video",
+      "DOCUMENT": "Document"
+    },
+    "UPLOAD_LOGO": "Upload logo",
+    "CHANGE_LOGO": "Change logo",
+    "UPLOAD_PHOTO": "Upload photo",
+    "CHANGE_PHOTO": "Change photo",
+    "UPLOAD_FILE": "Upload file",
+    "ADD_SOCIAL_LINK": "Add social network",
+    "ADD_LINK": "Add link",
+    "ADD_ATTACHMENT": "Add file",
+    "REQUIRED_FIELD": "This field is required",
+    "INVALID_URL": "Please enter a valid URL",
+    "INVALID_FOLLOWERS": "Number of followers must be greater than 0",
+    "PREVIOUS": "Previous",
+    "NEXT": "Next",
+    "SUBMIT": "Finish",
+    "SUCCESS": "Profile created successfully!",
+    "ERROR": "An error occurred while creating the profile"
+  },
+  "ERRORS": {
+    "INVALID_FILE_TYPE": "Invalid file type",
+    "FILE_TOO_LARGE": "File is too large"
   }
 }
