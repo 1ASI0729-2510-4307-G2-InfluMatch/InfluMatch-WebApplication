@@ -1,7 +1,7 @@
 <div class="profile-card" [class.brand]="profile.type === 'brand'" [class.influencer]="profile.type === 'influencer'">
   <div class="profile-header">
     <div class="profile-image">
-      <img [src]="profile.imageUrl || '/assets/default-avatar.png'" [alt]="profile.name">
+      <img [src]="getImageSrc(profile.imageUrl)" [alt]="profile.name">
     </div>
     <div class="profile-badge">
       <span>{{ profile.type === 'brand' ? '🏢' : '👤' }}</span>
@@ -25,10 +25,10 @@
       <ng-container *ngIf="profile.type === 'influencer'">
         <div class="info-item followers">
           <span class="icon">👥</span>
-          <span class="text">{{ profile.followersCount | number }} seguidores</span>
+          <span class="text">{{ profile.followersCount | number }} {{ 'dashboard.profile.followers' | translate }}</span>
         </div>
         
-        <div class="bio">
+        <div class="bio" *ngIf="profile.bio">
           <p>{{ profile.bio }}</p>
         </div>
       </ng-container>
@@ -38,11 +38,11 @@
   <div class="profile-actions">
     <button class="action-button primary">
       <span class="icon">👋</span>
-      Contactar
+      {{ 'dashboard.profile.actions.contact' | translate }}
     </button>
     <button class="action-button secondary">
       <span class="icon">ℹ️</span>
-      Ver Perfil
+      {{ 'dashboard.profile.actions.viewProfile' | translate }}
     </button>
   </div>
 </div>

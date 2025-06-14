@@ -262,5 +262,26 @@
     "NEWSLETTER_TEXT": "Stay updated with the latest trends in influencer marketing and platform features.",
     "EMAIL_PLACEHOLDER": "Enter your email address",
     "SUBSCRIBE": "Subscribe"
+  },
+  "dashboard": {
+    "titles": {
+      "influencers": "Influencers",
+      "brands": "Brands"
+    },
+    "loading": "Loading profiles...",
+    "errors": {
+      "loading": "An error occurred while loading profiles. Please try again."
+    },
+    "empty": {
+      "influencers": "No influencers available at the moment.",
+      "brands": "No brands available at the moment."
+    },
+    "profile": {
+      "followers": "followers",
+      "actions": {
+        "contact": "Contact",
+        "viewProfile": "View Profile"
+      }
+    }
   }
 }

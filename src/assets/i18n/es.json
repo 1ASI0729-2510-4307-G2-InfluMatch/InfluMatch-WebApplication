@@ -284,5 +284,26 @@
       "followers": "Seguidores",
       "socialLinks": "Enlaces sociales"
     }
+  },
+  "dashboard": {
+    "titles": {
+      "influencers": "Influencers",
+      "brands": "Marcas"
+    },
+    "loading": "Cargando perfiles...",
+    "errors": {
+      "loading": "Ha ocurrido un error al cargar los perfiles. Por favor, intenta nuevamente."
+    },
+    "empty": {
+      "influencers": "No hay influencers disponibles en este momento.",
+      "brands": "No hay marcas disponibles en este momento."
+    },
+    "profile": {
+      "followers": "seguidores",
+      "actions": {
+        "contact": "Contactar",
+        "viewProfile": "Ver Perfil"
+      }
+    }
   }
 }
