@@ -211,9 +211,9 @@ export class OnboardingComponent implements OnInit {
         sector: ['', Validators.required],
         country: ['', Validators.required],
         description: ['', Validators.required],
-        logo: ['', Validators.required],
-        profilePhoto: ['', Validators.required],
-        websiteUrl: ['', Validators.required],
+        logo: [''],
+        profilePhoto: [''],
+        websiteUrl: ['', [Validators.required, Validators.pattern('https?://.+')]],
         location: ['', Validators.required],
         links: this.fb.array([]),
         attachments: this.fb.array([])
@@ -221,20 +221,24 @@ export class OnboardingComponent implements OnInit {
     } else {
       this.form = this.fb.group({
         name: ['', Validators.required],
-        niches: this.fb.array([], [Validators.required, Validators.minLength(1)]),
-        bio: ['', Validators.required],
+        niches: this.fb.array([]),
+        description: ['', Validators.required],
         country: ['', Validators.required],
-        photo: ['', Validators.required],
-        profilePhoto: ['', Validators.required],
+        photo: [''],
+        profilePhoto: [''],
         followers: [0, [Validators.required, Validators.min(0)]],
         socialLinks: this.fb.array([]),
         location: ['', Validators.required],
         links: this.fb.array([]),
         attachments: this.fb.array([])
       });
-      // Add initial social link only for influencer profiles
+
+      // Add initial social link for influencers
       this.addSocialLink();
     }
+
+    // Add initial link for both types
+    this.addLink();
   }
 
   get socialLinks() {
@@ -403,13 +407,8 @@ export class OnboardingComponent implements OnInit {
     
     this.isSubmitting = true;
     try {
-      // Debug: Imprimir el estado completo del formulario
-      console.log('Submitting form...');
-      console.log('Form State:', this.form.value);
-      console.log('Form Valid:', this.form.valid);
-      console.log('Form Errors:', this.form.errors);
-
       const formValue = this.form.value;
+      const token = localStorage.getItem('accessToken');
 
       if (this.isBrand) {
         const brandProfile = new BrandProfileVO(
@@ -421,31 +420,48 @@ export class OnboardingComponent implements OnInit {
           formValue.profilePhoto,
           formValue.websiteUrl,
           formValue.location,
-          formValue.links || [],
-          formValue.attachments || []
+          formValue.links.map((link: any) => ({
+            title: link.title,
+            url: link.url
+          })),
+          formValue.attachments?.map((attachment: any) => ({
+            title: attachment.title,
+            description: attachment.description,
+            mediaType: attachment.mediaType,
+            data: attachment.data
+          })) || []
         );
 
-        console.log('Creating brand profile:', brandProfile);
-
-        await this.profileApi.createBrandProfile(brandProfile);
+        const response = await this.profileApi.createBrandProfile(brandProfile).toPromise();
+        console.log('Brand profile created:', response);
       } else {
         const influencerProfile = new InfluencerProfileVO(
           formValue.name,
-          formValue.niches || [],
-          formValue.bio,
+          formValue.niches,
+          formValue.description,
           formValue.country,
           formValue.photo,
           formValue.profilePhoto,
-          formValue.followers || 0,
-          formValue.socialLinks || [],
+          formValue.followers,
+          formValue.socialLinks.map((link: any) => ({
+            platform: link.platform,
+            url: link.url
+          })),
           formValue.location,
-          formValue.links || [],
-          formValue.attachments || []
+          formValue.links.map((link: any) => ({
+            title: link.title,
+            url: link.url
+          })),
+          formValue.attachments?.map((attachment: any) => ({
+            title: attachment.title,
+            description: attachment.description,
+            mediaType: attachment.mediaType,
+            data: attachment.data
+          })) || []
         );
 
-        console.log('Creating influencer profile:', influencerProfile);
-
-        await this.profileApi.createInfluencerProfile(influencerProfile);
+        const response = await this.profileApi.createInfluencerProfile(influencerProfile).toPromise();
+        console.log('Influencer profile created:', response);
       }
 
       // Update user data with profile completion status
@@ -454,6 +470,7 @@ export class OnboardingComponent implements OnInit {
         profileCompleted: true
       };
       await this.auth.updateUserData(updatedUser);
+
       this.snack.open(
         this.translate.instant('onboarding.success'),
         'OK',
@@ -462,7 +479,6 @@ export class OnboardingComponent implements OnInit {
       this.router.navigate(['/dashboard']);
     } catch (error: any) {
       console.error('Error in submit:', error);
-      this.loading = false;
       this.snack.open(
         this.translate.instant('onboarding.error'),
         'OK',
