@@ -20,12 +20,12 @@ export class DashboardRepositoryImpl extends DashboardRepository {
   getInfluencers(): Observable<DashboardProfileVO[]> {
     return this.http
       .get<any[]>(`${this.baseUrl}/dashboard/influencers`)
-      .pipe(map(data => data.map(item => this.assembler.toValueObject(item))));
+      .pipe(map(data => data.map(item => this.assembler.toValueObject(item, 'influencer'))));
   }
 
   getBrands(): Observable<DashboardProfileVO[]> {
     return this.http
       .get<any[]>(`${this.baseUrl}/dashboard/brands`)
-      .pipe(map(data => data.map(item => this.assembler.toValueObject(item))));
+      .pipe(map(data => data.map(item => this.assembler.toValueObject(item, 'brand'))));
   }
 } 

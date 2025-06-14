@@ -1,47 +1,48 @@
-<mat-card class="profile-card" (click)="viewDetails()">
+<div class="profile-card" [class.brand]="profile.type === 'brand'" [class.influencer]="profile.type === 'influencer'">
   <div class="profile-header">
-    <div class="profile-avatar">
-      <img
-        [src]="profile.photoUrl || '/assets/default-avatar.png'"
-        alt="Profile Avatar"
-      />
+    <div class="profile-image">
+      <img [src]="profile.imageUrl || '/assets/default-avatar.png'" [alt]="profile.name">
     </div>
-    <div class="profile-info">
-      <h3 class="profile-name">{{ profile.name }}</h3>
-      <span class="profile-type">{{
-        type === "influencer" ? "Influencer" : "Marca"
-      }}</span>
+    <div class="profile-badge">
+      <span>{{ profile.type === 'brand' ? '🏢' : '👤' }}</span>
     </div>
   </div>
-
+  
   <div class="profile-content">
-    <p class="profile-bio">{{ profile.bio || "Sin biografía" }}</p>
+    <h3 class="profile-name">{{ profile.name }}</h3>
+    
+    <div class="profile-info">
+      <div class="info-item">
+        <span class="icon">🌍</span>
+        <span class="text">{{ profile.country }}</span>
+      </div>
+      
+      <div class="info-item">
+        <span class="icon">🎯</span>
+        <span class="text">{{ profile.category }}</span>
+      </div>
 
-    <!-- Información específica para influencers -->
-    <div *ngIf="type === 'influencer'" class="profile-metrics">
-      <div class="metric">
-        <mat-icon>people</mat-icon>
-        <span>{{ formatNumber(profile.followersCount) }} seguidores</span>
-      </div>
-      <div class="metric">
-        <mat-icon>category</mat-icon>
-        <span>{{ profile.mainNiche }}</span>
-      </div>
-    </div>
-
-    <!-- Información específica para marcas -->
-    <div *ngIf="type === 'brand'" class="profile-metrics">
-      <div class="metric">
-        <mat-icon>location_on</mat-icon>
-        <span>{{ profile.country }}</span>
-      </div>
+      <ng-container *ngIf="profile.type === 'influencer'">
+        <div class="info-item followers">
+          <span class="icon">👥</span>
+          <span class="text">{{ profile.followersCount | number }} seguidores</span>
+        </div>
+        
+        <div class="bio">
+          <p>{{ profile.bio }}</p>
+        </div>
+      </ng-container>
     </div>
   </div>
 
-  <div class="profile-footer">
-    <button mat-button color="primary" class="view-details-btn">
-      Ver detalles
-      <mat-icon>arrow_forward</mat-icon>
+  <div class="profile-actions">
+    <button class="action-button primary">
+      <span class="icon">👋</span>
+      Contactar
+    </button>
+    <button class="action-button secondary">
+      <span class="icon">ℹ️</span>
+      Ver Perfil
     </button>
   </div>
-</mat-card>
+</div>
