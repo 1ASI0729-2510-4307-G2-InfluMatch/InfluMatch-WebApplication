@@ -37,30 +37,37 @@
           alt="InfluMatch Logo"
         />
       </div>
-      <h1 class="welcome-text">{{ "REGISTER.WELCOME" | translate }}</h1>
-      <p class="welcome-subtitle">{{ "REGISTER.SUBTITLE" | translate }}</p>
+      <h1 class="welcome-text">{{ 'auth.register.welcome' | translate }}</h1>
+      <p class="welcome-subtitle">{{ 'auth.register.subtitle' | translate }}</p>
     </div>
   </div>
 
   <div class="register-right">
     <div class="register-form-container">
-      <h2>{{ "REGISTER.TITLE" | translate }}</h2>
-      <p class="subtitle">{{ "REGISTER.INSTRUCTION" | translate }}</p>
+      <h2>{{ 'auth.register.title' | translate }}</h2>
+      <p class="subtitle">{{ 'auth.register.instruction' | translate }}</p>
 
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="register-form">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+        <div class="error-message" *ngIf="error">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ error }}</span>
+        </div>
+
         <mat-form-field appearance="outline">
-          <mat-label>{{ "REGISTER.EMAIL" | translate }}</mat-label>
-          <input matInput formControlName="email" type="email" required />
-          <mat-error *ngIf="form.get('email')?.hasError('required')">
-            {{ "REGISTER.EMAIL_REQUIRED" | translate }}
+          <mat-label>{{ 'auth.register.email' | translate }}</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput formControlName="email" type="email" />
+          <mat-error *ngIf="isFieldInvalid('email') && registerForm.get('email')?.errors?.['required']">
+            {{ 'auth.register.errors.email.required' | translate }}
           </mat-error>
-          <mat-error *ngIf="form.get('email')?.hasError('email')">
-            {{ "REGISTER.EMAIL_INVALID" | translate }}
+          <mat-error *ngIf="isFieldInvalid('email') && registerForm.get('email')?.errors?.['email']">
+            {{ 'auth.register.errors.email.invalid' | translate }}
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>{{ "REGISTER.PASSWORD" | translate }}</mat-label>
+          <mat-label>{{ 'auth.register.password' | translate }}</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
           <input
             matInput
             formControlName="password"
@@ -78,53 +85,63 @@
               hidePassword ? "visibility_off" : "visibility"
             }}</mat-icon>
           </button>
-          <mat-error *ngIf="form.get('password')?.hasError('required')">
-            {{ "REGISTER.PASSWORD_REQUIRED" | translate }}
-          </mat-error>
-          <mat-error *ngIf="form.get('password')?.hasError('minlength')">
-            {{ "REGISTER.PASSWORD_MIN_LENGTH" | translate }}
+          <mat-error *ngIf="isFieldInvalid('password')">
+            {{ getErrorMessage('password') | translate }}
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>{{ "REGISTER.ROLE" | translate }}</mat-label>
-          <mat-select formControlName="role" required>
-            <mat-option value="BRAND">{{ "REGISTER.ROLE_BRAND" | translate }}</mat-option>
-            <mat-option value="INFLUENCER">{{ "REGISTER.ROLE_INFLUENCER" | translate }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="form.get('role')?.hasError('required')">
-            {{ "REGISTER.ROLE_REQUIRED" | translate }}
+          <mat-label>{{ 'auth.register.confirmPassword' | translate }}</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input
+            matInput
+            formControlName="confirmPassword"
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+            required
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hideConfirmPassword = !hideConfirmPassword"
+            type="button"
+            aria-label="Toggle password visibility"
+          >
+            <mat-icon>{{
+              hideConfirmPassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+          <mat-error *ngIf="isFieldInvalid('confirmPassword')">
+            {{ getErrorMessage('confirmPassword') | translate }}
           </mat-error>
         </mat-form-field>
 
-        <div class="terms-checkbox">
-          <mat-checkbox color="primary" formControlName="acceptTerms" required>
-            {{ "REGISTER.ACCEPT_TERMS" | translate }}
-          </mat-checkbox>
-          <mat-error
-            *ngIf="
-              form.get('acceptTerms')?.hasError('required') &&
-              form.get('acceptTerms')?.touched
-            "
-          >
-            {{ "REGISTER.TERMS_REQUIRED" | translate }}
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'auth.register.selectRole' | translate }}</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <mat-select formControlName="role" required>
+            <mat-option value="INFLUENCER">{{ 'auth.register.roles.influencer' | translate }}</mat-option>
+            <mat-option value="BRAND">{{ 'auth.register.roles.brand' | translate }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="isFieldInvalid('role')">
+            {{ getErrorMessage('role') | translate }}
           </mat-error>
-        </div>
+        </mat-form-field>
 
         <button
           mat-flat-button
           type="submit"
           class="register-button"
-          [disabled]="form.invalid"
+          [disabled]="!registerForm.valid"
         >
-          <span>{{ "REGISTER.SIGN_UP" | translate }}</span>
-          <mat-icon>arrow_forward</mat-icon>
+          <span>{{ 'auth.register.submit' | translate }}</span>
+          <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+          <mat-icon *ngIf="!loading">arrow_forward</mat-icon>
         </button>
       </form>
 
       <div class="login-link">
-        {{ "REGISTER.HAVE_ACCOUNT" | translate }}
-        <a routerLink="/login">{{ "REGISTER.SIGN_IN" | translate }}</a>
+        {{ 'auth.register.haveAccount' | translate }}
+        <a routerLink="/auth/login">{{ 'auth.register.loginLink' | translate }}</a>
       </div>
     </div>
   </div>

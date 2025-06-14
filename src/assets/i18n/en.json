@@ -290,5 +290,41 @@
     "messages": "Messages",
     "settings": "Settings",
     "logout": "Logout"
+  },
+  "auth": {
+    "register": {
+      "welcome": "Join InfluMatch!",
+      "subtitle": "Connect with the best influencers and brands on our AI-powered platform",
+      "title": "Create Account",
+      "instruction": "Fill in your details to get started",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "selectRole": "Select your role",
+      "roles": {
+        "influencer": "I'm an Influencer",
+        "brand": "I'm a Brand"
+      },
+      "submit": "Sign Up",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Sign In",
+      "errors": {
+        "email": {
+          "required": "Email is required",
+          "invalid": "Enter a valid email"
+        },
+        "password": {
+          "required": "Password is required",
+          "minLength": "Password must be at least 6 characters"
+        },
+        "confirmPassword": {
+          "required": "Confirm your password",
+          "mismatch": "Passwords do not match"
+        },
+        "role": {
+          "required": "Select your role"
+        }
+      }
+    }
   }
 }

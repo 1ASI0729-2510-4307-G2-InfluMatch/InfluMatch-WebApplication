@@ -312,5 +312,41 @@
     "messages": "Mensajes",
     "settings": "Configuración",
     "logout": "Cerrar Sesión"
+  },
+  "auth": {
+    "register": {
+      "welcome": "¡Únete a InfluMatch!",
+      "subtitle": "Conecta con los mejores influencers y marcas en nuestra plataforma impulsada por IA",
+      "title": "Crear cuenta",
+      "instruction": "Completa tus datos para comenzar",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "selectRole": "Selecciona tu rol",
+      "roles": {
+        "influencer": "Soy Influencer",
+        "brand": "Soy Marca"
+      },
+      "submit": "Registrarse",
+      "haveAccount": "¿Ya tienes una cuenta?",
+      "loginLink": "Inicia sesión",
+      "errors": {
+        "email": {
+          "required": "El correo electrónico es requerido",
+          "invalid": "Ingresa un correo electrónico válido"
+        },
+        "password": {
+          "required": "La contraseña es requerida",
+          "minLength": "La contraseña debe tener al menos 6 caracteres"
+        },
+        "confirmPassword": {
+          "required": "Confirma tu contraseña",
+          "mismatch": "Las contraseñas no coinciden"
+        },
+        "role": {
+          "required": "Selecciona tu rol"
+        }
+      }
+    }
   }
 }
