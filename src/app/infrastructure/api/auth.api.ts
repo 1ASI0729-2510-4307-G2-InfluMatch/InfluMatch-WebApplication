@@ -8,6 +8,7 @@ import { User } from '../../domain/entities/user.entity';
 import { UserCredentials } from '../../domain/value-objects/user-credentials.vo';
 import { NewUserVO } from '../../domain/value-objects/new-user.vo';
 import { ProfileVO } from '../../domain/value-objects/profile.vo';
+import { UserAssembler, RegisterResponse } from '../assemblers/user.assembler';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApi {
@@ -23,60 +24,28 @@ export class AuthApi {
   }
 
   login(creds: UserCredentials): Observable<User | null> {
-    return this.http.post<any>(`${this.url}/login`, creds, {
+    return this.http.post<RegisterResponse>(`${this.url}/login`, creds, {
       withCredentials: true
     }).pipe(
-      map(response => {
-        if (response) {
-          return {
-            accessToken: response.accessToken,
-            refreshToken: response.refreshToken,
-            profileCompleted: response.profileCompleted,
-            userId: response.userId,
-            name: response.name,
-            photoUrl: response.photoUrl,
-            email: response.email,
-            user_type: response.user_type || 'marca'
-          };
-        }
-        return null;
-      }),
+      map(response => response ? UserAssembler.toUser(response) : null),
       catchError(this.handleError)
     );
   }
 
   register(data: NewUserVO): Observable<User> {
-    return this.http.post<any>(`${this.url}/register`, data, {
+    return this.http.post<RegisterResponse>(`${this.url}/register`, data, {
       withCredentials: true
     }).pipe(
-      map(response => ({
-        accessToken: response.accessToken,
-        refreshToken: response.refreshToken,
-        profileCompleted: response.profileCompleted,
-        userId: response.userId,
-        name: response.name,
-        photoUrl: response.photoUrl,
-        email: response.email,
-        user_type: response.user_type || 'marca'
-      })),
+      map(response => UserAssembler.toUser(response)),
       catchError(this.handleError)
     );
   }
 
   updateProfile(data: ProfileVO): Observable<User> {
-    return this.http.put<any>(`${this.url}/profile`, data, {
+    return this.http.put<RegisterResponse>(`${this.url}/profile`, data, {
       withCredentials: true
     }).pipe(
-      map(response => ({
-        accessToken: response.accessToken,
-        refreshToken: response.refreshToken,
-        profileCompleted: response.profileCompleted,
-        userId: response.userId,
-        name: response.name,
-        photoUrl: response.photoUrl,
-        email: response.email,
-        user_type: response.user_type || 'marca'
-      })),
+      map(response => UserAssembler.toUser(response)),
       catchError(this.handleError)
     );
   }

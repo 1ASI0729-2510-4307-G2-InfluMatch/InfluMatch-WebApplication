@@ -49,17 +49,7 @@
 
       <form [formGroup]="form" (ngSubmit)="submit()" class="register-form">
         <mat-form-field appearance="outline">
-          <mat-label>{{ "REGISTER.NAME" | translate }}</mat-label>
-          <mat-icon matPrefix>person</mat-icon>
-          <input matInput formControlName="name" required />
-          <mat-error *ngIf="form.get('name')?.hasError('required')">
-            {{ "REGISTER.NAME_REQUIRED" | translate }}
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
           <mat-label>{{ "REGISTER.EMAIL" | translate }}</mat-label>
-          <mat-icon matPrefix>email</mat-icon>
           <input matInput formControlName="email" type="email" required />
           <mat-error *ngIf="form.get('email')?.hasError('required')">
             {{ "REGISTER.EMAIL_REQUIRED" | translate }}
@@ -71,7 +61,6 @@
 
         <mat-form-field appearance="outline">
           <mat-label>{{ "REGISTER.PASSWORD" | translate }}</mat-label>
-          <mat-icon matPrefix>lock</mat-icon>
           <input
             matInput
             formControlName="password"
@@ -93,33 +82,24 @@
             {{ "REGISTER.PASSWORD_REQUIRED" | translate }}
           </mat-error>
           <mat-error *ngIf="form.get('password')?.hasError('minlength')">
-            {{ "REGISTER.PASSWORD_MINLENGTH" | translate }}
+            {{ "REGISTER.PASSWORD_MIN_LENGTH" | translate }}
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>{{ "REGISTER.ACCOUNT_TYPE" | translate }}</mat-label>
-          <mat-icon matPrefix>business</mat-icon>
-          <mat-select formControlName="user_type">
-            <mat-option
-              *ngFor="let option of rolOptions"
-              [value]="option.value"
-            >
-              {{ option.translationKey | translate }}
-            </mat-option>
+          <mat-label>{{ "REGISTER.ROLE" | translate }}</mat-label>
+          <mat-select formControlName="role" required>
+            <mat-option value="BRAND">{{ "REGISTER.ROLE_BRAND" | translate }}</mat-option>
+            <mat-option value="INFLUENCER">{{ "REGISTER.ROLE_INFLUENCER" | translate }}</mat-option>
           </mat-select>
+          <mat-error *ngIf="form.get('role')?.hasError('required')">
+            {{ "REGISTER.ROLE_REQUIRED" | translate }}
+          </mat-error>
         </mat-form-field>
 
         <div class="terms-checkbox">
-          <mat-checkbox color="primary" formControlName="acceptTerms">
-            {{ "REGISTER.ACCEPT_TERMS_1" | translate }}
-            <a href="#" class="terms-link">{{
-              "REGISTER.TERMS_CONDITIONS" | translate
-            }}</a>
-            {{ "REGISTER.AND" | translate }}
-            <a href="#" class="terms-link">{{
-              "REGISTER.PRIVACY_POLICY" | translate
-            }}</a>
+          <mat-checkbox color="primary" formControlName="acceptTerms" required>
+            {{ "REGISTER.ACCEPT_TERMS" | translate }}
           </mat-checkbox>
           <mat-error
             *ngIf="

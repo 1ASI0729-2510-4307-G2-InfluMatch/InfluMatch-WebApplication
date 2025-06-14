@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,8 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { RegisterUseCase } from '../../../../application/use-cases/register.usecase';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -48,9 +50,10 @@ interface RolOption {
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  form!: FormGroup;
+  form: FormGroup;
   hidePassword = true;
   currentLang = 'es';
+  loading = false;
   private langSubscription: Subscription | null = null;
 
   rolOptions: RolOption[] = [
@@ -64,24 +67,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private registerUC: RegisterUseCase,
     private auth: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar,
+    private snack: MatSnackBar,
     private translate: TranslateService
   ) {
-    this.initForm();
-  }
-
-  private initForm(): void {
     this.form = this.fb.group({
-      name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      user_type: ['', Validators.required],
-      profile_completed: [false], // ← snake_case
-      acceptTerms: [false, Validators.requiredTrue],
+      role: ['BRAND', [Validators.required]],
+      acceptTerms: [false, [Validators.requiredTrue]]
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // Initialize language
     this.currentLang = this.translate.currentLang || 'es';
     this.langSubscription = this.translate.onLangChange.subscribe((event) => {
@@ -89,7 +86,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
@@ -100,39 +97,45 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
   }
 
-  submit() {
-    if (this.form.invalid) return;
+  submit(): void {
+    if (this.form.invalid) {
+      console.log('Form invalid:', this.form.errors);
+      console.log('Form values:', this.form.value);
+      return;
+    }
 
-    // desestructuramos para descartar acceptTerms
-    const { acceptTerms, ...userData } = this.form.value as {
-      name: string;
-      email: string;
-      password: string;
-      user_type: string;
-      profile_completed: boolean;
-      acceptTerms: boolean;
+    this.loading = true;
+    const { acceptTerms, ...userData } = this.form.value;
+    
+    const data: NewUserVO = {
+      email: userData.email,
+      password: userData.password,
+      role: userData.role
     };
 
-    const data: NewUserVO = userData;
-
-    this.registerUC.execute(data).subscribe(
-      (user) => {
-        this.auth.save(user);
-        this.snackBar.open(
-          this.translate.instant('REGISTER.SUCCESS_MESSAGE'),
-          this.translate.instant('LOGIN.CLOSE'),
-          { duration: 5000 }
-        );
-
-        // 🚀 tras crear la cuenta, si NO completó el perfil...
-        this.router.navigateByUrl('/onboarding');
+    this.registerUC.execute(data).subscribe({
+      next: (user) => {
+        if (user) {
+          this.auth.save(user);
+          this.router.navigateByUrl('/onboarding');
+        }
       },
-      (error) => {
-        this.snackBar.open(
-          this.translate.instant('REGISTER.ERROR_MESSAGE'),
-          this.translate.instant('LOGIN.CLOSE'),
-          { duration: 3000 }
-        );
+      error: (error) => {
+        console.error('Registration error:', error);
+        this.showErrorMessage();
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
+  }
+
+  private showErrorMessage(): void {
+    this.snack.open(
+      this.translate.instant('REGISTER.ERROR'),
+      this.translate.instant('REGISTER.CLOSE'),
+      {
+        duration: 3000,
       }
     );
   }
