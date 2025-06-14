@@ -402,6 +402,21 @@ export class OnboardingComponent implements OnInit {
     return 'DOCUMENT';
   }
 
+  getAcceptType(index: number): string {
+    const attachment = this.attachments.at(index);
+    const mediaType = attachment.get('mediaType')?.value;
+    switch (mediaType) {
+      case 'PHOTO':
+        return 'image/*';
+      case 'VIDEO':
+        return 'video/*';
+      case 'DOCUMENT':
+        return '.pdf,.doc,.docx';
+      default:
+        return '*/*';
+    }
+  }
+
   async submit(): Promise<void> {
     if (this.form.invalid) return;
     

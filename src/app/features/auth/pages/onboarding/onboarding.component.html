@@ -167,6 +167,31 @@
         </button>
       </div>
 
+      <!-- Attachments Section -->
+      <div class="links-section">
+        <h2>{{ 'ONBOARDING.ATTACHMENTS' | translate }}</h2>
+        <div formArrayName="attachments">
+          <div *ngFor="let attachment of attachments.controls; let i = index" [formGroupName]="i" class="link-group">
+            <input type="text" formControlName="title" required placeholder="{{ 'ONBOARDING.ATTACHMENT_TITLE' | translate }}">
+            <textarea formControlName="description" placeholder="{{ 'ONBOARDING.ATTACHMENT_DESCRIPTION' | translate }}"></textarea>
+            <select formControlName="mediaType" required>
+              <option value="PHOTO">Photo</option>
+              <option value="VIDEO">Video</option>
+              <option value="DOCUMENT">Document</option>
+            </select>
+            <input type="file" [accept]="getAcceptType(i)" (change)="onAttachmentSelected($event)">
+            <button type="button" class="remove-button" (click)="removeAttachment(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <button type="button" class="add-button" (click)="addAttachment()">
+          <mat-icon>add</mat-icon>
+          {{ 'ONBOARDING.ADD_ATTACHMENT' | translate }}
+        </button>
+      </div>
+
       <button type="submit" class="submit-btn" [disabled]="form.invalid || isSubmitting">
         <span *ngIf="!isSubmitting">{{ 'ONBOARDING.SUBMIT' | translate }}</span>
         <mat-spinner *ngIf="isSubmitting" diameter="20"></mat-spinner>

@@ -198,3 +198,46 @@ LEUGO EL REGISTRE TMABIEN DEVUVEL ESTO
 SI DICE  "profileCompleted": false, ENTONCES LO LLEVAS AL ONBOARD 
 
 Y EN EL ONBOARD LO LLEVAS DEPEDNEIDNO DE "profileType": "INFLUENCER" O "profileType": "BRAND"
+
+
+
+
+{
+  "name": "dsasda",
+  "sector": "sadasd",
+  "country": "asdas",
+  "description": "dsadsa",
+  "logo": "ORw0KGgoAAAANSUhEUgAAAjYAAABECAYAAACSw3/WAAAAAXNSR0IAr",
+  "profilePhoto": "sadsadsadasdasdasdasdsasadd"
+  "websiteUrl": "https://base64.guru/converter/encode/image",
+  "location": "sadas",
+  "links": [
+      {
+          "title": "fdasdsa",
+          "url": "https://base64.guru/converter/encode/image"
+      }
+  ],
+  "attachments": []
+}
+
+
+{
+  "id": 6,
+  "name": "dsasda",
+  "sector": "sadasd",
+  "country": "asdas",
+  "description": "dsadsa",
+  "logo": "ORw0KGgoAAAANSUhEUgAAAjYAAABECAYAAACSw3/WAAAAAXNSR0IAr",
+  "profilePhoto": "sadsadsadasdasdasdasdsasadd",
+    "websiteUrl": "https://base64.guru/converter/encode/image",
+  "location": "sadas",
+  "links": [
+      {
+          "title": "fdasdsa",
+          "url": "https://base64.guru/converter/encode/image"
+      }
+  ],
+  "attachments": [],
+  "createdAt": "2025-06-14T01:46:17",
+  "updatedAt": "2025-06-14T01:46:17"
+}
