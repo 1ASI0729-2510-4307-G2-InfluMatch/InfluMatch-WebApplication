@@ -34,16 +34,22 @@ export class ProfileCardComponent {
     return num.toString();
   }
 
-  getImageSrc(imageUrl: string | null): string | SafeUrl {
+  getImageSrc(imageUrl: string | null): SafeUrl {
     if (!imageUrl) {
       return this.profile.type === 'brand' 
         ? '/assets/default-brand.png' 
         : '/assets/default-avatar.png';
     }
 
-    // Si la imagen es base64
+    // Si la imagen ya es una URL de datos base64 completa
     if (imageUrl.startsWith('data:image')) {
       return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+    }
+
+    // Si es solo el string base64, agregamos el prefijo necesario
+    if (this.isBase64(imageUrl)) {
+      const base64Image = `data:image/jpeg;base64,${imageUrl}`;
+      return this.sanitizer.bypassSecurityTrustUrl(base64Image);
     }
 
     // Si es una URL normal
@@ -53,5 +59,14 @@ export class ProfileCardComponent {
 
     // Si es una ruta relativa
     return imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
+  }
+
+  private isBase64(str: string): boolean {
+    try {
+      // Intenta verificar si el string es base64 válido
+      return btoa(atob(str)) === str;
+    } catch (err) {
+      return false;
+    }
   }
 }

@@ -171,8 +171,20 @@ export class SidebarComponent implements OnInit {
   }
 
   logout(): void {
+    // Limpiar todos los datos de sesión
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('current_user');
+    localStorage.removeItem('profileType');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('userId');
+
+    // Notificar al servicio de autenticación
     this.authService.logout();
-    this.router.navigate(['/login']);
+
+    // Redirigir al login
+    this.router.navigate(['/auth/login']);
   }
 
   translateTooltips(): void {

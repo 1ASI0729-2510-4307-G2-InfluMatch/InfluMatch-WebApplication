@@ -305,5 +305,12 @@
         "viewProfile": "Ver Perfil"
       }
     }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "profile": "Perfil",
+    "messages": "Mensajes",
+    "settings": "Configuración",
+    "logout": "Cerrar Sesión"
   }
 }

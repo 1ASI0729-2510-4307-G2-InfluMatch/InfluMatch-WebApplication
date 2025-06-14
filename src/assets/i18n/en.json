@@ -283,5 +283,12 @@
         "viewProfile": "View Profile"
       }
     }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "messages": "Messages",
+    "settings": "Settings",
+    "logout": "Logout"
   }
 }

@@ -40,7 +40,16 @@ export class AuthService {
   }
 
   public logout(): void {
-    localStorage.removeItem(this.USER_STORAGE_KEY);
+    // Limpiar todos los datos de sesión
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('current_user');
+    localStorage.removeItem('profileType');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('userId');
+
+    // Limpiar el estado del servicio
     this.currentUserSubject.next(null);
   }
 
