@@ -1,0 +1,145 @@
+http://localhost:4200/dashboard
+
+aqui me lista la lista de perfiles dependiendo del tipo de perfil
+
+bueno la cosa es que en la lsita me traen esto [{
+    "userId": 3,
+    "tradeName": "Nombre de la Marca",
+    "logoUrl": "",
+"country": "US",
+    "sector": "Sector de la Marca"
+},
+{
+    "userId": 11,
+    "tradeName": "Nombre de la Marca",
+    "logoUrl": "",
+"country": "US",
+    "sector": "Sector de la Marca"
+},
+{
+    "userId": 14,
+    "tradeName": "Nike",
+    "logoUrl": "",
+"country": "US",
+    "sector": "Deportes"
+},]
+
+
+me traen el userID a partir de eso en cada card hay un boton qeu es ver perfil ese botoon va llamar a estos servicios
+
+
+http://localhost:8080//api/dashboard/influencers/{id}
+
+ahi le pasas el id ese es apra influencers
+
+y este e sapra amrcas
+
+http://localhost:8080//api/dashboard/brands/{id}
+
+y como sabes cual va a usar por ejmeplo si el perfil registrrado es amrca entonces usasa el de influencers y si el perfil registarado es de influenecer entonces yusas el de marca 
+
+/api/dashboard/brands/{userId}
+
+esto deveulve esto: 
+
+
+
+
+{
+    "id": 3,
+    "name": "Nombre de la Marca",
+    "sector": "Sector de la Marca",
+    "description": "Descripción detallada de la marca (mínimo 50 caracteres)",
+    "logo": "sadasd", //photo en base 64
+    "profilePhoto": "sadasd", //photo en base 64
+    "country": "PE",
+    "websiteUrl": "https://www.tuweb.com",
+    "location": "Ciudad, País",
+    "links": [
+        {
+            "title": "Título del enlace",
+            "url": "https://url.com"
+        }
+    ],
+    "attachments": [
+        {
+            "title": "Título del adjunto",
+            "description": "Descripción del adjunto",
+            "mediaType": "PHOTO",
+            "data": "sadasd" //data dependiendo del mediaType(PHOTO, VIDEO, DOCUMENT) en base 64
+            }
+    ],
+    "rating": 0.0,
+    "createdAt": "2025-06-13T20:50:40",
+    "updatedAt": "2025-06-13T20:50:40"
+}
+
+y el de influencers deveuvel esto
+
+localhost:8080/api/dashboard/influencers/userId
+
+
+{
+    "id": 2,
+    "name": "Carlos Fitness",
+    "niches": [
+        "FITNESS",
+        "LIFESTYLE",
+        "HEALTH"
+    ],
+    "bio": "Entrenador personal certificado y creador de contenido fitness con más de 5 años de experiencia. Especializado en rutinas de ejercicio, nutrición y estilo de vida saludable.",
+    "country": "ES",
+    "logo": "sadasd", //photo en base 64
+    "profilePhoto": "sadasd", //photo en base 64
+    "followers": 150000,
+    "socialLinks": [
+        {
+            "platform": "INSTAGRAM",
+            "url": "https://instagram.com/carlosfitness"
+        },
+        {
+            "platform": "YOUTUBE",
+            "url": "https://youtube.com/c/carlosfitness"
+        },
+        {
+            "platform": "TIKTOK",
+            "url": "https://tiktok.com/@carlosfitness"
+        }
+    ],
+    "location": "Madrid",
+    "links": [
+        {
+            "title": "Mi Blog Personal",
+            "url": "https://carlosfitness.com"
+        },
+        {
+            "title": "Programa de Entrenamiento",
+            "url": "https://carlosfitness.com/programa"
+        }
+    ],
+    "attachments": [
+        {
+            "title": "Reel Destacados",
+            "description": "Compilación de mis mejores contenidos fitness",
+            "mediaType": "VIDEO",
+             "data": "sadasd" //data dependiendo del mediaType(PHOTO, VIDEO, DOCUMENT) en base 64},
+        {
+            "title": "Media Kit",
+            "description": "Estadísticas y métricas de engagement",
+            "mediaType": "DOCUMENT",
+            "data": "sadasd" //data dependiendo del mediaType(PHOTO, VIDEO, DOCUMENT) en base 64
+            }
+    ],
+    "rating": 0.0,
+    "createdAt": "2025-06-13T20:51:26",
+    "updatedAt": "2025-06-13T20:51:26"
+}
+
+
+has una vcaldaicion qeu si alkgun campos esta vacio o es cero como en raiting simeplmnten no lo muestres nomas 
+
+quiero un cmponetne que trenga unsstilo parecido al @login.component.html  y tenga los estislo parecidos o ighuale sbajo la misma tematica qeu @login.component.scss 
+y tambien qeu @register.component.html @register.component.scss  y tambien de @onboard.component.scss @onboard.component.html 
+
+
+receurda hacerlo bajo ddd con asewembler dtos , etc etc

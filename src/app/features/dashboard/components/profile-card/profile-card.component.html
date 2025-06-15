@@ -1,4 +1,4 @@
-<div class="profile-card" [class.brand]="profile.type === 'brand'" [class.influencer]="profile.type === 'influencer'">
+<div class="profile-card" [class.brand]="profile.type === 'brand'" [class.influencer]="profile.type === 'influencer'" (click)="viewDetails()">
   <div class="profile-header">
     <div class="profile-image">
       <img [src]="getImageSrc(profile.imageUrl)" [alt]="profile.name">
@@ -23,9 +23,9 @@
       </div>
 
       <ng-container *ngIf="profile.type === 'influencer'">
-        <div class="info-item followers">
+        <div class="info-item followers" *ngIf="profile.followersCount">
           <span class="icon">👥</span>
-          <span class="text">{{ profile.followersCount | number }} {{ 'dashboard.profile.followers' | translate }}</span>
+          <span class="text">{{ formatNumber(profile.followersCount) }} {{ 'dashboard.profile.followers' | translate }}</span>
         </div>
         
         <div class="bio" *ngIf="profile.bio">

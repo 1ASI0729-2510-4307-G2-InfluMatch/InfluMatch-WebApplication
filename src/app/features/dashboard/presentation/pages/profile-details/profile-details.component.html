@@ -1,0 +1,157 @@
+<div class="profile-details-container">
+  <div class="profile-details-content">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading profile details...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="error-state">
+      <mat-icon>error_outline</mat-icon>
+      <p>{{ error }}</p>
+      <button mat-button color="primary" (click)="navigateToDashboard()">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Dashboard
+      </button>
+    </div>
+
+    <!-- Profile Content -->
+    <ng-container *ngIf="profile$ | async as profile">
+      <!-- Header Section -->
+      <div class="profile-header">
+        <div class="profile-photos">
+          <div class="logo" *ngIf="hasValue(profile.logo)">
+            <img [src]="'data:image/jpeg;base64,' + profile.logo" alt="Logo">
+          </div>
+          <div class="profile-photo" *ngIf="hasValue(profile.profilePhoto)">
+            <img [src]="'data:image/jpeg;base64,' + profile.profilePhoto" alt="Profile Photo">
+          </div>
+        </div>
+        <div class="profile-title">
+          <h1>{{ profile.name }}</h1>
+          <p class="location" *ngIf="hasValue(profile.location)">
+            <mat-icon>location_on</mat-icon>
+            {{ profile.location }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Brand Profile -->
+      <ng-container *ngIf="isBrandProfile(profile)">
+        <div class="profile-section">
+          <h2>About the Brand</h2>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="hasValue(profile.sector)">
+              <label>Sector</label>
+              <p>{{ profile.sector }}</p>
+            </div>
+            <div class="info-item" *ngIf="hasValue(profile.country)">
+              <label>Country</label>
+              <p>{{ profile.country }}</p>
+            </div>
+            <div class="info-item" *ngIf="hasValue(profile.websiteUrl)">
+              <label>Website</label>
+              <a [href]="profile.websiteUrl" target="_blank" rel="noopener noreferrer">
+                {{ profile.websiteUrl }}
+              </a>
+            </div>
+          </div>
+          <div class="description" *ngIf="hasValue(profile.description)">
+            <label>Description</label>
+            <p>{{ profile.description }}</p>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Influencer Profile -->
+      <ng-container *ngIf="isInfluencerProfile(profile)">
+        <div class="profile-section">
+          <h2>About the Influencer</h2>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="hasValue(profile.followers)">
+              <label>Followers</label>
+              <p>{{ profile.followers | number }}</p>
+            </div>
+            <div class="info-item" *ngIf="hasValue(profile.country)">
+              <label>Country</label>
+              <p>{{ profile.country }}</p>
+            </div>
+          </div>
+          <div class="description" *ngIf="hasValue(profile.bio)">
+            <label>Bio</label>
+            <p>{{ profile.bio }}</p>
+          </div>
+          <div class="niches" *ngIf="hasValue(profile.niches)">
+            <label>Niches</label>
+            <div class="niches-list">
+              <span class="niche-tag" *ngFor="let niche of profile.niches">
+                {{ niche }}
+              </span>
+            </div>
+          </div>
+          <div class="social-links" *ngIf="hasValue(profile.socialLinks)">
+            <label>Social Media</label>
+            <div class="social-links-grid">
+              <a *ngFor="let link of profile.socialLinks"
+                [href]="link.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link">
+                <mat-icon>{{ link.platform.toLowerCase() }}</mat-icon>
+                {{ link.platform }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Common Sections -->
+      <div class="profile-section" *ngIf="hasValue(profile.links)">
+        <h2>Links</h2>
+        <div class="links-grid">
+          <a *ngFor="let link of profile.links"
+            [href]="link.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-card">
+            <h3>{{ link.title }}</h3>
+            <p>{{ link.url }}</p>
+          </a>
+        </div>
+      </div>
+
+      <div class="profile-section" *ngIf="hasValue(profile.attachments)">
+        <h2>Attachments</h2>
+        <div class="attachments-grid">
+          <div *ngFor="let attachment of profile.attachments" class="attachment-card">
+            <div class="attachment-preview">
+              <ng-container [ngSwitch]="attachment.type">
+                <img *ngSwitchCase="'image'" [src]="attachment.url" [alt]="attachment.name">
+                <video *ngSwitchCase="'video'" [src]="attachment.url" controls></video>
+                <mat-icon *ngSwitchDefault>insert_drive_file</mat-icon>
+              </ng-container>
+            </div>
+            <div class="attachment-info">
+              <h3>{{ attachment.name }}</h3>
+              <p>{{ attachment.size | number }} bytes</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-section" *ngIf="hasValue(profile.rating)">
+        <h2>Rating</h2>
+        <div class="rating-display">
+          <span class="rating-value">{{ profile.rating }}/5</span>
+          <div class="rating-stars">
+            <mat-icon *ngFor="let star of [1,2,3,4,5]"
+                      [class.filled]="star <= profile.rating">
+              star
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div> 

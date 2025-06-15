@@ -17,7 +17,6 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 })
 export class ProfileCardComponent {
   @Input() profile!: DashboardProfileVO;
-  @Input() type: 'influencer' | 'brand' = 'influencer';
 
   constructor(private router: Router, private sanitizer: DomSanitizer) {}
 

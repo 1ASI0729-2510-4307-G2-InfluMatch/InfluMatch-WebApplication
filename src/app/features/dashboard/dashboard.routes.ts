@@ -16,8 +16,8 @@ export const DASHBOARD_ROUTES: Routes = [
   {
     path: 'profile/:id',
     loadComponent: () =>
-      import('./pages/profile-detail/profile-detail.component').then(
-        (m) => m.ProfileDetailComponent
+      import('./presentation/pages/profile-details/profile-details.component').then(
+        (m) => m.ProfileDetailsComponent
       ),
   },
 ];
