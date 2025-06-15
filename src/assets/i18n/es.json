@@ -303,6 +303,30 @@
       "actions": {
         "contact": "Contactar",
         "viewProfile": "Ver Perfil"
+      },
+      "attachments": {
+        "title": "Adjuntos",
+        "types": {
+          "PHOTO": "Foto",
+          "VIDEO": "Video",
+          "DOCUMENT": "Documento"
+        }
+      },
+      "details": {
+        "about": "Acerca de",
+        "contact": "Información de Contacto",
+        "socialMedia": "Redes Sociales",
+        "location": "Ubicación",
+        "category": "Categoría",
+        "bio": "Biografía",
+        "niches": "Nichos",
+        "followers": "Seguidores",
+        "languages": "Idiomas",
+        "preferredCategories": "Categorías Preferidas",
+        "contactName": "Nombre de Contacto",
+        "contactPosition": "Cargo",
+        "contactEmail": "Email",
+        "additionalInfo": "Información Adicional"
       }
     }
   },

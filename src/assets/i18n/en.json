@@ -281,6 +281,30 @@
       "actions": {
         "contact": "Contact",
         "viewProfile": "View Profile"
+      },
+      "attachments": {
+        "title": "Attachments",
+        "types": {
+          "PHOTO": "Photo",
+          "VIDEO": "Video",
+          "DOCUMENT": "Document"
+        }
+      },
+      "details": {
+        "about": "About",
+        "contact": "Contact Information",
+        "socialMedia": "Social Media",
+        "location": "Location",
+        "category": "Category",
+        "bio": "Bio",
+        "niches": "Niches",
+        "followers": "Followers",
+        "languages": "Languages",
+        "preferredCategories": "Preferred Categories",
+        "contactName": "Contact Name",
+        "contactPosition": "Position",
+        "contactEmail": "Email",
+        "additionalInfo": "Additional Information"
       }
     }
   },
