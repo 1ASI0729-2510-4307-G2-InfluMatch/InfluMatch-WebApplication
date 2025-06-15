@@ -97,6 +97,7 @@ export class SidebarComponent implements OnInit {
   logoutTooltip = '';
   languageTooltip = '';
   collaborationsTooltip = '';
+  agendaTooltip = '';
 
   constructor(
     private authService: AuthService,
@@ -202,8 +203,8 @@ export class SidebarComponent implements OnInit {
       .get('SIDEBAR.CAMPAIGNS')
       .subscribe((text) => (this.campaignsTooltip = text));
     this.translateService
-      .get('SIDEBAR.ANALYTICS')
-      .subscribe((text) => (this.analyticsTooltip = text));
+      .get('SIDEBAR.AGENDA')
+      .subscribe((text) => (this.agendaTooltip = text));
     this.translateService
       .get('SIDEBAR.SETTINGS')
       .subscribe((text) => (this.settingsTooltip = text));

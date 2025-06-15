@@ -1,0 +1,360 @@
+// Base styles and resets for InfluMatch
+
+@use "./variables.scss" as *;
+@use "./mixins.scss" as *;
+
+// CSS Reset and base styles
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// HTML and body base styles
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-base;
+  color: var(--text-primary);
+  background-color: var(--background-light);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background-color $transition-normal, color $transition-normal;
+}
+
+// Typography base styles
+h1, h2, h3, h4, h5, h6 {
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-sm;
+  margin-bottom: $spacing-md;
+  color: var(--text-primary);
+}
+
+h1 { @include heading-1; }
+h2 { @include heading-2; }
+h3 { @include heading-3; }
+h4 { @include heading-4; }
+
+p {
+  margin-bottom: $spacing-md;
+  @include body-text;
+}
+
+// Link styles
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color $transition-fast;
+  
+  &:hover {
+    color: var(--primary-dark);
+  }
+  
+  &:focus {
+    @include focus-visible;
+  }
+}
+
+// List styles
+ul, ol {
+  margin-bottom: $spacing-md;
+  padding-left: $spacing-lg;
+}
+
+li {
+  margin-bottom: $spacing-xs;
+}
+
+// Image styles
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+// Button base styles
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  
+  &:focus {
+    @include focus-visible;
+  }
+  
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// Input base styles
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  
+  &:focus {
+    @include focus-visible;
+  }
+}
+
+// Table base styles
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: $spacing-lg;
+}
+
+th,
+td {
+  padding: $table-cell-padding;
+  text-align: left;
+  border-bottom: $table-border-width solid $table-border-color;
+}
+
+th {
+  font-weight: $font-weight-semibold;
+  background-color: rgba(var(--primary-rgb), 0.05);
+}
+
+// Form base styles
+form {
+  margin-bottom: $spacing-lg;
+}
+
+label {
+  display: block;
+  margin-bottom: $spacing-xs;
+  font-weight: $font-weight-medium;
+  color: var(--text-primary);
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+legend {
+  font-weight: $font-weight-semibold;
+  margin-bottom: $spacing-md;
+}
+
+// Code styles
+code {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875em;
+  background-color: rgba(var(--primary-rgb), 0.1);
+  padding: 0.2em 0.4em;
+  border-radius: $border-radius-sm;
+  color: var(--primary-dark);
+}
+
+pre {
+  background-color: rgba(var(--primary-rgb), 0.05);
+  padding: $spacing-md;
+  border-radius: $border-radius-md;
+  overflow-x: auto;
+  margin-bottom: $spacing-lg;
+  
+  code {
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+}
+
+// Blockquote styles
+blockquote {
+  border-left: 4px solid var(--primary);
+  padding-left: $spacing-md;
+  margin-bottom: $spacing-lg;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+// Horizontal rule
+hr {
+  border: none;
+  border-top: 1px solid rgba(var(--primary-rgb), 0.2);
+  margin: $spacing-xl 0;
+}
+
+// Selection styles
+::selection {
+  background-color: rgba(var(--primary-rgb), 0.2);
+  color: var(--text-primary);
+}
+
+::-moz-selection {
+  background-color: rgba(var(--primary-rgb), 0.2);
+  color: var(--text-primary);
+}
+
+// Scrollbar styles
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(var(--primary-rgb), 0.05);
+  border-radius: $border-radius-sm;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--primary-rgb), 0.3);
+  border-radius: $border-radius-sm;
+  
+  &:hover {
+    background: rgba(var(--primary-rgb), 0.5);
+  }
+}
+
+// Focus styles for all focusable elements
+button:focus,
+input:focus,
+textarea:focus,
+select:focus,
+a:focus,
+[tabindex]:focus {
+  @include focus-visible;
+}
+
+// Utility classes
+.sr-only {
+  @include sr-only;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-truncate {
+  @include truncate;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.d-grid {
+  display: grid !important;
+}
+
+.justify-content-center {
+  justify-content: center !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.h-100 {
+  height: 100% !important;
+}
+
+.m-0 {
+  margin: 0 !important;
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+// Print styles
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+  
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+  
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+  
+  thead {
+    display: table-header-group;
+  }
+  
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+  
+  img {
+    max-width: 100% !important;
+  }
+  
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+  
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+} 

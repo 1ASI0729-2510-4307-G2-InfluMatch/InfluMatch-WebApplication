@@ -1,5 +1,6 @@
 /* Importación de fuentes */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
 
 /* Reset y estilos base */
 *,
@@ -923,3 +924,4 @@ p {
     border-top-color: rgba(255, 255, 255, 0.05);
   }
 }
+

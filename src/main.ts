@@ -10,6 +10,10 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+// Import date adapter providers for angular-calendar
+import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
+import { CalendarDateFormatter, CalendarAngularDateFormatter } from 'angular-calendar';
+
 import { routes } from './app/app.routes'; // <-- tu archivo de rutas stand-alone
 import { AppComponent } from './app/app.component';
 import { CoreModule } from './app/core/core.module';
@@ -27,7 +31,11 @@ bootstrapApplication(AppComponent, {
     // 👉 Animaciones (equivalente a BrowserAnimationsModule)
     provideAnimations(),
 
-    // 👉 Imports de módulos “clásicos” que aún necesitas
+    // 👉 Date adapter providers for angular-calendar
+    { provide: DateAdapter, useClass: NativeDateAdapter },
+    { provide: CalendarDateFormatter, useClass: CalendarAngularDateFormatter },
+
+    // 👉 Imports de módulos "clásicos" que aún necesitas
     importProvidersFrom(
       HttpClientModule,
       CoreModule,

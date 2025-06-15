@@ -41,4 +41,11 @@ export const DASHBOARD_ROUTES: Routes = [
         (m) => m.CollaborationsComponent
       ),
   },
+  {
+    path: 'agenda',
+    loadComponent: () =>
+      import('./presentation/pages/agenda/agenda.component').then(
+        (m) => m.AgendaComponent
+      ),
+  },
 ];

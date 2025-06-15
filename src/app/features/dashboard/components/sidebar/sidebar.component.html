@@ -98,12 +98,18 @@
       </li>
       <li>
         <a
-          routerLink="/dashboard/analytics"
+          routerLink="/dashboard/agenda"
           routerLinkActive="active"
           (click)="closeMobileMenu()"
+          (mouseenter)="showTooltip($event, agendaTooltip)"
+          (mouseleave)="hideTooltip()"
         >
-          <mat-icon>bar_chart</mat-icon>
-          <span>{{ "SIDEBAR.ANALYTICS" | translate }}</span>
+          <mat-icon>event</mat-icon>
+          <span
+            *ngIf="isExpanded"
+            [@fadeInOut]="isExpanded ? 'visible' : 'hidden'"
+            >{{ "SIDEBAR.AGENDA" | translate }}</span
+          >
         </a>
       </li>
       <!-- Toggle sidebar button (inside navigation) -->
@@ -275,17 +281,17 @@
         </li>
         <li>
           <a
-            routerLink="/dashboard/analytics"
+            routerLink="/dashboard/agenda"
             routerLinkActive="active"
             (click)="closeMobileMenu()"
-            (mouseenter)="showTooltip($event, analyticsTooltip)"
+            (mouseenter)="showTooltip($event, agendaTooltip)"
             (mouseleave)="hideTooltip()"
           >
-            <mat-icon>bar_chart</mat-icon>
+            <mat-icon>event</mat-icon>
             <span
               *ngIf="isExpanded"
               [@fadeInOut]="isExpanded ? 'visible' : 'hidden'"
-              >{{ "SIDEBAR.ANALYTICS" | translate }}</span
+              >{{ "SIDEBAR.AGENDA" | translate }}</span
             >
           </a>
         </li>

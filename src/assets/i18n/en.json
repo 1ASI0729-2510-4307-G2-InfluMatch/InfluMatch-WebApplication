@@ -15,7 +15,7 @@
     "PROFILE": "My Profile",
     "MESSAGES": "Messages",
     "CAMPAIGNS": "Campaigns",
-    "ANALYTICS": "Analytics",
+    "AGENDA": "Agenda",
     "SETTINGS": "Settings",
     "LOGOUT": "Logout",
     "LANGUAGE": "Language",
@@ -568,5 +568,22 @@
       "RETRY": "Retry",
       "NO_MILESTONES": "No milestones defined for this collaboration"
     }
+  },
+  "AGENDA": {
+    "TITLE": "Collaboration Agenda",
+    "LOADING": "Loading agenda events...",
+    "ERROR_TITLE": "Error loading agenda",
+    "ERROR_MESSAGE": "Could not load agenda events. Please try again.",
+    "RETRY": "Retry",
+    "EMPTY_TITLE": "No agenda events",
+    "EMPTY_MESSAGE": "It seems you don't have any scheduled collaboration events. Start connecting!",
+    "COUNTERPART": "Counterpart",
+    "DATE": "Date",
+    "LOCATION": "Location",
+    "VIEW_COLLABORATION": "View Collaboration",
+    "TODAY": "Today",
+    "MONTH": "Month",
+    "WEEK": "Week",
+    "DAY": "Day"
   }
 }

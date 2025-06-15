@@ -15,7 +15,7 @@
     "PROFILE": "Mi Perfil",
     "MESSAGES": "Mensajes",
     "CAMPAIGNS": "Campañas",
-    "ANALYTICS": "Analíticas",
+    "AGENDA": "Agenda",
     "SETTINGS": "Configuración",
     "LOGOUT": "Cerrar Sesión",
     "LANGUAGE": "Idioma",
@@ -590,5 +590,22 @@
       "RETRY": "Reintentar",
       "NO_MILESTONES": "No hay hitos definidos para esta colaboración"
     }
+  },
+  "AGENDA": {
+    "TITLE": "Agenda de Colaboraciones",
+    "LOADING": "Cargando eventos de la agenda...",
+    "ERROR_TITLE": "Error al cargar la agenda",
+    "ERROR_MESSAGE": "No se pudieron cargar los eventos de la agenda. Por favor, inténtalo de nuevo.",
+    "RETRY": "Reintentar",
+    "EMPTY_TITLE": "No hay eventos en la agenda",
+    "EMPTY_MESSAGE": "Parece que no tienes eventos de colaboración programados. ¡Empieza a conectar!",
+    "COUNTERPART": "Contraparte",
+    "DATE": "Fecha",
+    "LOCATION": "Ubicación",
+    "VIEW_COLLABORATION": "Ver Colaboración",
+    "TODAY": "Hoy",
+    "MONTH": "Mes",
+    "WEEK": "Semana",
+    "DAY": "Día"
   }
 }
