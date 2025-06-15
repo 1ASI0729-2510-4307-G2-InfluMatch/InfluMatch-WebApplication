@@ -55,6 +55,8 @@ export class CollaborationRepositoryImpl implements CollaborationRepository {
         map((response: CollaborationListItemDto[]) => {
           return response.map(item => ({
             id: item.id,
+            initiatorId: item.initiatorId,
+            counterpartId: item.counterpartId,
             initiatorRole: item.initiatorRole,
             status: item.status,
             counterpartName: item.counterpartName,

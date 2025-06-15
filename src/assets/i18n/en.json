@@ -444,6 +444,7 @@
       "PENDING": "Pending",
       "ACCEPTED": "Accepted",
       "REJECTED": "Rejected",
+      "CANCELED": "Canceled",
       "FINISHED": "Finished"
     },
     "FILTERS": {
@@ -451,6 +452,7 @@
       "PENDING": "Pending",
       "ACCEPTED": "Accepted",
       "REJECTED": "Rejected",
+      "CANCELED": "Canceled",
       "FINISHED": "Finished"
     },
     "LIST": {
@@ -466,10 +468,39 @@
       "CREATED": "Created",
       "VIEW_DETAILS": "View Details",
       "NEW_COLLABORATION": "New Collaboration",
+      "CONFIRM_PROCESS": "Confirm Process",
+      "CANCEL_COLLABORATION": "Cancel Collaboration",
+      "FINISH_COLLABORATION": "Finish Collaboration",
       "ROLE": {
         "INFLUENCER": "Influencer",
         "BRAND": "Brand"
       }
+    },
+    "ACTIONS": {
+      "ACCEPT": "Accept",
+      "REJECT": "Reject",
+      "CANCEL": "Cancel",
+      "FINISH": "Finish",
+      "ACCEPT_SUCCESS": "Collaboration accepted successfully",
+      "REJECT_SUCCESS": "Collaboration rejected successfully",
+      "CANCEL_SUCCESS": "Collaboration canceled successfully",
+      "FINISH_SUCCESS": "Collaboration finished successfully",
+      "ACCEPT_ERROR": "Error accepting collaboration",
+      "REJECT_ERROR": "Error rejecting collaboration",
+      "CANCEL_ERROR": "Error canceling collaboration",
+      "FINISH_ERROR": "Error finishing collaboration"
+    },
+    "CONFIRMATION": {
+      "TITLE": "Process Confirmation",
+      "PROCESSING": "Processing...",
+      "MESSAGE": "Message",
+      "ACTION_TYPE": "Action Type",
+      "CREATED_DATE": "Created Date",
+      "RECIPIENT_DESCRIPTION": "You can accept or reject this collaboration proposal",
+      "INITIATOR_CANCEL_DESCRIPTION": "You can cancel this collaboration if you no longer want to continue",
+      "INITIATOR_FINISH_DESCRIPTION": "Mark this collaboration as finished when all deliverables have been completed",
+      "NO_ACTIONS_AVAILABLE": "No actions available for this collaboration",
+      "CLOSE": "Close"
     },
     "FIELDS": {
       "MESSAGE": "Proposal message",

@@ -1,64 +1,117 @@
-perfecto ahroa para cada solcitu de vuelve esto [
+perfecto ahroa necesito unos cambios este ednpoint 
+
+eel qeu me lsiatss lasmsolicitudes se han añadido algunos campos 
+
+[
   {
       "id": 2,
+      "initiatorId": 123,
+      "counterpartId": 456,
       "initiatorRole": "INFLUENCER",
       "status": "PENDING",
       "counterpartName": "Nike",
-      "counterpartPhotoUrl":"sajdhasdjsahdjsazhjdsahjdhd" //imagen en base 64 ,
-        "message": "aadssadasdasdasdasasmkdhkajsdhusaijkdhjkasdhjkasdkhgjahjgdsashjk",
+      "counterpartPhotoUrl": "data:image/jpeg;base64,/9j/4AAQ...",
+      "message": "aadssadasdasdasdasasmkdhkajsdhusaijkdhjkasdhjkasdkhgjahjgdsashjk",
       "actionType": "POST_IG",
       "createdAt": "2025-06-15T04:00:30Z"
-  },
-  {
-      "id": 3,
-      "initiatorRole": "INFLUENCER",
-      "status": "PENDING",
-      "counterpartName": "Carlos Fitness",
-      "counterpartPhotoUrl": null,
-      "message": "qweqwewqdasdasdsadasdasdasdasdasasdasdasdasdasvsdcxvxcvsdavfsd",
-      "actionType": "REEL_IG",
-      "createdAt": "2025-06-15T04:08:09Z"
   }
 ]
 
 
+para ser mans especificso se han añaiddo estos 
 
-debes mostara la imagen en cada solcitud 
+"initiatorId": 123,
+"counterpartId": 456,
 
 
-leugo para ver los detalles de cada solicitud cnsumes este endpoint 
+porque ahoa necewsito que aghregues en cda card de kla lsiat un boton el cual va ser 
 
-http://localhost:8080/api/collaborations/2
+confirmacion de proceso 
 
-le pasas el id de la solcitud y es un get y esto te devuelve esto: 
 
-ese dos es le id de la solcitud 
+
+el cual me va abrir un modal el cual 
+
+mer va lsita esto 
+
+
+  {
+      "id": 2,
+      "initiatorId": 123,
+      "counterpartId": 456,
+      "initiatorRole": "INFLUENCER",
+      "status": "PENDING",
+      "counterpartName": "Nike",
+      "counterpartPhotoUrl": "data:image/jpeg;base64,/9j/4AAQ...",
+      "message": "aadssadasdasdasdasasmkdhkajsdhusaijkdhjkasdhjkasdkhgjahjgdsashjk",
+      "actionType": "POST_IG",
+      "createdAt": "2025-06-15T04:00:30Z"
+  }
+ osea los datros cortos de esa solcitud y va ahber un boton para acepatr o rechazar 
+
+el qeu peude aceprtar o rechazar solo es la persona qeu recibio 
+
+aqui tiene que buscar nuestro id de usario qeu esta en el local storage y ver si 
+
+
+"counterpartId": 456,(este es el userID)
+
+es igual a nuestro userid entonces este modal se muestra 
+
+si fuera dierente 
+
+entonces te vas a le segunda verificacion "initiatorId": 123,
+este seria del qeu envia 
+
+
+etonces si "initiatorId": 123, conidice con nuestro suer id de l lcoal storage entocnes 
+
+solo me sale el mismo modal pero en las opcione ssopllo me va aslir 
+
+lña ocpion de cancerlar 
+
+y se cierra el mdoal en ambos casoss
+
+
+este mdoal tiene qeuy tener un boton qeu ejeucte este enpoitn el cual le va mandar al back 
+el nuevo estado 
+
+http://localhost:8080/api/collaborations/1 (put)
+
 {
-  "id": 2,
-  "status": "PENDING",
-  "initiatorRole": "INFLUENCER",
-  "counterpart": {
-      "id": 14,
-      "name": "Nike",
-      "photoUrl": :"sajdhasdjsahdjsazhjdsahjdhd" //imagen en base 64 ,
-      },
-  "message": "aadssadasdasdasdasasmkdhkajsdhusaijkdhjkasdhjkasdkhgjahjgdsashjk",
-  "actionType": "POST_IG",
-  "targetDate": "2025-06-26",
-  "budget": 3424.42,
-  "milestones": [
-      {
-          "title": "fsdfsdfds",
-          "date": "2025-06-12",
-          "description": "sdfsdfdsfsd",
-          "location": "sdfsdfsd",
-          "deliverables": "sdfsdfsdfsdfsd"
-      }
-  ],
-  "location": "dsfsdfsds",
-  "deliverables": "dsffdsfds",
-  "createdAt": "2025-06-15T04:00:30Z",
-  "updatedAt": "2025-06-15T04:00:30Z"
+  "action": "ACCEPT"
 }
 
 
+estros son  los estdos que tengo:
+
+aqui le envias esto public enum CollaborationStatus {
+  PENDING,
+  ACCEPTED,
+  REJECTED,
+  CANCELED,
+  FINISHED
+} 
+
+por ahora solo hemos inpmenteado 3 aceptar o rechazar si nuestrpo idUser conicide con  "counterpartId": 456,
+
+
+y cancelar si nuestro idUSer coincide con       "initiatorId": 123,
+
+
+ah verdad esto solo sale si el estado esta en pendiende para otro estado no peude salir 
+
+
+ahroa este modal tambine puede salri si el estado es ACCEPTED,
+
+y solo le sale la opcion de FINISHED si es que el nuestro idUSer coincide con       "initiatorId": 123,
+
+aqui hay un tbalita quelo explica mejro 
+
+
+🎯 Resumen de Permisos:
+Acción	Quién puede	Estado requerido	Nuevo estado
+ACCEPT	Recipient	PENDING	          ACCEPTED
+REJECT	Recipient	PENDING	          REJECTED
+CANCEL	Initiator	PENDING	        CANCELED
+FINISH	Initiator	ACCEPTED	        FINISHED

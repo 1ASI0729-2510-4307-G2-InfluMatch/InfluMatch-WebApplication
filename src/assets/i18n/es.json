@@ -466,6 +466,7 @@
       "PENDING": "Pendiente",
       "ACCEPTED": "Aceptado",
       "REJECTED": "Rechazado",
+      "CANCELED": "Cancelado",
       "FINISHED": "Finalizado"
     },
     "FILTERS": {
@@ -473,6 +474,7 @@
       "PENDING": "Pendiente",
       "ACCEPTED": "Aceptado",
       "REJECTED": "Rechazado",
+      "CANCELED": "Cancelado",
       "FINISHED": "Finalizado"
     },
     "LIST": {
@@ -488,10 +490,39 @@
       "CREATED": "Creado",
       "VIEW_DETAILS": "Ver Detalles",
       "NEW_COLLABORATION": "Nueva Colaboración",
+      "CONFIRM_PROCESS": "Confirmar Proceso",
+      "CANCEL_COLLABORATION": "Cancelar Colaboración",
+      "FINISH_COLLABORATION": "Finalizar Colaboración",
       "ROLE": {
         "INFLUENCER": "Influencer",
         "BRAND": "Marca"
       }
+    },
+    "ACTIONS": {
+      "ACCEPT": "Aceptar",
+      "REJECT": "Rechazar",
+      "CANCEL": "Cancelar",
+      "FINISH": "Finalizar",
+      "ACCEPT_SUCCESS": "Colaboración aceptada exitosamente",
+      "REJECT_SUCCESS": "Colaboración rechazada exitosamente",
+      "CANCEL_SUCCESS": "Colaboración cancelada exitosamente",
+      "FINISH_SUCCESS": "Colaboración finalizada exitosamente",
+      "ACCEPT_ERROR": "Error al aceptar la colaboración",
+      "REJECT_ERROR": "Error al rechazar la colaboración",
+      "CANCEL_ERROR": "Error al cancelar la colaboración",
+      "FINISH_ERROR": "Error al finalizar la colaboración"
+    },
+    "CONFIRMATION": {
+      "TITLE": "Confirmación de Proceso",
+      "PROCESSING": "Procesando...",
+      "MESSAGE": "Mensaje",
+      "ACTION_TYPE": "Tipo de Acción",
+      "CREATED_DATE": "Fecha de Creación",
+      "RECIPIENT_DESCRIPTION": "Puedes aceptar o rechazar esta propuesta de colaboración",
+      "INITIATOR_CANCEL_DESCRIPTION": "Puedes cancelar esta colaboración si ya no deseas continuar",
+      "INITIATOR_FINISH_DESCRIPTION": "Marca esta colaboración como finalizada cuando se hayan completado todos los entregables",
+      "NO_ACTIONS_AVAILABLE": "No hay acciones disponibles para esta colaboración",
+      "CLOSE": "Cerrar"
     },
     "FIELDS": {
       "MESSAGE": "Mensaje de propuesta",

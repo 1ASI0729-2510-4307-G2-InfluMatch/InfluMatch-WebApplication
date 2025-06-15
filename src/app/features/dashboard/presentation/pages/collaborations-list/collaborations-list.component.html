@@ -117,6 +117,17 @@
             <mat-icon>visibility</mat-icon>
             {{ 'COLLABORATIONS.LIST.VIEW_DETAILS' | translate }}
           </button>
+          
+          <!-- Botón de Confirmación de Proceso -->
+          <button 
+            *ngIf="shouldShowConfirmationButton(collaboration)"
+            mat-raised-button 
+            [color]="getConfirmationButtonColor(collaboration)"
+            class="confirmation-btn" 
+            (click)="$event.stopPropagation(); openConfirmationModal(collaboration)">
+            <mat-icon>{{ getConfirmationButtonIcon(collaboration) }}</mat-icon>
+            {{ getConfirmationButtonText(collaboration) | translate }}
+          </button>
         </mat-card-actions>
       </mat-card>
     </div>

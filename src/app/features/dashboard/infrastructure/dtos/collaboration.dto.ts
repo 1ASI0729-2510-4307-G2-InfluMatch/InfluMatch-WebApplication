@@ -46,8 +46,10 @@ export interface MilestoneDto {
 
 export interface CollaborationListItemDto {
   id: number;
+  initiatorId: number;
+  counterpartId: number;
   initiatorRole: 'INFLUENCER' | 'BRAND';
-  status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'FINISHED';
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'CANCELED' | 'FINISHED';
   counterpartName: string;
   counterpartPhotoUrl: string | null;
   message: string;
