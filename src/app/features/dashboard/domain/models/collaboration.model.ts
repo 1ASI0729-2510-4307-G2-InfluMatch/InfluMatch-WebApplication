@@ -30,7 +30,7 @@ export interface CollaborationListItem {
   initiatorRole: 'INFLUENCER' | 'BRAND';
   status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'FINISHED';
   counterpartName: string;
-  counterpartPhotoUrl: string;
+  counterpartPhotoUrl: string | null;
   message: string;
   actionType: string;
   createdAt: string;
@@ -38,4 +38,26 @@ export interface CollaborationListItem {
 
 export interface CollaborationListResponse {
   collaborations: CollaborationListItem[];
+}
+
+export interface CollaborationCounterpart {
+  id: number;
+  name: string;
+  photoUrl: string | null;
+}
+
+export interface CollaborationDetail {
+  id: number;
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'FINISHED';
+  initiatorRole: 'INFLUENCER' | 'BRAND';
+  counterpart: CollaborationCounterpart;
+  message: string;
+  actionType: string;
+  targetDate: string;
+  budget: number;
+  milestones: Milestone[];
+  location: string;
+  deliverables: string;
+  createdAt: string;
+  updatedAt: string;
 } 

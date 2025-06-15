@@ -45,8 +45,8 @@ export class ProfileCardComponent {
   getImageSrc(imageUrl: string | null): SafeUrl {
     if (!imageUrl) {
       return this.profile.type === 'brand' 
-        ? '/assets/default-brand.png' 
-        : '/assets/default-avatar.png';
+        ? '/assets/images/logo-dark.png' 
+        : '/assets/images/default-avatar.svg';
     }
 
     // Si la imagen ya es una URL de datos base64 completa

@@ -514,6 +514,28 @@
       "BLOG_POST": "Blog Post",
       "PODCAST": "Podcast",
       "EVENT": "Event"
+    },
+    "DETAILS": {
+      "TITLE": "Collaboration Details",
+      "COUNTERPART": "Counterpart",
+      "INFORMATION": "General Information",
+      "ACTION_TYPE": "Action Type",
+      "TARGET_DATE": "Target Date",
+      "BUDGET": "Budget",
+      "LOCATION": "Location",
+      "MESSAGE": "Message",
+      "DELIVERABLES": "Deliverables",
+      "MILESTONES": "Project Milestones",
+      "DATES": "Dates",
+      "CREATED_AT": "Created At",
+      "UPDATED_AT": "Last Updated",
+      "LOADING": "Loading details...",
+      "ERROR_TITLE": "Error Loading",
+      "ERROR_MESSAGE": "Could not load collaboration details. Please try again.",
+      "ERROR_INVALID_ID": "Invalid collaboration ID",
+      "ERROR_LOADING": "Error loading collaboration details",
+      "RETRY": "Retry",
+      "NO_MILESTONES": "No milestones defined for this collaboration"
     }
   }
 }

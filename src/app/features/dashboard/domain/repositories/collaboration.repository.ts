@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs';
-import { Collaboration, CollaborationListItem, CollaborationResponse } from '../models/collaboration.model';
+import { Collaboration, CollaborationListItem, CollaborationResponse, CollaborationDetail } from '../models/collaboration.model';
 
 export interface CollaborationRepository {
   createCollaboration(collaboration: Collaboration): Observable<CollaborationResponse>;
   getCollaborations(): Observable<CollaborationListItem[]>;
+  getCollaborationById(id: number): Observable<CollaborationDetail>;
 } 

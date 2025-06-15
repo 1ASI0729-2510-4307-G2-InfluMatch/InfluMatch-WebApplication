@@ -1,101 +1,64 @@
-leugo necesito queme crees otro apartado qeu sea collaboraciones
-
-todo incia desde el dashbiard incial dodne me listas los marcas/influncers ahi tran esto 
-
-
-
-    "userId": 17,
-    "tradeName": "Nike Colombia",
-    "logoUrl": "",  // lgo en base 64 
-    "country": "CO",
-    "sector": "Deportes y Moda"
-},
-{
-    "userId": 29,
-    "tradeName": "dsasda",
-    "logoUrl": "",  // lgo en base 64 
-    "country": "asdas",
-    "sector": "sadasd"
-},
-{
-    "userId": 33,
-    "tradeName": "dsadsa",
-    "logoUrl": "",  // lgo en base 64 
-    "" "country": "asdsada",
-    "sector": "sadsa"
-}
+perfecto ahroa para cada solcitu de vuelve esto [
+  {
+      "id": 2,
+      "initiatorRole": "INFLUENCER",
+      "status": "PENDING",
+      "counterpartName": "Nike",
+      "counterpartPhotoUrl":"sajdhasdjsahdjsazhjdsahjdhd" //imagen en base 64 ,
+        "message": "aadssadasdasdasdasasmkdhkajsdhusaijkdhjkasdhjkasdkhgjahjgdsashjk",
+      "actionType": "POST_IG",
+      "createdAt": "2025-06-15T04:00:30Z"
+  },
+  {
+      "id": 3,
+      "initiatorRole": "INFLUENCER",
+      "status": "PENDING",
+      "counterpartName": "Carlos Fitness",
+      "counterpartPhotoUrl": null,
+      "message": "qweqwewqdasdasdsadasdasdasdasdasasdasdasdasdasvsdcxvxcvsdavfsd",
+      "actionType": "REEL_IG",
+      "createdAt": "2025-06-15T04:08:09Z"
+  }
 ]
 
 
-de auqi obetenesmo el userID de aqui cuadno presione el boton de contacatar obtienbe el userId y me llevas a otra ruta que seria dashbaord/collaboratiosn
 
-tiene qeu agregar este icono en el siedbar 
+debes mostara la imagen en cada solcitud 
 
-aqui vas  a mostrar un formulario el caul tiene qeu envairlo estos campos 
 
-http://localhost:8080/api/collaborations
+leugo para ver los detalles de cada solicitud cnsumes este endpoint 
 
-tienes qeu enviarle esto 
+http://localhost:8080/api/collaborations/2
 
+le pasas el id de la solcitud y es un get y esto te devuelve esto: 
+
+ese dos es le id de la solcitud 
 {
-    "counterpartId": 2,  // IDuser  de la marca o id de influencer 
-    "message": "¡Hola! Me encanta su marca y sus productos. Me gustaría proponer una colaboración para crear contenido que muestre cómo sus productos se integran en mi estilo de vida saludable.",
-    "actionType": "REEL_IG",
-    "targetDate": "2024-04-15",
-    "budget": 800.00,
-    "milestones": [
-      {
-        "title": "Propuesta creativa",
-        "date": "2024-03-25",
-        "description": "Presentación de ideas y concepto",
-        "location": "Zoom",
-        "deliverables": "Documento de propuesta"
+  "id": 2,
+  "status": "PENDING",
+  "initiatorRole": "INFLUENCER",
+  "counterpart": {
+      "id": 14,
+      "name": "Nike",
+      "photoUrl": :"sajdhasdjsahdjsazhjdsahjdhd" //imagen en base 64 ,
       },
-      {
-        "title": "Grabación de contenido",
-        "date": "2024-04-05",
-        "description": "Producción del Reel",
-        "location": "Estudio",
-        "deliverables": "Reel sin editar"
-      },
-      {
-        "title": "Entrega final",
-        "date": "2024-04-12",
-        "description": "Entrega del Reel editado",
-        "location": "Email",
-        "deliverables": "Reel final con música y efectos"
-      }
-    ],
-    "location": "Madrid",
-    "deliverables": "1 Reel de 60 segundos + 3 Stories promocionales"
-  }
-
+  "message": "aadssadasdasdasdasasmkdhkajsdhusaijkdhjkasdhjkasdkhgjahjgdsashjk",
+  "actionType": "POST_IG",
+  "targetDate": "2025-06-26",
+  "budget": 3424.42,
   "milestones": [
       {
-        "title": "Propuesta creativa",
-        "date": "2024-03-25",
-        "description": "Presentación de ideas y concepto",
-        "location": "Zoom",
-        "deliverables": "Documento de propuesta"
-      },
-      {
-        "title": "Grabación de contenido",
-        "date": "2024-04-05",
-        "description": "Producción del Reel",
-        "location": "Estudio",
-        "deliverables": "Reel sin editar"
-      },
-      {
-        "title": "Entrega final",
-        "date": "2024-04-12",
-        "description": "Entrega del Reel editado",
-        "location": "Email",
-        "deliverables": "Reel final con música y efectos"
+          "title": "fsdfsdfds",
+          "date": "2025-06-12",
+          "description": "sdfsdfdsfsd",
+          "location": "sdfsdfsd",
+          "deliverables": "sdfsdfsdfsdfsd"
       }
-    ],
+  ],
+  "location": "dsfsdfsds",
+  "deliverables": "dsffdsfds",
+  "createdAt": "2025-06-15T04:00:30Z",
+  "updatedAt": "2025-06-15T04:00:30Z"
+}
 
-    esta aprte de aqui tiene qeus eun campo oblligatorio luego un boton de mas y tacho apra poder agregar mas 
 
-    tiene qeu ser respodive ys eguir DDD
-
-    ademas dale un estilo de vista bonitiog agrgadlbel freco moderno no tan minilaista qeu angualr maeriu9al e smuy minuimalista asi qeu tu dale un poco de vida pero sin si llegare a si extrabagante 

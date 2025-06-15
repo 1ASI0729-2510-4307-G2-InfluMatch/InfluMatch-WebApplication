@@ -49,7 +49,7 @@ export interface CollaborationListItemDto {
   initiatorRole: 'INFLUENCER' | 'BRAND';
   status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'FINISHED';
   counterpartName: string;
-  counterpartPhotoUrl: string;
+  counterpartPhotoUrl: string | null;
   message: string;
   actionType: string;
   createdAt: string;
@@ -57,4 +57,26 @@ export interface CollaborationListItemDto {
 
 export interface CollaborationListResponseDto {
   collaborations: CollaborationListItemDto[];
+}
+
+export interface CollaborationCounterpartDto {
+  id: number;
+  name: string;
+  photoUrl: string | null;
+}
+
+export interface CollaborationDetailDto {
+  id: number;
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'FINISHED';
+  initiatorRole: 'INFLUENCER' | 'BRAND';
+  counterpart: CollaborationCounterpartDto;
+  message: string;
+  actionType: string;
+  targetDate: string;
+  budget: number;
+  milestones: MilestoneDto[];
+  location: string;
+  deliverables: string;
+  createdAt: string;
+  updatedAt: string;
 } 

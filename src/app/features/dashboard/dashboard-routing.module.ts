@@ -11,6 +11,18 @@ const routes: Routes = [
       {
         path: 'profile/:id',
         component: ProfileDetailsComponent
+      },
+      {
+        path: 'collaborations',
+        loadComponent: () => import('./presentation/pages/collaborations-list/collaborations-list.component').then(m => m.CollaborationsListComponent)
+      },
+      {
+        path: 'collaborations/:id',
+        loadComponent: () => import('./presentation/pages/collaboration-details/collaboration-details.component').then(m => m.CollaborationDetailsComponent)
+      },
+      {
+        path: 'new-collaboration',
+        loadComponent: () => import('./presentation/pages/collaborations/collaborations.component').then(m => m.CollaborationsComponent)
       }
     ]
   }

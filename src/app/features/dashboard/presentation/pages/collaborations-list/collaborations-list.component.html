@@ -9,7 +9,7 @@
           mat-raised-button 
           color="primary" 
           class="new-collaboration-btn"
-          routerLink="/dashboard">
+          routerLink="/dashboard/new-collaboration">
           <mat-icon>add</mat-icon>
           {{ 'COLLABORATIONS.LIST.NEW_COLLABORATION' | translate }}
         </button>
@@ -62,14 +62,15 @@
 
       <mat-card 
         *ngFor="let collaboration of filteredCollaborations" 
-        class="collaboration-card"
-        [class]="'status-' + collaboration.status.toLowerCase()">
+        class="collaboration-card clickable"
+        [class]="'status-' + collaboration.status.toLowerCase()"
+        (click)="viewCollaborationDetails(collaboration.id)">
         
         <mat-card-header>
           <div class="card-header-content">
             <div class="user-info">
               <img 
-                [src]="collaboration.counterpartPhotoUrl" 
+                [src]="getImageUrl(collaboration.counterpartPhotoUrl)" 
                 [alt]="collaboration.counterpartName"
                 class="user-avatar"
                 (error)="hideImage($event)">
@@ -112,7 +113,7 @@
         </mat-card-content>
 
         <mat-card-actions>
-          <button mat-button color="primary" class="view-details-btn">
+          <button mat-button color="primary" class="view-details-btn" (click)="$event.stopPropagation(); viewCollaborationDetails(collaboration.id)">
             <mat-icon>visibility</mat-icon>
             {{ 'COLLABORATIONS.LIST.VIEW_DETAILS' | translate }}
           </button>

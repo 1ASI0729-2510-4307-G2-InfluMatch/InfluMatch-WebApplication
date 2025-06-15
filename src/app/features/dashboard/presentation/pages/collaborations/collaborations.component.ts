@@ -204,7 +204,7 @@ export class CollaborationsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard/collaborations']);
   }
 
   getErrorMessage(controlName: string): string {

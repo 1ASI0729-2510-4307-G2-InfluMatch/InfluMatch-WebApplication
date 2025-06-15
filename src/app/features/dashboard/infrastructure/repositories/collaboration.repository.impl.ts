@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { CollaborationRepository } from '../../domain/repositories/collaboration.repository';
-import { Collaboration, CollaborationListItem, CollaborationResponse } from '../../domain/models/collaboration.model';
-import { CreateCollaborationDto, CollaborationListItemDto, CollaborationResponseDTO } from '../dtos/collaboration.dto';
+import { Collaboration, CollaborationListItem, CollaborationResponse, CollaborationDetail } from '../../domain/models/collaboration.model';
+import { CreateCollaborationDto, CollaborationListItemDto, CollaborationResponseDTO, CollaborationDetailDto } from '../dtos/collaboration.dto';
 import { environment } from '../../../../../environments/environment';
 
 @Injectable({
@@ -64,6 +64,36 @@ export class CollaborationRepositoryImpl implements CollaborationRepository {
             createdAt: item.createdAt
           }));
         })
+      );
+  }
+
+  getCollaborationById(id: number): Observable<CollaborationDetail> {
+    const token = localStorage.getItem('accessToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get<CollaborationDetailDto>(`${this.apiUrl}/collaborations/${id}`, { headers })
+      .pipe(
+        map((response: CollaborationDetailDto): CollaborationDetail => ({
+          id: response.id,
+          status: response.status,
+          initiatorRole: response.initiatorRole,
+          counterpart: {
+            id: response.counterpart.id,
+            name: response.counterpart.name,
+            photoUrl: response.counterpart.photoUrl
+          },
+          message: response.message,
+          actionType: response.actionType,
+          targetDate: response.targetDate,
+          budget: response.budget,
+          milestones: response.milestones,
+          location: response.location,
+          deliverables: response.deliverables,
+          createdAt: response.createdAt,
+          updatedAt: response.updatedAt
+        }))
       );
   }
 } 

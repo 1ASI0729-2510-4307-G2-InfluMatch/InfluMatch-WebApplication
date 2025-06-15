@@ -536,6 +536,28 @@
       "BLOG_POST": "Artículo de Blog",
       "PODCAST": "Podcast",
       "EVENT": "Evento"
+    },
+    "DETAILS": {
+      "TITLE": "Detalles de Colaboración",
+      "COUNTERPART": "Contraparte",
+      "INFORMATION": "Información General",
+      "ACTION_TYPE": "Tipo de Acción",
+      "TARGET_DATE": "Fecha Objetivo",
+      "BUDGET": "Presupuesto",
+      "LOCATION": "Ubicación",
+      "MESSAGE": "Mensaje",
+      "DELIVERABLES": "Entregables",
+      "MILESTONES": "Hitos del Proyecto",
+      "DATES": "Fechas",
+      "CREATED_AT": "Fecha de Creación",
+      "UPDATED_AT": "Última Actualización",
+      "LOADING": "Cargando detalles...",
+      "ERROR_TITLE": "Error al Cargar",
+      "ERROR_MESSAGE": "No se pudieron cargar los detalles de la colaboración. Por favor, inténtalo de nuevo.",
+      "ERROR_INVALID_ID": "ID de colaboración inválido",
+      "ERROR_LOADING": "Error al cargar los detalles de la colaboración",
+      "RETRY": "Reintentar",
+      "NO_MILESTONES": "No hay hitos definidos para esta colaboración"
     }
   }
 }

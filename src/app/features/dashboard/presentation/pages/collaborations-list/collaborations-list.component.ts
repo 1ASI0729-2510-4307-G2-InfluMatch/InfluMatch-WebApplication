@@ -16,6 +16,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs/operators';
 import { CollaborationListItem } from '../../../domain/models/collaboration.model';
 import { CollaborationListItemDto } from '../../../infrastructure/dtos/collaboration.dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-collaborations-list',
@@ -57,7 +58,8 @@ export class CollaborationsListComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private snackBar: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -156,5 +158,35 @@ export class CollaborationsListComponent implements OnInit {
     if (target) {
       target.style.display = 'none';
     }
+  }
+
+  getImageUrl(photoUrl: string | null): string {
+    if (!photoUrl) {
+      return 'assets/images/default-avatar.svg'; // Imagen por defecto
+    }
+    
+    // Si ya es una URL completa, devolverla tal como está
+    if (photoUrl.startsWith('http://') || photoUrl.startsWith('https://')) {
+      return photoUrl;
+    }
+    
+    // Si es base64, devolverla con el prefijo data:image
+    if (photoUrl.startsWith('data:')) {
+      return photoUrl;
+    }
+    
+    // Si es solo base64 sin prefijo, agregar el prefijo
+    return `data:image/jpeg;base64,${photoUrl}`;
+  }
+
+  viewCollaborationDetails(collaborationId: number): void {
+    console.log('Navegando a detalles de colaboración:', collaborationId);
+    console.log('URL de navegación:', `/dashboard/collaborations/${collaborationId}`);
+    
+    this.router.navigate(['/dashboard/collaborations', collaborationId]).then(success => {
+      console.log('Navegación exitosa:', success);
+    }).catch(error => {
+      console.error('Error en navegación:', error);
+    });
   }
 } 

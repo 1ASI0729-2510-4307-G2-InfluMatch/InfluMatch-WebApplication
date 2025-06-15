@@ -28,6 +28,13 @@ export const DASHBOARD_ROUTES: Routes = [
       ),
   },
   {
+    path: 'collaborations/:id',
+    loadComponent: () =>
+      import('./presentation/pages/collaboration-details/collaboration-details.component').then(
+        (m) => m.CollaborationDetailsComponent
+      ),
+  },
+  {
     path: 'new-collaboration',
     loadComponent: () =>
       import('./presentation/pages/collaborations/collaborations.component').then(
