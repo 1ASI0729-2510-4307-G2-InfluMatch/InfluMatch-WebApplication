@@ -1,145 +1,82 @@
-http://localhost:4200/dashboard
+si mi perfil es de marca entonces consumes es te ednpoint 
 
-aqui me lista la lista de perfiles dependiendo del tipo de perfil
+http://localhost:8080/api/profiles/brand/me
 
-bueno la cosa es que en la lsita me traen esto [{
-    "userId": 3,
-    "tradeName": "Nombre de la Marca",
-    "logoUrl": "",
-"country": "US",
-    "sector": "Sector de la Marca"
-},
+
+este devuvel esto: 
 {
-    "userId": 11,
-    "tradeName": "Nombre de la Marca",
-    "logoUrl": "",
-"country": "US",
-    "sector": "Sector de la Marca"
-},
-{
-    "userId": 14,
-    "tradeName": "Nike",
-    "logoUrl": "",
-"country": "US",
-    "sector": "Deportes"
-},]
-
-
-me traen el userID a partir de eso en cada card hay un boton qeu es ver perfil ese botoon va llamar a estos servicios
-
-
-http://localhost:8080//api/dashboard/influencers/{id}
-
-ahi le pasas el id ese es apra influencers
-
-y este e sapra amrcas
-
-http://localhost:8080//api/dashboard/brands/{id}
-
-y como sabes cual va a usar por ejmeplo si el perfil registrrado es amrca entonces usasa el de influencers y si el perfil registarado es de influenecer entonces yusas el de marca 
-
-/api/dashboard/brands/{userId}
-
-esto deveulve esto: 
-
-
-
-
-{
-    "id": 3,
-    "name": "Nombre de la Marca",
-    "sector": "Sector de la Marca",
-    "description": "Descripción detallada de la marca (mínimo 50 caracteres)",
-    "logo": "sadasd", //photo en base 64
-    "profilePhoto": "sadasd", //photo en base 64
-    "country": "PE",
-    "websiteUrl": "https://www.tuweb.com",
-    "location": "Ciudad, País",
+    "id": "Long - ID del perfil",
+    "name": "String - Nombre de la marca",
+    "sector": "String - Sector o industria",
+    "country": "String - Código de país ISO 3166-1 alpha-2",
+    "description": "String - Descripción detallada",
+    "logo": "String - Logo en base64",
+    "profilePhoto": "String - Foto de perfil en base64",
+    "websiteUrl": "String - URL del sitio web",
+    "location": "String - Ubicación",
     "links": [
         {
-            "title": "Título del enlace",
-            "url": "https://url.com"
+            "title": "String - Título del enlace",
+            "url": "String - URL del enlace"
         }
     ],
     "attachments": [
         {
-            "title": "Título del adjunto",
-            "description": "Descripción del adjunto",
-            "mediaType": "PHOTO",
-            "data": "sadasd" //data dependiendo del mediaType(PHOTO, VIDEO, DOCUMENT) en base 64
-            }
+            "title": "String - Título del adjunto",
+            "description": "String - Descripción del adjunto",
+            "mediaType": "String - Tipo de medio (PHOTO, VIDEO, DOCUMENT)",
+            "data": "String - Contenido del archivo en base64"
+        }
     ],
-    "rating": 0.0,
-    "createdAt": "2025-06-13T20:50:40",
-    "updatedAt": "2025-06-13T20:50:40"
+    "createdAt": "DateTime - Fecha de creación (formato: yyyy-MM-dd'T'HH:mm:ss)",
+    "updatedAt": "DateTime - Fecha de última actualización (formato: yyyy-MM-dd'T'HH:mm:ss)"
 }
 
-y el de influencers deveuvel esto
+si mi perfil es de infleunecr consuems esto:
 
-localhost:8080/api/dashboard/influencers/userId
+http://localhost:8080/api/profiles/influencer/me
+
+ambos son gets devuvel esto
 
 
 {
-    "id": 2,
-    "name": "Carlos Fitness",
-    "niches": [
-        "FITNESS",
-        "LIFESTYLE",
-        "HEALTH"
-    ],
-    "bio": "Entrenador personal certificado y creador de contenido fitness con más de 5 años de experiencia. Especializado en rutinas de ejercicio, nutrición y estilo de vida saludable.",
-    "country": "ES",
-    "logo": "sadasd", //photo en base 64
-    "profilePhoto": "sadasd", //photo en base 64
-    "followers": 150000,
+    "id": "Long - ID del perfil",
+    "name": "String - Nombre del influencer",
+    "niches": ["String - Lista de nichos o categorías"],
+    "bio": "String - Biografía",
+    "country": "String - Código de país ISO 3166-1 alpha-2",
+    "photo": "String - Foto principal en base64",
+    "profilePhoto": "String - Foto de perfil en base64",
+    "followers": "Integer - Número de seguidores",
     "socialLinks": [
         {
-            "platform": "INSTAGRAM",
-            "url": "https://instagram.com/carlosfitness"
-        },
-        {
-            "platform": "YOUTUBE",
-            "url": "https://youtube.com/c/carlosfitness"
-        },
-        {
-            "platform": "TIKTOK",
-            "url": "https://tiktok.com/@carlosfitness"
+            "platform": "String - Plataforma de red social",
+            "url": "String - URL del perfil social"
         }
     ],
-    "location": "Madrid",
+    "location": "String - Ubicación",
     "links": [
         {
-            "title": "Mi Blog Personal",
-            "url": "https://carlosfitness.com"
-        },
-        {
-            "title": "Programa de Entrenamiento",
-            "url": "https://carlosfitness.com/programa"
+            "title": "String - Título del enlace",
+            "url": "String - URL del enlace"
         }
     ],
     "attachments": [
         {
-            "title": "Reel Destacados",
-            "description": "Compilación de mis mejores contenidos fitness",
-            "mediaType": "VIDEO",
-             "data": "sadasd" //data dependiendo del mediaType(PHOTO, VIDEO, DOCUMENT) en base 64},
-        {
-            "title": "Media Kit",
-            "description": "Estadísticas y métricas de engagement",
-            "mediaType": "DOCUMENT",
-            "data": "sadasd" //data dependiendo del mediaType(PHOTO, VIDEO, DOCUMENT) en base 64
-            }
+            "title": "String - Título del adjunto",
+            "description": "String - Descripción del adjunto",
+            "mediaType": "String - Tipo de medio (PHOTO, VIDEO, DOCUMENT)",
+            "data": "String - Contenido del archivo en base64"
+        }
     ],
-    "rating": 0.0,
-    "createdAt": "2025-06-13T20:51:26",
-    "updatedAt": "2025-06-13T20:51:26"
+    "createdAt": "DateTime - Fecha de creación (formato: yyyy-MM-dd'T'HH:mm:ss)",
+    "updatedAt": "DateTime - Fecha de última actualización (formato: yyyy-MM-dd'T'HH:mm:ss)"
 }
 
+si algun campo devuelvo un null, entonces no lo muestro en el frontend y tmapo si e sque devuele "" tmapoc lo muestro
 
-has una vcaldaicion qeu si alkgun campos esta vacio o es cero como en raiting simeplmnten no lo muestres nomas 
-
-quiero un cmponetne que trenga unsstilo parecido al @login.component.html  y tenga los estislo parecidos o ighuale sbajo la misma tematica qeu @login.component.scss 
-y tambien qeu @register.component.html @register.component.scss  y tambien de @onboard.component.scss @onboard.component.html 
+de ahi esto tiene qeu ser bajo DDD la estrutura de la aplicacion, y revisa misa rhcivos y ten en cuneta qeu ya ahy algunos dtos, crados los cuales
+tiene una esturura y si tus los modifcas peuden qeu otros componenes se ropmpan poruqe ya tabajand con eso asi qe lop mas recomndable es crees todo nuevo exceptop de este componetnde de @profiele.compoente que te digo ese si lo puedes cambias porque no se usa
 
 
-receurda hacerlo bajo ddd con asewembler dtos , etc etc
+tambien trienes que cambiar en el componedne de @sidebar para que te redirga a esdya pesatña en la priema cargga nomas se tioene que consumir los endpoints osea apensa redenricen

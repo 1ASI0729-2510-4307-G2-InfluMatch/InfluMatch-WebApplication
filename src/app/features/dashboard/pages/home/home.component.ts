@@ -7,7 +7,7 @@ import { DashboardProfileVO } from '../../../../domain/value-objects/dashboard-p
 import { DashboardRepository } from '../../../../domain/repositories/dashboard-repository';
 import { DashboardRepositoryImpl } from '../../../../infrastructure/repositories/dashboard.repository';
 import { ProfileCardComponent } from '../../components/profile-card/profile-card.component';
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../../infrastructure/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -38,7 +38,8 @@ export class HomeComponent implements OnInit {
     private dashboardRepository: DashboardRepository,
     private authService: AuthService
   ) {
-    this.role = this.authService.getUserRole();
+    const currentUser = this.authService.currentUser;
+    this.role = currentUser?.user_type || '';
   }
 
   ngOnInit(): void {
