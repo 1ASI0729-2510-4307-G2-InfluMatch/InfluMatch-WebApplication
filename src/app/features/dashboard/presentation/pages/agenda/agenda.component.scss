@@ -278,7 +278,6 @@
       gap: 1px;
 
       .calendar-day {
-        aspect-ratio: 1;
         padding: 10px;
         border: 1px solid #e9ecef;
         border-radius: 8px;
@@ -290,6 +289,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
+        min-height: 100px; /* Base minimum height */
+        box-sizing: border-box; 
 
         &:hover {
           background-color: #f8f9fa;
@@ -319,11 +320,6 @@
           }
         }
 
-        &.has-events {
-          border-color: #a0d911;
-          border-width: 2px;
-        }
-
         .day-number {
           font-size: 1rem;
           margin-bottom: 5px;
@@ -331,15 +327,16 @@
 
         .day-events {
           display: flex;
-          flex-direction: column;
+          flex-direction: column; 
           flex-wrap: wrap;
           gap: 2px;
-          justify-content: flex-start;
+          justify-content: flex-start; 
           width: 100%;
-          height: calc(100% - 25px);
-          overflow-y: auto;
-          padding-top: 5px;
+          height: calc(100% - 25px); /* Adjusted height calculation based on min-height for day cell */
+          overflow-y: auto; 
+          padding-top: 5px; 
 
+          /* Custom scrollbar for better appearance */
           &::-webkit-scrollbar {
             width: 5px;
           }
@@ -352,19 +349,19 @@
           }
 
           .event-card {
-            width: calc(100% - 8px);
+            width: calc(100% - 8px); /* Account for padding */
             padding: 6px 8px;
             border-radius: 6px;
-            margin-bottom: 4px;
+            margin-bottom: 4px; 
             cursor: pointer;
             transition: all 0.2s ease;
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
-            font-size: 0.8rem;
+            white-space: nowrap; 
+            font-size: 0.8rem; 
             color: white;
             text-align: left;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
 
             &:hover {
               transform: translateY(-1px);
@@ -481,46 +478,97 @@
 }
 
 // Responsive design
+@media (max-width: 1200px) {
+  .native-calendar {
+    padding: 25px; /* Adjust as needed */
+  }
+}
+
+@media (max-width: 992px) {
+  .native-calendar {
+    padding: 20px;
+
+    .calendar-header {
+      h2 {
+        font-size: 1.6rem;
+      }
+    }
+
+    .today-button {
+      padding: 9px 22px;
+      font-size: 0.95rem;
+    }
+
+    .calendar-grid {
+      .calendar-week-header {
+        .calendar-day-header {
+          padding: 12px 8px;
+          font-size: 0.85rem;
+        }
+      }
+
+      .calendar-days {
+        .calendar-day {
+          padding: 8px 6px;
+          min-height: 90px; /* Adjusted min-height */
+
+          .day-number {
+            font-size: 0.9rem;
+          }
+
+          .day-events {
+            height: calc(100% - 22px); /* Adjusted height calculation */
+            .event-card {
+              width: calc(100% - 7px); 
+              padding: 5px 7px;
+              font-size: 0.75rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .native-calendar {
     padding: 15px;
 
     .calendar-header {
       h2 {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
       }
     }
 
     .today-button {
-      padding: 8px 20px;
-      font-size: 0.9rem;
+      padding: 7px 18px;
+      font-size: 0.85rem;
     }
 
     .calendar-grid {
       .calendar-week-header {
         .calendar-day-header {
           padding: 8px 4px;
-          font-size: 0.75rem;
+          font-size: 0.7rem;
         }
       }
 
       .calendar-days {
         .calendar-day {
-          padding: 6px 4px;
-          height: unset;
-          min-height: 80px;
+          padding: 5px 3px;
+          min-height: 80px; /* Adjusted min-height */
 
           .day-number {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
           }
 
           .day-events {
-            height: calc(100% - 20px);
+            height: calc(100% - 18px); /* Adjusted height calculation */
 
             .event-card {
-              width: calc(100% - 6px);
+              width: calc(100% - 4px);
               padding: 4px 5px;
-              font-size: 0.7rem;
+              font-size: 0.65rem;
               margin-bottom: 2px;
             }
           }
@@ -528,14 +576,101 @@
       }
     }
   }
+}
 
-  .calendar-controls {
-    flex-direction: column;
-    gap: 15px;
-    text-align: center;
+@media (max-width: 576px) {
+  .native-calendar {
+    padding: 10px;
 
-    .view-toggle-buttons {
-      justify-content: center;
+    .calendar-header {
+      flex-direction: column;
+      h2 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+      }
+    }
+
+    .today-button {
+      padding: 6px 14px;
+      font-size: 0.75rem;
+      margin-bottom: 12px;
+    }
+
+    .calendar-grid {
+      .calendar-week-header {
+        .calendar-day-header {
+          padding: 5px 2px;
+          font-size: 0.65rem;
+        }
+      }
+
+      .calendar-days {
+        .calendar-day {
+          padding: 3px 1px;
+          min-height: 65px; /* Adjusted min-height */
+
+          .day-number {
+            font-size: 0.65rem;
+          }
+
+          .day-events {
+            height: calc(100% - 15px); /* Adjusted height calculation */
+
+            .event-card {
+              width: calc(100% - 2px);
+              padding: 2px 3px;
+              font-size: 0.6rem;
+              margin-bottom: 1px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .native-calendar {
+    padding: 8px;
+
+    .calendar-header {
+      h2 {
+        font-size: 0.9rem;
+      }
+    }
+
+    .today-button {
+      padding: 5px 10px;
+      font-size: 0.7rem;
+    }
+
+    .calendar-grid {
+      .calendar-week-header {
+        .calendar-day-header {
+          padding: 4px 1px;
+          font-size: 0.6rem;
+        }
+      }
+
+      .calendar-days {
+        .calendar-day {
+          padding: 2px;
+          min-height: 55px; /* Smallest min-height */
+
+          .day-number {
+            font-size: 0.6rem;
+          }
+
+          .day-events {
+            height: calc(100% - 12px); /* Adjusted height calculation */
+
+            .event-card {
+              padding: 1px 2px;
+              font-size: 0.55rem;
+            }
+          }
+        }
+      }
     }
   }
 } 
