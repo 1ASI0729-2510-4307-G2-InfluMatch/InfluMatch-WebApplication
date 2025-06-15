@@ -20,4 +20,11 @@ export const DASHBOARD_ROUTES: Routes = [
         (m) => m.ProfileDetailsComponent
       ),
   },
+  {
+    path: 'collaborations',
+    loadComponent: () =>
+      import('./presentation/pages/collaborations/collaborations.component').then(
+        (m) => m.CollaborationsComponent
+      ),
+  },
 ];

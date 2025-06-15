@@ -36,11 +36,11 @@
   </div>
 
   <div class="profile-actions">
-    <button class="action-button primary">
+    <button class="action-button primary" (click)="contactUser(); $event.stopPropagation()">
       <span class="icon">👋</span>
       {{ 'dashboard.profile.actions.contact' | translate }}
     </button>
-    <button class="action-button secondary">
+    <button class="action-button secondary" (click)="viewDetails(); $event.stopPropagation()">
       <span class="icon">ℹ️</span>
       {{ 'dashboard.profile.actions.viewProfile' | translate }}
     </button>

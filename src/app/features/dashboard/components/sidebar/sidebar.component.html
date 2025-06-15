@@ -78,6 +78,16 @@
       </li>
       <li>
         <a
+          routerLink="/dashboard/collaborations"
+          routerLinkActive="active"
+          (click)="closeMobileMenu()"
+        >
+          <mat-icon>handshake</mat-icon>
+          <span>{{ "SIDEBAR.COLLABORATIONS" | translate }}</span>
+        </a>
+      </li>
+      <li>
+        <a
           routerLink="/dashboard/campaigns"
           routerLinkActive="active"
           (click)="closeMobileMenu()"
@@ -229,6 +239,22 @@
             >
               3
             </div>
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="/dashboard/collaborations"
+            routerLinkActive="active"
+            (click)="closeMobileMenu()"
+            (mouseenter)="showTooltip($event, collaborationsTooltip)"
+            (mouseleave)="hideTooltip()"
+          >
+            <mat-icon>handshake</mat-icon>
+            <span
+              *ngIf="isExpanded"
+              [@fadeInOut]="isExpanded ? 'visible' : 'hidden'"
+              >{{ "SIDEBAR.COLLABORATIONS" | translate }}</span
+            >
           </a>
         </li>
         <li>

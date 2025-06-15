@@ -207,4 +207,13 @@ export class ProfileDetailsComponent implements OnInit {
   get Math() {
     return Math;
   }
+
+  contactUser(): void {
+    this.router.navigate(['/dashboard/collaborations'], {
+      queryParams: {
+        counterpartId: this.route.snapshot.paramMap.get('id'),
+        counterpartName: 'Usuario' // Esto se puede mejorar obteniendo el nombre del perfil actual
+      }
+    });
+  }
 } 

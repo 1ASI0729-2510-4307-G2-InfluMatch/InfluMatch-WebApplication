@@ -24,6 +24,15 @@ export class ProfileCardComponent {
     this.router.navigate(['/dashboard/profile', this.profile.userId]);
   }
 
+  contactUser(): void {
+    this.router.navigate(['/dashboard/collaborations'], {
+      queryParams: {
+        counterpartId: this.profile.userId,
+        counterpartName: this.profile.name
+      }
+    });
+  }
+
   formatNumber(num: number): string {
     if (num >= 1000000) {
       return (num / 1000000).toFixed(1) + 'M';

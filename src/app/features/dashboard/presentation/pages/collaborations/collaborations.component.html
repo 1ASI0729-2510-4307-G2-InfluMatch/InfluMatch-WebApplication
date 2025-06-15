@@ -1,0 +1,233 @@
+<div class="collaborations-container">
+  <div class="collaborations-content">
+    <!-- Header -->
+    <div class="header-section">
+      <button mat-icon-button class="back-button" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="header-content">
+        <h1>Nueva Colaboración</h1>
+        <p class="subtitle">Propón una colaboración con <strong>{{ counterpartName }}</strong></p>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="loading">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Enviando colaboración...</p>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="collaborationForm" (ngSubmit)="onSubmit()" class="collaboration-form">
+      
+      <!-- Información General -->
+      <mat-card class="form-section">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>info</mat-icon>
+            Información General
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="form-grid">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Mensaje de propuesta</mat-label>
+              <textarea 
+                matInput 
+                formControlName="message" 
+                placeholder="Describe tu propuesta de colaboración..."
+                rows="4">
+              </textarea>
+              <mat-error *ngIf="collaborationForm.get('message')?.hasError('required')">
+                El mensaje es obligatorio
+              </mat-error>
+              <mat-error *ngIf="collaborationForm.get('message')?.hasError('minlength')">
+                Mínimo 50 caracteres
+              </mat-error>
+              <mat-hint>Mínimo 50 caracteres</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo de acción</mat-label>
+              <mat-select formControlName="actionType">
+                <mat-option *ngFor="let type of actionTypes" [value]="type.value">
+                  {{ type.label }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="collaborationForm.get('actionType')?.hasError('required')">
+                Selecciona un tipo de acción
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha objetivo</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="targetDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="collaborationForm.get('targetDate')?.hasError('required')">
+                La fecha es obligatoria
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Presupuesto (€)</mat-label>
+              <input matInput type="number" formControlName="budget" placeholder="0.00">
+              <mat-error *ngIf="collaborationForm.get('budget')?.hasError('required')">
+                El presupuesto es obligatorio
+              </mat-error>
+              <mat-error *ngIf="collaborationForm.get('budget')?.hasError('min')">
+                El presupuesto debe ser mayor a 0
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Ubicación</mat-label>
+              <input matInput formControlName="location" placeholder="Madrid, España">
+              <mat-error *ngIf="collaborationForm.get('location')?.hasError('required')">
+                La ubicación es obligatoria
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Entregables</mat-label>
+              <textarea 
+                matInput 
+                formControlName="deliverables" 
+                placeholder="Describe los entregables de la colaboración..."
+                rows="3">
+              </textarea>
+              <mat-error *ngIf="collaborationForm.get('deliverables')?.hasError('required')">
+                Los entregables son obligatorios
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Milestones -->
+      <mat-card class="form-section">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>timeline</mat-icon>
+            Hitos del Proyecto
+          </mat-card-title>
+          <mat-card-subtitle>
+            Define los pasos y fechas importantes de la colaboración
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div formArrayName="milestones" class="milestones-container">
+            <div 
+              *ngFor="let milestone of milestones.controls; let i = index" 
+              [formGroupName]="i"
+              class="milestone-item">
+              
+              <div class="milestone-header">
+                <h3>Hito {{ i + 1 }}</h3>
+                <button 
+                  type="button" 
+                  mat-icon-button 
+                  color="warn" 
+                  (click)="removeMilestone(i)"
+                  [disabled]="milestones.length === 1"
+                  class="remove-button">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+
+              <div class="milestone-form">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Título del hito</mat-label>
+                  <input matInput formControlName="title" placeholder="Ej: Propuesta creativa">
+                  <mat-error *ngIf="milestone.get('title')?.hasError('required')">
+                    El título es obligatorio
+                  </mat-error>
+                </mat-form-field>
+
+                <div class="milestone-grid">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Fecha</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="milestone.get('date')?.hasError('required')">
+                      La fecha es obligatoria
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Ubicación</mat-label>
+                    <input matInput formControlName="location" placeholder="Zoom, Estudio, etc.">
+                    <mat-error *ngIf="milestone.get('location')?.hasError('required')">
+                      La ubicación es obligatoria
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Descripción</mat-label>
+                  <textarea 
+                    matInput 
+                    formControlName="description" 
+                    placeholder="Describe qué se realizará en este hito..."
+                    rows="2">
+                  </textarea>
+                  <mat-error *ngIf="milestone.get('description')?.hasError('required')">
+                    La descripción es obligatoria
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Entregables</mat-label>
+                  <textarea 
+                    matInput 
+                    formControlName="deliverables" 
+                    placeholder="Qué se entregará al finalizar este hito..."
+                    rows="2">
+                  </textarea>
+                  <mat-error *ngIf="milestone.get('deliverables')?.hasError('required')">
+                    Los entregables son obligatorios
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="add-milestone-section">
+              <button 
+                type="button" 
+                mat-stroked-button 
+                color="primary" 
+                (click)="addMilestone()"
+                class="add-milestone-button">
+                <mat-icon>add</mat-icon>
+                Agregar Hito
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Submit Section -->
+      <div class="submit-section">
+        <button 
+          type="button" 
+          mat-button 
+          (click)="goBack()"
+          class="cancel-button">
+          <mat-icon>cancel</mat-icon>
+          Cancelar
+        </button>
+        
+        <button 
+          type="submit" 
+          mat-raised-button 
+          color="primary"
+          [disabled]="loading || !collaborationForm.valid"
+          class="submit-button">
+          <mat-icon>send</mat-icon>
+          Enviar Colaboración
+        </button>
+      </div>
+    </form>
+  </div>
+</div> 
