@@ -1,19 +1,25 @@
 <div class="profile-container">
   <!-- Estado de carga -->
   <div *ngIf="loading" class="loading-container">
-    <mat-spinner diameter="40"></mat-spinner>
-    <p>Cargando perfil...</p>
+    <div class="loading-spinner"></div>
+    <h2 class="loading-text">Cargando perfil...</h2>
+    <p class="loading-subtitle">Obteniendo tu información personal</p>
   </div>
 
   <!-- Estado de error -->
   <div *ngIf="error && !loading" class="error-container">
-    <mat-icon color="warn">error_outline</mat-icon>
-    <p>No se pudo cargar la información del perfil</p>
-    <button mat-raised-button color="primary" (click)="loadUserProfile()">Reintentar</button>
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    <h2 class="error-title">Error al cargar el perfil</h2>
+    <p class="error-message">No se pudo cargar la información del perfil. Verifica tu conexión e intenta nuevamente.</p>
+    <button class="retry-button" (click)="loadUserProfile()">
+      <mat-icon>refresh</mat-icon>
+      Reintentar
+    </button>
   </div>
 
   <!-- Perfil cargado -->
   <div *ngIf="user && !loading && !error" class="profile-content">
+    <!-- Header del perfil -->
     <div class="profile-header">
       <div class="avatar-container">
         <div
@@ -25,27 +31,24 @@
       </div>
       <div class="user-info">
         <h1>{{ user.name }}</h1>
-        <p class="user-type">{{ isInfluencer() ? "Influencer" : "Marca" }}</p>
+        <span class="user-type">{{ isInfluencer() ? "Influencer" : "Marca" }}</span>
         <p class="location" *ngIf="hasValue(user.location)">
           <mat-icon>location_on</mat-icon> {{ user.location }}
         </p>
       </div>
       <div class="actions">
-        <button mat-raised-button color="primary">
-          <mat-icon>edit</mat-icon> Editar Perfil
+        <button class="edit-button">
+          <mat-icon>edit</mat-icon>
+          Editar Perfil
         </button>
       </div>
     </div>
-
-    <mat-divider></mat-divider>
 
     <!-- Bio/Descripción -->
     <section class="profile-section" *ngIf="hasValue(user.bio) || hasValue(user.description)">
       <h2>{{ isInfluencer() ? 'Biografía' : 'Descripción' }}</h2>
       <p class="bio">{{ user.bio || user.description }}</p>
     </section>
-
-    <mat-divider *ngIf="hasValue(user.bio) || hasValue(user.description)"></mat-divider>
 
     <!-- Información específica para Influencers -->
     <ng-container *ngIf="isInfluencer()">
@@ -68,8 +71,6 @@
           </div>
         </div>
       </section>
-
-      <mat-divider *ngIf="hasValue(user.followers) || hasValue(user.niches)"></mat-divider>
     </ng-container>
 
     <!-- Información específica para Marcas -->
@@ -86,13 +87,11 @@
           <div class="detail-item" *ngIf="hasValue(user.websiteUrl)">
             <span class="detail-label">Sitio Web:</span>
             <span class="detail-value">
-              <a [href]="user.websiteUrl" target="_blank">{{ user.websiteUrl }}</a>
+              <a [href]="user.websiteUrl" target="_blank" class="link-item">{{ user.websiteUrl }}</a>
             </span>
           </div>
         </div>
       </section>
-
-      <mat-divider *ngIf="hasValue(user.sector) || hasValue(user.websiteUrl)"></mat-divider>
     </ng-container>
 
     <!-- Enlaces -->
@@ -111,8 +110,6 @@
       </div>
     </section>
 
-    <mat-divider *ngIf="user.links && user.links.length > 0"></mat-divider>
-
     <!-- Redes Sociales -->
     <section class="profile-section" *ngIf="getSocialLinks().length > 0">
       <h2>Redes Sociales</h2>
@@ -128,8 +125,6 @@
         </a>
       </div>
     </section>
-
-    <mat-divider *ngIf="getSocialLinks().length > 0"></mat-divider>
 
     <!-- Adjuntos -->
     <section class="profile-section" *ngIf="user.attachments && user.attachments.length > 0">
@@ -147,8 +142,6 @@
         </div>
       </div>
     </section>
-
-    <mat-divider *ngIf="user.attachments && user.attachments.length > 0"></mat-divider>
 
     <!-- Información de Fechas -->
     <section class="profile-section">
