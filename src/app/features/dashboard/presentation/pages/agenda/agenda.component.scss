@@ -349,7 +349,7 @@
           }
 
           .event-card {
-            width: calc(100% - 8px); /* Account for padding */
+            width: 100%; /* Ensure full width */
             padding: 6px 8px;
             border-radius: 6px;
             margin-bottom: 4px; 
@@ -480,48 +480,48 @@
 // Responsive design
 @media (max-width: 1200px) {
   .native-calendar {
-    padding: 25px; /* Adjust as needed */
+    padding: 15px; 
   }
 }
 
 @media (max-width: 992px) {
   .native-calendar {
-    padding: 20px;
+    padding: 10px; 
 
     .calendar-header {
       h2 {
-        font-size: 1.6rem;
+        font-size: 1.2rem;
       }
     }
 
     .today-button {
-      padding: 9px 22px;
-      font-size: 0.95rem;
+      padding: 5px 12px;
+      font-size: 0.75rem;
     }
 
     .calendar-grid {
       .calendar-week-header {
         .calendar-day-header {
-          padding: 12px 8px;
-          font-size: 0.85rem;
+          padding: 6px 3px;
+          font-size: 0.65rem;
         }
       }
 
       .calendar-days {
         .calendar-day {
-          padding: 8px 6px;
-          min-height: 90px; /* Adjusted min-height */
+          padding: 4px 2px;
+          min-height: 70px; 
 
           .day-number {
-            font-size: 0.9rem;
+            font-size: 0.7rem;
           }
 
           .day-events {
-            height: calc(100% - 22px); /* Adjusted height calculation */
+            height: calc(100% - 15px); 
             .event-card {
-              width: calc(100% - 7px); 
-              padding: 5px 7px;
-              font-size: 0.75rem;
+              width: 100%; 
+              padding: 3px 4px;
+              font-size: 0.6rem;
             }
           }
         }
@@ -532,44 +532,44 @@
 
 @media (max-width: 768px) {
   .native-calendar {
-    padding: 15px;
+    padding: 8px; 
 
     .calendar-header {
       h2 {
-        font-size: 1.3rem;
+        font-size: 1rem;
       }
     }
 
     .today-button {
-      padding: 7px 18px;
-      font-size: 0.85rem;
+      padding: 4px 10px;
+      font-size: 0.7rem;
     }
 
     .calendar-grid {
       .calendar-week-header {
         .calendar-day-header {
-          padding: 8px 4px;
-          font-size: 0.7rem;
+          padding: 4px 2px;
+          font-size: 0.55rem;
         }
       }
 
       .calendar-days {
         .calendar-day {
-          padding: 5px 3px;
-          min-height: 80px; /* Adjusted min-height */
+          padding: 2px 1px;
+          min-height: 60px; 
 
           .day-number {
-            font-size: 0.75rem;
+            font-size: 0.6rem;
           }
 
           .day-events {
-            height: calc(100% - 18px); /* Adjusted height calculation */
+            height: calc(100% - 12px); 
 
             .event-card {
-              width: calc(100% - 4px);
-              padding: 4px 5px;
-              font-size: 0.65rem;
-              margin-bottom: 2px;
+              width: 100%; 
+              padding: 2px 3px;
+              font-size: 0.5rem;
+              margin-bottom: 1px;
             }
           }
         }
@@ -580,47 +580,45 @@
 
 @media (max-width: 576px) {
   .native-calendar {
-    padding: 10px;
+    padding: 5px; 
 
     .calendar-header {
       flex-direction: column;
       h2 {
-        font-size: 1.1rem;
-        margin-bottom: 8px;
+        font-size: 0.85rem;
+        margin-bottom: 4px;
       }
     }
 
     .today-button {
-      padding: 6px 14px;
-      font-size: 0.75rem;
-      margin-bottom: 12px;
+      padding: 3px 8px;
+      font-size: 0.6rem;
+      margin-bottom: 6px;
     }
 
     .calendar-grid {
       .calendar-week-header {
         .calendar-day-header {
-          padding: 5px 2px;
-          font-size: 0.65rem;
+          padding: 2px 0.5px;
+          font-size: 0.5rem;
         }
       }
 
       .calendar-days {
         .calendar-day {
-          padding: 3px 1px;
-          min-height: 65px; /* Adjusted min-height */
+          padding: 1px;
+          min-height: 50px; 
 
           .day-number {
-            font-size: 0.65rem;
+            font-size: 0.5rem;
           }
 
           .day-events {
-            height: calc(100% - 15px); /* Adjusted height calculation */
+            height: calc(100% - 10px); 
 
             .event-card {
-              width: calc(100% - 2px);
-              padding: 2px 3px;
-              font-size: 0.6rem;
-              margin-bottom: 1px;
+              padding: 1px;
+              font-size: 0.45rem;
             }
           }
         }
@@ -631,42 +629,42 @@
 
 @media (max-width: 400px) {
   .native-calendar {
-    padding: 8px;
+    padding: 3px; 
 
     .calendar-header {
       h2 {
-        font-size: 0.9rem;
+        font-size: 0.75rem;
       }
     }
 
     .today-button {
-      padding: 5px 10px;
-      font-size: 0.7rem;
+      padding: 2px 5px;
+      font-size: 0.55rem;
     }
 
     .calendar-grid {
       .calendar-week-header {
         .calendar-day-header {
-          padding: 4px 1px;
-          font-size: 0.6rem;
+          padding: 1px 0px;
+          font-size: 0.45rem;
         }
       }
 
       .calendar-days {
         .calendar-day {
-          padding: 2px;
-          min-height: 55px; /* Smallest min-height */
+          padding: 0px;
+          min-height: 40px; 
 
           .day-number {
-            font-size: 0.6rem;
+            font-size: 0.45rem;
           }
 
           .day-events {
-            height: calc(100% - 12px); /* Adjusted height calculation */
+            height: calc(100% - 8px); 
 
             .event-card {
-              padding: 1px 2px;
-              font-size: 0.55rem;
+              padding: 0.5px;
+              font-size: 0.4rem;
             }
           }
         }
