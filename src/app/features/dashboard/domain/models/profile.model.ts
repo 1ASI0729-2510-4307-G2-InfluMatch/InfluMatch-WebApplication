@@ -22,10 +22,11 @@ export interface Link {
 
 export interface Attachment {
   id: number;
-  name: string;
-  url: string;
-  type: string;
-  size: number;
+  title: string;
+  description?: string;
+  mediaType: 'PHOTO' | 'VIDEO' | 'DOCUMENT' | 'AUDIO';
+  data: string; // base64 data
+  size?: number;
 }
 
 export interface SocialLink {

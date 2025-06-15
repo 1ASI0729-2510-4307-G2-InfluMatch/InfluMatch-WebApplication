@@ -67,9 +67,10 @@ export class ProfileAssembler {
   private toAttachment(dto: AttachmentDTO): Attachment {
     return {
       id: dto.id,
-      name: dto.name,
-      url: dto.url,
-      type: dto.type,
+      title: dto.title,
+      description: dto.description,
+      mediaType: dto.mediaType,
+      data: dto.data,
       size: dto.size
     };
   }

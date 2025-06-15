@@ -27,6 +27,75 @@ todo incia desde el dashbiard incial dodne me listas los marcas/influncers ahi t
 ]
 
 
-de auqi obetenesmo el userID de aqui cuadno presione el boton de contacatar 
+de auqi obetenesmo el userID de aqui cuadno presione el boton de contacatar obtienbe el userId y me llevas a otra ruta que seria dashbaord/collaboratiosn
+
+tiene qeu agregar este icono en el siedbar 
+
+aqui vas  a mostrar un formulario el caul tiene qeu envairlo estos campos 
 
 http://localhost:8080/api/collaborations
+
+tienes qeu enviarle esto 
+
+{
+    "counterpartId": 2,  // IDuser  de la marca o id de influencer 
+    "message": "¡Hola! Me encanta su marca y sus productos. Me gustaría proponer una colaboración para crear contenido que muestre cómo sus productos se integran en mi estilo de vida saludable.",
+    "actionType": "REEL_IG",
+    "targetDate": "2024-04-15",
+    "budget": 800.00,
+    "milestones": [
+      {
+        "title": "Propuesta creativa",
+        "date": "2024-03-25",
+        "description": "Presentación de ideas y concepto",
+        "location": "Zoom",
+        "deliverables": "Documento de propuesta"
+      },
+      {
+        "title": "Grabación de contenido",
+        "date": "2024-04-05",
+        "description": "Producción del Reel",
+        "location": "Estudio",
+        "deliverables": "Reel sin editar"
+      },
+      {
+        "title": "Entrega final",
+        "date": "2024-04-12",
+        "description": "Entrega del Reel editado",
+        "location": "Email",
+        "deliverables": "Reel final con música y efectos"
+      }
+    ],
+    "location": "Madrid",
+    "deliverables": "1 Reel de 60 segundos + 3 Stories promocionales"
+  }
+
+  "milestones": [
+      {
+        "title": "Propuesta creativa",
+        "date": "2024-03-25",
+        "description": "Presentación de ideas y concepto",
+        "location": "Zoom",
+        "deliverables": "Documento de propuesta"
+      },
+      {
+        "title": "Grabación de contenido",
+        "date": "2024-04-05",
+        "description": "Producción del Reel",
+        "location": "Estudio",
+        "deliverables": "Reel sin editar"
+      },
+      {
+        "title": "Entrega final",
+        "date": "2024-04-12",
+        "description": "Entrega del Reel editado",
+        "location": "Email",
+        "deliverables": "Reel final con música y efectos"
+      }
+    ],
+
+    esta aprte de aqui tiene qeus eun campo oblligatorio luego un boton de mas y tacho apra poder agregar mas 
+
+    tiene qeu ser respodive ys eguir DDD
+
+    ademas dale un estilo de vista bonitiog agrgadlbel freco moderno no tan minilaista qeu angualr maeriu9al e smuy minuimalista asi qeu tu dale un poco de vida pero sin si llegare a si extrabagante 
