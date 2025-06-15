@@ -18,7 +18,8 @@
     "ANALYTICS": "Analytics",
     "SETTINGS": "Settings",
     "LOGOUT": "Logout",
-    "LANGUAGE": "Language"
+    "LANGUAGE": "Language",
+    "COLLABORATIONS": "Collaborations"
   },
   "LOGIN": {
     "WELCOME": "Welcome back!",
@@ -422,5 +423,97 @@
   "ERRORS": {
     "INVALID_FILE_TYPE": "Invalid file type",
     "FILE_TOO_LARGE": "File is too large"
+  },
+  "COLLABORATIONS": {
+    "TITLE": "New Collaboration",
+    "SUBTITLE": "Propose a collaboration with",
+    "GENERAL_INFO": "General Information",
+    "PROJECT_MILESTONES": "Project Milestones",
+    "MILESTONES_SUBTITLE": "Define the important steps and dates of the collaboration",
+    "MILESTONE": "Milestone",
+    "ADD_MILESTONE": "Add Milestone",
+    "CANCEL": "Cancel",
+    "SEND_COLLABORATION": "Send Collaboration",
+    "SENDING": "Sending collaboration...",
+    "SUCCESS": "Collaboration sent successfully!",
+    "ERROR": "Error sending collaboration. Please try again.",
+    "ERROR_NO_USER": "Error: No user specified for collaboration",
+    "ERROR_LOADING": "Error loading collaborations. Please try again.",
+    "DEFAULT_USER": "User",
+    "STATUS": {
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "REJECTED": "Rejected",
+      "FINISHED": "Finished"
+    },
+    "FILTERS": {
+      "ALL_STATUS": "All Status",
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "REJECTED": "Rejected",
+      "FINISHED": "Finished"
+    },
+    "LIST": {
+      "TITLE": "My Collaborations",
+      "SUBTITLE": "Manage all your collaborations in one place",
+      "SEARCH": "Search",
+      "SEARCH_PLACEHOLDER": "Search by name or message...",
+      "STATUS_FILTER": "Filter by status",
+      "LOADING": "Loading collaborations...",
+      "EMPTY_TITLE": "No collaborations",
+      "EMPTY_MESSAGE": "You don't have any collaborations yet. Start connecting with other users!",
+      "MESSAGE": "Message",
+      "CREATED": "Created",
+      "VIEW_DETAILS": "View Details",
+      "NEW_COLLABORATION": "New Collaboration",
+      "ROLE": {
+        "INFLUENCER": "Influencer",
+        "BRAND": "Brand"
+      }
+    },
+    "FIELDS": {
+      "MESSAGE": "Proposal message",
+      "MESSAGE_PLACEHOLDER": "Describe your collaboration proposal...",
+      "MESSAGE_REQUIRED": "Message is required",
+      "MESSAGE_MINLENGTH": "Minimum 50 characters",
+      "ACTION_TYPE": "Action type",
+      "ACTION_TYPE_REQUIRED": "Select an action type",
+      "TARGET_DATE": "Target date",
+      "TARGET_DATE_REQUIRED": "Date is required",
+      "BUDGET": "Budget (€)",
+      "BUDGET_PLACEHOLDER": "0.00",
+      "BUDGET_REQUIRED": "Budget is required",
+      "BUDGET_MIN": "Budget must be greater than 0",
+      "LOCATION": "Location",
+      "LOCATION_PLACEHOLDER": "Madrid, Spain",
+      "LOCATION_REQUIRED": "Location is required",
+      "DELIVERABLES": "Deliverables",
+      "DELIVERABLES_PLACEHOLDER": "Describe the collaboration deliverables...",
+      "DELIVERABLES_REQUIRED": "Deliverables are required",
+      "MILESTONE_TITLE": "Milestone title",
+      "MILESTONE_TITLE_PLACEHOLDER": "Ex: Creative proposal",
+      "MILESTONE_TITLE_REQUIRED": "Title is required",
+      "MILESTONE_DATE": "Date",
+      "MILESTONE_DATE_REQUIRED": "Date is required",
+      "MILESTONE_LOCATION": "Location",
+      "MILESTONE_LOCATION_PLACEHOLDER": "Zoom, Studio, etc.",
+      "MILESTONE_LOCATION_REQUIRED": "Location is required",
+      "MILESTONE_DESCRIPTION": "Description",
+      "MILESTONE_DESCRIPTION_PLACEHOLDER": "Describe what will be done in this milestone...",
+      "MILESTONE_DESCRIPTION_REQUIRED": "Description is required",
+      "MILESTONE_DELIVERABLES": "Deliverables",
+      "MILESTONE_DELIVERABLES_PLACEHOLDER": "What will be delivered when this milestone is completed...",
+      "MILESTONE_DELIVERABLES_REQUIRED": "Deliverables are required"
+    },
+    "ACTION_TYPES": {
+      "REEL_IG": "Instagram Reel",
+      "POST_IG": "Instagram Post",
+      "STORY_IG": "Instagram Story",
+      "VIDEO_YT": "YouTube Video",
+      "TIKTOK": "TikTok Video",
+      "BLOG_POST": "Blog Post",
+      "PODCAST": "Podcast",
+      "EVENT": "Event"
+    }
   }
 }

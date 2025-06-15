@@ -18,7 +18,8 @@
     "ANALYTICS": "Analíticas",
     "SETTINGS": "Configuración",
     "LOGOUT": "Cerrar Sesión",
-    "LANGUAGE": "Idioma"
+    "LANGUAGE": "Idioma",
+    "COLLABORATIONS": "Colaboraciones"
   },
   "LOGIN": {
     "WELCOME": "¡Bienvenido de nuevo!",
@@ -444,5 +445,97 @@
   "ERRORS": {
     "INVALID_FILE_TYPE": "Tipo de archivo no válido",
     "FILE_TOO_LARGE": "El archivo es demasiado grande"
+  },
+  "COLLABORATIONS": {
+    "TITLE": "Nueva Colaboración",
+    "SUBTITLE": "Propón una colaboración con",
+    "GENERAL_INFO": "Información General",
+    "PROJECT_MILESTONES": "Hitos del Proyecto",
+    "MILESTONES_SUBTITLE": "Define los pasos y fechas importantes de la colaboración",
+    "MILESTONE": "Hito",
+    "ADD_MILESTONE": "Agregar Hito",
+    "CANCEL": "Cancelar",
+    "SEND_COLLABORATION": "Enviar Colaboración",
+    "SENDING": "Enviando colaboración...",
+    "SUCCESS": "¡Colaboración enviada exitosamente!",
+    "ERROR": "Error al enviar la colaboración. Inténtalo de nuevo.",
+    "ERROR_NO_USER": "Error: No se especificó el usuario para colaborar",
+    "ERROR_LOADING": "Error al cargar las colaboraciones. Inténtalo de nuevo.",
+    "DEFAULT_USER": "Usuario",
+    "STATUS": {
+      "PENDING": "Pendiente",
+      "ACCEPTED": "Aceptado",
+      "REJECTED": "Rechazado",
+      "FINISHED": "Finalizado"
+    },
+    "FILTERS": {
+      "ALL_STATUS": "Todos los estados",
+      "PENDING": "Pendiente",
+      "ACCEPTED": "Aceptado",
+      "REJECTED": "Rechazado",
+      "FINISHED": "Finalizado"
+    },
+    "LIST": {
+      "TITLE": "Mis Colaboraciones",
+      "SUBTITLE": "Gestiona todas tus colaboraciones en un solo lugar",
+      "SEARCH": "Buscar",
+      "SEARCH_PLACEHOLDER": "Buscar por nombre o mensaje...",
+      "STATUS_FILTER": "Filtrar por estado",
+      "LOADING": "Cargando colaboraciones...",
+      "EMPTY_TITLE": "No hay colaboraciones",
+      "EMPTY_MESSAGE": "Aún no tienes colaboraciones. ¡Comienza a conectar con otros usuarios!",
+      "MESSAGE": "Mensaje",
+      "CREATED": "Creado",
+      "VIEW_DETAILS": "Ver Detalles",
+      "NEW_COLLABORATION": "Nueva Colaboración",
+      "ROLE": {
+        "INFLUENCER": "Influencer",
+        "BRAND": "Marca"
+      }
+    },
+    "FIELDS": {
+      "MESSAGE": "Mensaje de propuesta",
+      "MESSAGE_PLACEHOLDER": "Describe tu propuesta de colaboración...",
+      "MESSAGE_REQUIRED": "El mensaje es obligatorio",
+      "MESSAGE_MINLENGTH": "Mínimo 50 caracteres",
+      "ACTION_TYPE": "Tipo de acción",
+      "ACTION_TYPE_REQUIRED": "Selecciona un tipo de acción",
+      "TARGET_DATE": "Fecha objetivo",
+      "TARGET_DATE_REQUIRED": "La fecha es obligatoria",
+      "BUDGET": "Presupuesto (€)",
+      "BUDGET_PLACEHOLDER": "0.00",
+      "BUDGET_REQUIRED": "El presupuesto es obligatorio",
+      "BUDGET_MIN": "El presupuesto debe ser mayor a 0",
+      "LOCATION": "Ubicación",
+      "LOCATION_PLACEHOLDER": "Madrid, España",
+      "LOCATION_REQUIRED": "La ubicación es obligatoria",
+      "DELIVERABLES": "Entregables",
+      "DELIVERABLES_PLACEHOLDER": "Describe los entregables de la colaboración...",
+      "DELIVERABLES_REQUIRED": "Los entregables son obligatorios",
+      "MILESTONE_TITLE": "Título del hito",
+      "MILESTONE_TITLE_PLACEHOLDER": "Ej: Propuesta creativa",
+      "MILESTONE_TITLE_REQUIRED": "El título es obligatorio",
+      "MILESTONE_DATE": "Fecha",
+      "MILESTONE_DATE_REQUIRED": "La fecha es obligatoria",
+      "MILESTONE_LOCATION": "Ubicación",
+      "MILESTONE_LOCATION_PLACEHOLDER": "Zoom, Estudio, etc.",
+      "MILESTONE_LOCATION_REQUIRED": "La ubicación es obligatoria",
+      "MILESTONE_DESCRIPTION": "Descripción",
+      "MILESTONE_DESCRIPTION_PLACEHOLDER": "Describe qué se realizará en este hito...",
+      "MILESTONE_DESCRIPTION_REQUIRED": "La descripción es obligatoria",
+      "MILESTONE_DELIVERABLES": "Entregables",
+      "MILESTONE_DELIVERABLES_PLACEHOLDER": "Qué se entregará al finalizar este hito...",
+      "MILESTONE_DELIVERABLES_REQUIRED": "Los entregables son obligatorios"
+    },
+    "ACTION_TYPES": {
+      "REEL_IG": "Reel de Instagram",
+      "POST_IG": "Post de Instagram",
+      "STORY_IG": "Story de Instagram",
+      "VIDEO_YT": "Video de YouTube",
+      "TIKTOK": "Video de TikTok",
+      "BLOG_POST": "Artículo de Blog",
+      "PODCAST": "Podcast",
+      "EVENT": "Evento"
+    }
   }
 }

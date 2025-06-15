@@ -13,6 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CreateCollaborationUseCase } from '../../../application/use-cases/create-collaboration.usecase';
 import { Collaboration, Milestone } from '../../../domain/models/collaboration.model';
 
@@ -32,7 +33,8 @@ import { Collaboration, Milestone } from '../../../domain/models/collaboration.m
     MatCardModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    MatChipsModule
+    MatChipsModule,
+    TranslateModule
   ],
   templateUrl: './collaborations.component.html',
   styleUrls: ['./collaborations.component.scss']
@@ -43,28 +45,34 @@ export class CollaborationsComponent implements OnInit {
   counterpartId: number | null = null;
   counterpartName: string = '';
 
-  actionTypes = [
-    { value: 'REEL_IG', label: 'Reel de Instagram' },
-    { value: 'POST_IG', label: 'Post de Instagram' },
-    { value: 'STORY_IG', label: 'Story de Instagram' },
-    { value: 'VIDEO_YT', label: 'Video de YouTube' },
-    { value: 'TIKTOK', label: 'Video de TikTok' },
-    { value: 'BLOG_POST', label: 'Artículo de Blog' },
-    { value: 'PODCAST', label: 'Podcast' },
-    { value: 'EVENT', label: 'Evento' }
-  ];
+  actionTypes: { value: string; label: string }[] = [];
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private createCollaborationUseCase: CreateCollaborationUseCase,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
+    this.initActionTypes();
     this.initForm();
     this.getCounterpartInfo();
+  }
+
+  private initActionTypes(): void {
+    this.actionTypes = [
+      { value: 'REEL_IG', label: this.translate.instant('COLLABORATIONS.ACTION_TYPES.REEL_IG') },
+      { value: 'POST_IG', label: this.translate.instant('COLLABORATIONS.ACTION_TYPES.POST_IG') },
+      { value: 'STORY_IG', label: this.translate.instant('COLLABORATIONS.ACTION_TYPES.STORY_IG') },
+      { value: 'VIDEO_YT', label: this.translate.instant('COLLABORATIONS.ACTION_TYPES.VIDEO_YT') },
+      { value: 'TIKTOK', label: this.translate.instant('COLLABORATIONS.ACTION_TYPES.TIKTOK') },
+      { value: 'BLOG_POST', label: this.translate.instant('COLLABORATIONS.ACTION_TYPES.BLOG_POST') },
+      { value: 'PODCAST', label: this.translate.instant('COLLABORATIONS.ACTION_TYPES.PODCAST') },
+      { value: 'EVENT', label: this.translate.instant('COLLABORATIONS.ACTION_TYPES.EVENT') }
+    ];
   }
 
   private initForm(): void {
@@ -84,10 +92,10 @@ export class CollaborationsComponent implements OnInit {
 
   private getCounterpartInfo(): void {
     this.counterpartId = Number(this.route.snapshot.queryParams['counterpartId']);
-    this.counterpartName = this.route.snapshot.queryParams['counterpartName'] || 'Usuario';
+    this.counterpartName = this.route.snapshot.queryParams['counterpartName'] || this.translate.instant('COLLABORATIONS.DEFAULT_USER');
     
     if (!this.counterpartId) {
-      this.snackBar.open('Error: No se especificó el usuario para colaborar', 'Cerrar', {
+      this.snackBar.open(this.translate.instant('COLLABORATIONS.ERROR_NO_USER'), this.translate.instant('LOGIN.CLOSE'), {
         duration: 5000,
         panelClass: ['error-snackbar']
       });
@@ -143,16 +151,16 @@ export class CollaborationsComponent implements OnInit {
       this.createCollaborationUseCase.execute(collaboration).subscribe({
         next: (response) => {
           this.loading = false;
-          this.snackBar.open('¡Colaboración enviada exitosamente!', 'Cerrar', {
+          this.snackBar.open(this.translate.instant('COLLABORATIONS.SUCCESS'), this.translate.instant('LOGIN.CLOSE'), {
             duration: 5000,
             panelClass: ['success-snackbar']
           });
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/dashboard/collaborations']);
         },
         error: (error) => {
           this.loading = false;
           console.error('Error al crear colaboración:', error);
-          this.snackBar.open('Error al enviar la colaboración. Inténtalo de nuevo.', 'Cerrar', {
+          this.snackBar.open(this.translate.instant('COLLABORATIONS.ERROR'), this.translate.instant('LOGIN.CLOSE'), {
             duration: 5000,
             panelClass: ['error-snackbar']
           });

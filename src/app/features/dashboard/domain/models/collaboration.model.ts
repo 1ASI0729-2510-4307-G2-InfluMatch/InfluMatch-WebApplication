@@ -19,8 +19,23 @@ export interface Collaboration {
 
 export interface CollaborationResponse {
   id: number;
-  status: 'PENDING' | 'ACCEPTED' | 'REJECTED'  | 'COMPLETED';
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'FINISHED';
   message: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface CollaborationListItem {
+  id: number;
+  initiatorRole: 'INFLUENCER' | 'BRAND';
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'FINISHED';
+  counterpartName: string;
+  counterpartPhotoUrl: string;
+  message: string;
+  actionType: string;
+  createdAt: string;
+}
+
+export interface CollaborationListResponse {
+  collaborations: CollaborationListItem[];
 } 

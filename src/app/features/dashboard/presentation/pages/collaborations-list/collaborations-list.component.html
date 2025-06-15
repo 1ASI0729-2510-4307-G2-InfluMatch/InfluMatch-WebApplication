@@ -1,0 +1,123 @@
+<div class="collaborations-list-container">
+  <div class="collaborations-list-content">
+    <!-- Header -->
+    <div class="header-section">
+      <div class="header-content">
+        <h1>{{ 'COLLABORATIONS.LIST.TITLE' | translate }}</h1>
+        <p class="subtitle">{{ 'COLLABORATIONS.LIST.SUBTITLE' | translate }}</p>
+        <button 
+          mat-raised-button 
+          color="primary" 
+          class="new-collaboration-btn"
+          routerLink="/dashboard">
+          <mat-icon>add</mat-icon>
+          {{ 'COLLABORATIONS.LIST.NEW_COLLABORATION' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <mat-card class="filters-card">
+        <mat-card-content>
+          <div class="filters-grid">
+            <!-- Search -->
+            <mat-form-field appearance="outline" class="search-field">
+              <mat-label>{{ 'COLLABORATIONS.LIST.SEARCH' | translate }}</mat-label>
+              <input 
+                matInput 
+                [(ngModel)]="searchTerm" 
+                (ngModelChange)="onSearchChange()"
+                [placeholder]="'COLLABORATIONS.LIST.SEARCH_PLACEHOLDER' | translate">
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+
+            <!-- Status Filter -->
+            <mat-form-field appearance="outline" class="status-filter">
+              <mat-label>{{ 'COLLABORATIONS.LIST.STATUS_FILTER' | translate }}</mat-label>
+              <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="onStatusChange()">
+                <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+                  {{ option.label | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-section" *ngIf="loading">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>{{ 'COLLABORATIONS.LIST.LOADING' | translate }}</p>
+    </div>
+
+    <!-- Collaborations List -->
+    <div class="collaborations-grid" *ngIf="!loading">
+      <div *ngIf="filteredCollaborations.length === 0" class="empty-state">
+        <mat-icon class="empty-icon">inbox</mat-icon>
+        <h3>{{ 'COLLABORATIONS.LIST.EMPTY_TITLE' | translate }}</h3>
+        <p>{{ 'COLLABORATIONS.LIST.EMPTY_MESSAGE' | translate }}</p>
+      </div>
+
+      <mat-card 
+        *ngFor="let collaboration of filteredCollaborations" 
+        class="collaboration-card"
+        [class]="'status-' + collaboration.status.toLowerCase()">
+        
+        <mat-card-header>
+          <div class="card-header-content">
+            <div class="user-info">
+              <img 
+                [src]="collaboration.counterpartPhotoUrl" 
+                [alt]="collaboration.counterpartName"
+                class="user-avatar"
+                (error)="hideImage($event)">
+              <div class="user-details">
+                <h3 class="user-name">{{ collaboration.counterpartName }}</h3>
+                <p class="user-role">{{ 'COLLABORATIONS.LIST.ROLE.' + collaboration.initiatorRole | translate }}</p>
+              </div>
+            </div>
+            
+            <div class="status-chip">
+              <mat-chip 
+                [color]="getStatusColor(collaboration.status)" 
+                selected>
+                <mat-icon>{{ getStatusIcon(collaboration.status) }}</mat-icon>
+                {{ 'COLLABORATIONS.STATUS.' + collaboration.status | translate }}
+              </mat-chip>
+            </div>
+          </div>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="collaboration-details">
+            <div class="message-section">
+              <h4>{{ 'COLLABORATIONS.LIST.MESSAGE' | translate }}</h4>
+              <p class="message-text">{{ collaboration.message }}</p>
+            </div>
+
+            <div class="action-details">
+              <div class="action-type">
+                <mat-icon>campaign</mat-icon>
+                <span>{{ getActionTypeLabel(collaboration.actionType) }}</span>
+              </div>
+              
+              <div class="created-date">
+                <mat-icon>schedule</mat-icon>
+                <span>{{ 'COLLABORATIONS.LIST.CREATED' | translate }}: {{ formatDate(collaboration.createdAt) }}</span>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-button color="primary" class="view-details-btn">
+            <mat-icon>visibility</mat-icon>
+            {{ 'COLLABORATIONS.LIST.VIEW_DETAILS' | translate }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div> 

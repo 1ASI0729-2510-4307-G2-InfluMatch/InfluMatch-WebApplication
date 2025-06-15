@@ -7,7 +7,7 @@ import { ProfileDetailsComponent } from './presentation/pages/profile-details/pr
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CollaborationRepositoryImpl } from './infrastructure/repositories/collaboration.repository';
+import { CollaborationRepositoryImpl } from './infrastructure/repositories/collaboration.repository.impl';
 
 @NgModule({
   imports: [

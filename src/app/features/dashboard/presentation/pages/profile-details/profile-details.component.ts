@@ -28,6 +28,7 @@ export class ProfileDetailsComponent implements OnInit {
   userType!: 'BRAND' | 'INFLUENCER';
   loading = true;
   error: string | null = null;
+  profile: BrandProfile | InfluencerProfile | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -70,6 +71,8 @@ export class ProfileDetailsComponent implements OnInit {
         this.loading = false;
         if (!profile) {
           this.error = 'Profile not found';
+        } else {
+          this.profile = profile;
         }
       },
       error: (err) => {
@@ -209,10 +212,10 @@ export class ProfileDetailsComponent implements OnInit {
   }
 
   contactUser(): void {
-    this.router.navigate(['/dashboard/collaborations'], {
+    this.router.navigate(['/dashboard/new-collaboration'], {
       queryParams: {
-        counterpartId: this.route.snapshot.paramMap.get('id'),
-        counterpartName: 'Usuario' // Esto se puede mejorar obteniendo el nombre del perfil actual
+        counterpartId: this.profile?.id,
+        counterpartName: this.profile?.name
       }
     });
   }

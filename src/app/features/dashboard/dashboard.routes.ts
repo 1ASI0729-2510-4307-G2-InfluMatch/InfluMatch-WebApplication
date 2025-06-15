@@ -23,6 +23,13 @@ export const DASHBOARD_ROUTES: Routes = [
   {
     path: 'collaborations',
     loadComponent: () =>
+      import('./presentation/pages/collaborations-list/collaborations-list.component').then(
+        (m) => m.CollaborationsListComponent
+      ),
+  },
+  {
+    path: 'new-collaboration',
+    loadComponent: () =>
       import('./presentation/pages/collaborations/collaborations.component').then(
         (m) => m.CollaborationsComponent
       ),

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CollaborationRepositoryImpl } from '../../infrastructure/repositories/collaboration.repository';
+import { CollaborationRepositoryImpl } from '../../infrastructure/repositories/collaboration.repository.impl';
 import { Collaboration, CollaborationResponse } from '../../domain/models/collaboration.model';
 
 @Injectable({

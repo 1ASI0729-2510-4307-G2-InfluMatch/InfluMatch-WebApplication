@@ -25,7 +25,7 @@ export class ProfileCardComponent {
   }
 
   contactUser(): void {
-    this.router.navigate(['/dashboard/collaborations'], {
+    this.router.navigate(['/dashboard/new-collaboration'], {
       queryParams: {
         counterpartId: this.profile.userId,
         counterpartName: this.profile.name

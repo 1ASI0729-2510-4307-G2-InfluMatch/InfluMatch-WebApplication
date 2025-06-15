@@ -6,15 +6,15 @@
         <mat-icon>arrow_back</mat-icon>
       </button>
       <div class="header-content">
-        <h1>Nueva Colaboración</h1>
-        <p class="subtitle">Propón una colaboración con <strong>{{ counterpartName }}</strong></p>
+        <h1>{{ 'COLLABORATIONS.TITLE' | translate }}</h1>
+        <p class="subtitle">{{ 'COLLABORATIONS.SUBTITLE' | translate }} <strong>{{ counterpartName }}</strong></p>
       </div>
     </div>
 
     <!-- Loading Overlay -->
     <div class="loading-overlay" *ngIf="loading">
       <mat-spinner diameter="50"></mat-spinner>
-      <p>Enviando colaboración...</p>
+      <p>{{ 'COLLABORATIONS.SENDING' | translate }}</p>
     </div>
 
     <!-- Form -->
@@ -25,79 +25,79 @@
         <mat-card-header>
           <mat-card-title>
             <mat-icon>info</mat-icon>
-            Información General
+            {{ 'COLLABORATIONS.GENERAL_INFO' | translate }}
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <div class="form-grid">
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Mensaje de propuesta</mat-label>
+              <mat-label>{{ 'COLLABORATIONS.FIELDS.MESSAGE' | translate }}</mat-label>
               <textarea 
                 matInput 
                 formControlName="message" 
-                placeholder="Describe tu propuesta de colaboración..."
+                [placeholder]="'COLLABORATIONS.FIELDS.MESSAGE_PLACEHOLDER' | translate"
                 rows="4">
               </textarea>
               <mat-error *ngIf="collaborationForm.get('message')?.hasError('required')">
-                El mensaje es obligatorio
+                {{ 'COLLABORATIONS.FIELDS.MESSAGE_REQUIRED' | translate }}
               </mat-error>
               <mat-error *ngIf="collaborationForm.get('message')?.hasError('minlength')">
-                Mínimo 50 caracteres
+                {{ 'COLLABORATIONS.FIELDS.MESSAGE_MINLENGTH' | translate }}
               </mat-error>
-              <mat-hint>Mínimo 50 caracteres</mat-hint>
+              <mat-hint>{{ 'COLLABORATIONS.FIELDS.MESSAGE_MINLENGTH' | translate }}</mat-hint>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Tipo de acción</mat-label>
+              <mat-label>{{ 'COLLABORATIONS.FIELDS.ACTION_TYPE' | translate }}</mat-label>
               <mat-select formControlName="actionType">
                 <mat-option *ngFor="let type of actionTypes" [value]="type.value">
                   {{ type.label }}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="collaborationForm.get('actionType')?.hasError('required')">
-                Selecciona un tipo de acción
+                {{ 'COLLABORATIONS.FIELDS.ACTION_TYPE_REQUIRED' | translate }}
               </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Fecha objetivo</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="targetDate">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
+              <mat-label>{{ 'COLLABORATIONS.FIELDS.TARGET_DATE' | translate }}</mat-label>
+              <input matInput [matDatepicker]="targetDatePicker" formControlName="targetDate">
+              <mat-datepicker-toggle matSuffix [for]="targetDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #targetDatePicker></mat-datepicker>
               <mat-error *ngIf="collaborationForm.get('targetDate')?.hasError('required')">
-                La fecha es obligatoria
+                {{ 'COLLABORATIONS.FIELDS.TARGET_DATE_REQUIRED' | translate }}
               </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Presupuesto (€)</mat-label>
-              <input matInput type="number" formControlName="budget" placeholder="0.00">
+              <mat-label>{{ 'COLLABORATIONS.FIELDS.BUDGET' | translate }}</mat-label>
+              <input matInput type="number" formControlName="budget" [placeholder]="'COLLABORATIONS.FIELDS.BUDGET_PLACEHOLDER' | translate">
               <mat-error *ngIf="collaborationForm.get('budget')?.hasError('required')">
-                El presupuesto es obligatorio
+                {{ 'COLLABORATIONS.FIELDS.BUDGET_REQUIRED' | translate }}
               </mat-error>
               <mat-error *ngIf="collaborationForm.get('budget')?.hasError('min')">
-                El presupuesto debe ser mayor a 0
+                {{ 'COLLABORATIONS.FIELDS.BUDGET_MIN' | translate }}
               </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Ubicación</mat-label>
-              <input matInput formControlName="location" placeholder="Madrid, España">
+              <mat-label>{{ 'COLLABORATIONS.FIELDS.LOCATION' | translate }}</mat-label>
+              <input matInput formControlName="location" [placeholder]="'COLLABORATIONS.FIELDS.LOCATION_PLACEHOLDER' | translate">
               <mat-error *ngIf="collaborationForm.get('location')?.hasError('required')">
-                La ubicación es obligatoria
+                {{ 'COLLABORATIONS.FIELDS.LOCATION_REQUIRED' | translate }}
               </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Entregables</mat-label>
+              <mat-label>{{ 'COLLABORATIONS.FIELDS.DELIVERABLES' | translate }}</mat-label>
               <textarea 
                 matInput 
                 formControlName="deliverables" 
-                placeholder="Describe los entregables de la colaboración..."
+                [placeholder]="'COLLABORATIONS.FIELDS.DELIVERABLES_PLACEHOLDER' | translate"
                 rows="3">
               </textarea>
               <mat-error *ngIf="collaborationForm.get('deliverables')?.hasError('required')">
-                Los entregables son obligatorios
+                {{ 'COLLABORATIONS.FIELDS.DELIVERABLES_REQUIRED' | translate }}
               </mat-error>
             </mat-form-field>
           </div>
@@ -109,10 +109,10 @@
         <mat-card-header>
           <mat-card-title>
             <mat-icon>timeline</mat-icon>
-            Hitos del Proyecto
+            {{ 'COLLABORATIONS.PROJECT_MILESTONES' | translate }}
           </mat-card-title>
           <mat-card-subtitle>
-            Define los pasos y fechas importantes de la colaboración
+            {{ 'COLLABORATIONS.MILESTONES_SUBTITLE' | translate }}
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
@@ -123,7 +123,7 @@
               class="milestone-item">
               
               <div class="milestone-header">
-                <h3>Hito {{ i + 1 }}</h3>
+                <h3>{{ 'COLLABORATIONS.MILESTONE' | translate }} {{ i + 1 }}</h3>
                 <button 
                   type="button" 
                   mat-icon-button 
@@ -137,56 +137,56 @@
 
               <div class="milestone-form">
                 <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Título del hito</mat-label>
-                  <input matInput formControlName="title" placeholder="Ej: Propuesta creativa">
+                  <mat-label>{{ 'COLLABORATIONS.FIELDS.MILESTONE_TITLE' | translate }}</mat-label>
+                  <input matInput formControlName="title" [placeholder]="'COLLABORATIONS.FIELDS.MILESTONE_TITLE_PLACEHOLDER' | translate">
                   <mat-error *ngIf="milestone.get('title')?.hasError('required')">
-                    El título es obligatorio
+                    {{ 'COLLABORATIONS.FIELDS.MILESTONE_TITLE_REQUIRED' | translate }}
                   </mat-error>
                 </mat-form-field>
 
                 <div class="milestone-grid">
                   <mat-form-field appearance="outline">
-                    <mat-label>Fecha</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="date">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-label>{{ 'COLLABORATIONS.FIELDS.MILESTONE_DATE' | translate }}</mat-label>
+                    <input matInput [matDatepicker]="milestoneDatePicker" formControlName="date">
+                    <mat-datepicker-toggle matSuffix [for]="milestoneDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #milestoneDatePicker></mat-datepicker>
                     <mat-error *ngIf="milestone.get('date')?.hasError('required')">
-                      La fecha es obligatoria
+                      {{ 'COLLABORATIONS.FIELDS.MILESTONE_DATE_REQUIRED' | translate }}
                     </mat-error>
                   </mat-form-field>
 
                   <mat-form-field appearance="outline">
-                    <mat-label>Ubicación</mat-label>
-                    <input matInput formControlName="location" placeholder="Zoom, Estudio, etc.">
+                    <mat-label>{{ 'COLLABORATIONS.FIELDS.MILESTONE_LOCATION' | translate }}</mat-label>
+                    <input matInput formControlName="location" [placeholder]="'COLLABORATIONS.FIELDS.MILESTONE_LOCATION_PLACEHOLDER' | translate">
                     <mat-error *ngIf="milestone.get('location')?.hasError('required')">
-                      La ubicación es obligatoria
+                      {{ 'COLLABORATIONS.FIELDS.MILESTONE_LOCATION_REQUIRED' | translate }}
                     </mat-error>
                   </mat-form-field>
                 </div>
 
                 <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Descripción</mat-label>
+                  <mat-label>{{ 'COLLABORATIONS.FIELDS.MILESTONE_DESCRIPTION' | translate }}</mat-label>
                   <textarea 
                     matInput 
                     formControlName="description" 
-                    placeholder="Describe qué se realizará en este hito..."
+                    [placeholder]="'COLLABORATIONS.FIELDS.MILESTONE_DESCRIPTION_PLACEHOLDER' | translate"
                     rows="2">
                   </textarea>
                   <mat-error *ngIf="milestone.get('description')?.hasError('required')">
-                    La descripción es obligatoria
+                    {{ 'COLLABORATIONS.FIELDS.MILESTONE_DESCRIPTION_REQUIRED' | translate }}
                   </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Entregables</mat-label>
+                  <mat-label>{{ 'COLLABORATIONS.FIELDS.MILESTONE_DELIVERABLES' | translate }}</mat-label>
                   <textarea 
                     matInput 
                     formControlName="deliverables" 
-                    placeholder="Qué se entregará al finalizar este hito..."
+                    [placeholder]="'COLLABORATIONS.FIELDS.MILESTONE_DELIVERABLES_PLACEHOLDER' | translate"
                     rows="2">
                   </textarea>
                   <mat-error *ngIf="milestone.get('deliverables')?.hasError('required')">
-                    Los entregables son obligatorios
+                    {{ 'COLLABORATIONS.FIELDS.MILESTONE_DELIVERABLES_REQUIRED' | translate }}
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -200,7 +200,7 @@
                 (click)="addMilestone()"
                 class="add-milestone-button">
                 <mat-icon>add</mat-icon>
-                Agregar Hito
+                {{ 'COLLABORATIONS.ADD_MILESTONE' | translate }}
               </button>
             </div>
           </div>
@@ -215,7 +215,7 @@
           (click)="goBack()"
           class="cancel-button">
           <mat-icon>cancel</mat-icon>
-          Cancelar
+          {{ 'COLLABORATIONS.CANCEL' | translate }}
         </button>
         
         <button 
@@ -225,7 +225,7 @@
           [disabled]="loading || !collaborationForm.valid"
           class="submit-button">
           <mat-icon>send</mat-icon>
-          Enviar Colaboración
+          {{ 'COLLABORATIONS.SEND_COLLABORATION' | translate }}
         </button>
       </div>
     </form>
