@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
-import { environment } from '../../../../../environments/environment';
 import { AuthService } from '../../../../core/services/auth.service';
+import { ProfileMeService } from '../../../../infrastructure/services/profile-me.service';
 
 @Component({
   selector: 'app-profile',
@@ -30,30 +29,31 @@ export class ProfileComponent implements OnInit {
   loading = true;
   error = false;
 
-  constructor(private authService: AuthService, private http: HttpClient) {}
+  constructor(
+    private authService: AuthService,
+    private profileMeService: ProfileMeService
+  ) {}
 
   ngOnInit(): void {
     // Obtener el usuario actual del AuthService
     const currentUser = this.authService.currentUser;
 
     if (currentUser) {
-      // Consultar la API para obtener los datos completos del perfil
-      this.http
-        .get(`${environment.apiBase}/users-register/${currentUser.userId}`)
-        .subscribe({
-          next: (userData: any) => {
-            this.user = userData;
-            this.loading = false;
-          },
-          error: (err) => {
-            console.error('Error al cargar el perfil:', err);
-            this.error = true;
-            this.loading = false;
+      const request$ = currentUser.profileType === 'INFLUENCER'
+        ? this.profileMeService.getInfluencerProfile()
+        : this.profileMeService.getBrandProfile();
 
-            // Si falla la consulta, usar los datos que ya tenemos del login
-            this.user = currentUser;
-          },
-        });
+      request$.subscribe({
+        next: (userData) => {
+          this.user = userData;
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Error al cargar el perfil:', err);
+          this.error = true;
+          this.loading = false;
+        }
+      });
     } else {
       this.error = true;
       this.loading = false;
@@ -74,6 +74,10 @@ export class ProfileComponent implements OnInit {
   getTotalFollowers(): number {
     if (!this.user?.followers) return 0;
 
+    if (typeof this.user.followers === 'number') {
+      return this.user.followers;
+    }
+
     let total = 0;
     if (this.user.followers.instagram) total += this.user.followers.instagram;
     if (this.user.followers.tiktok) total += this.user.followers.tiktok;
@@ -84,9 +88,6 @@ export class ProfileComponent implements OnInit {
 
   // Método para obtener las redes sociales como array
   getSocialLinks(): { platform: string; url: string; icon: string }[] {
-    if (!this.user?.social_links) return [];
-
-    const result = [];
     const icons: { [key: string]: string } = {
       instagram: 'instagram',
       facebook: 'facebook',
@@ -95,6 +96,17 @@ export class ProfileComponent implements OnInit {
       youtube: 'youtube',
     };
 
+    if (Array.isArray(this.user?.socialLinks)) {
+      return this.user.socialLinks.map((link: any) => ({
+        platform: link.platform,
+        url: link.url,
+        icon: icons[link.platform.toLowerCase()] || 'link',
+      }));
+    }
+
+    if (!this.user?.social_links) return [];
+
+    const result = [];
     for (const [platform, url] of Object.entries(this.user.social_links)) {
       if (url) {
         result.push({
@@ -110,11 +122,13 @@ export class ProfileComponent implements OnInit {
 
   // Método para verificar si es influencer
   isInfluencer(): boolean {
-    return this.user?.user_type === 'influencer';
+    const currentUser = this.authService.currentUser;
+    return currentUser?.profileType === 'INFLUENCER';
   }
 
   // Método para verificar si es marca
   isBrand(): boolean {
-    return this.user?.user_type === 'marca';
+    const currentUser = this.authService.currentUser;
+    return currentUser?.profileType === 'BRAND';
   }
 }
