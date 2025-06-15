@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +9,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ProfileMeService } from '../../../../infrastructure/services/profile-me.service';
+import {
+  InfluencerProfileResponse,
+  BrandProfileResponse,
+} from '../../../../infrastructure/dtos/profile-me.dto';
 
 @Component({
   selector: 'app-profile',
@@ -39,12 +44,13 @@ export class ProfileComponent implements OnInit {
     const currentUser = this.authService.currentUser;
 
     if (currentUser) {
-      const request$ = currentUser.profileType === 'INFLUENCER'
-        ? this.profileMeService.getInfluencerProfile()
-        : this.profileMeService.getBrandProfile();
+      const request$: Observable<InfluencerProfileResponse | BrandProfileResponse> =
+        currentUser.profileType === 'INFLUENCER'
+          ? this.profileMeService.getInfluencerProfile()
+          : this.profileMeService.getBrandProfile();
 
       request$.subscribe({
-        next: (userData) => {
+        next: (userData: InfluencerProfileResponse | BrandProfileResponse) => {
           this.user = userData;
           this.loading = false;
         },
