@@ -134,28 +134,74 @@
           *ngFor="let attachment of user.attachments"
           class="attachment-item"
         >
-          <mat-icon>{{ getAttachmentIcon(attachment.mediaType) }}</mat-icon>
+          <!-- Vista previa de imagen -->
+          <div *ngIf="isImage(attachment.mediaType)" class="attachment-preview">
+            <img 
+              [src]="getAttachmentUrl(attachment)" 
+              [alt]="attachment.title"
+              class="preview-image"
+              (click)="downloadAttachment(attachment)"
+            />
+            <div class="preview-overlay">
+              <mat-icon>zoom_in</mat-icon>
+            </div>
+          </div>
+
+          <!-- Vista previa de video -->
+          <div *ngIf="isVideo(attachment.mediaType)" class="attachment-preview">
+            <video 
+              [src]="getAttachmentUrl(attachment)" 
+              class="preview-video"
+              controls
+              preload="metadata"
+            >
+              Tu navegador no soporta el elemento de video.
+            </video>
+            <div class="video-overlay">
+              <mat-icon>play_circle</mat-icon>
+            </div>
+          </div>
+
+          <!-- Vista previa de documento -->
+          <div *ngIf="isDocument(attachment.mediaType)" class="attachment-preview">
+            <div class="document-preview" (click)="downloadAttachment(attachment)">
+              <mat-icon class="document-icon">{{ getAttachmentIcon(attachment.mediaType) }}</mat-icon>
+              <div class="document-info">
+                <h4>{{ attachment.title }}</h4>
+                <p *ngIf="hasValue(attachment.description)">{{ attachment.description }}</p>
+                <span class="document-type">{{ getDocumentType(attachment.title) }}</span>
+              </div>
+              <mat-icon class="download-icon">download</mat-icon>
+            </div>
+          </div>
+
+          <!-- Información del adjunto -->
           <div class="attachment-info">
             <h4>{{ attachment.title }}</h4>
             <p *ngIf="hasValue(attachment.description)">{{ attachment.description }}</p>
+            <div class="attachment-actions">
+              <button 
+                class="action-button view-button" 
+                (click)="downloadAttachment(attachment)"
+                *ngIf="!isVideo(attachment.mediaType)"
+              >
+                <mat-icon>visibility</mat-icon>
+                Ver
+              </button>
+              <button 
+                class="action-button download-button" 
+                (click)="downloadAttachment(attachment)"
+              >
+                <mat-icon>download</mat-icon>
+                Descargar
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Información de Fechas -->
-    <section class="profile-section">
-      <h2>Información del Perfil</h2>
-      <div class="dates-info">
-        <div class="date-item">
-          <span class="date-label">Creado:</span>
-          <span class="date-value">{{ formatDate(user.createdAt) }}</span>
-        </div>
-        <div class="date-item">
-          <span class="date-label">Última actualización:</span>
-          <span class="date-value">{{ formatDate(user.updatedAt) }}</span>
-        </div>
-      </div>
-    </section>
+  
   </div>
 </div>

@@ -1,82 +1,32 @@
-si mi perfil es de marca entonces consumes es te ednpoint 
+leugo necesito queme crees otro apartado qeu sea collaboraciones
 
-http://localhost:8080/api/profiles/brand/me
+todo incia desde el dashbiard incial dodne me listas los marcas/influncers ahi tran esto 
 
 
-este devuvel esto: 
+
+    "userId": 17,
+    "tradeName": "Nike Colombia",
+    "logoUrl": "",  // lgo en base 64 
+    "country": "CO",
+    "sector": "Deportes y Moda"
+},
 {
-    "id": "Long - ID del perfil",
-    "name": "String - Nombre de la marca",
-    "sector": "String - Sector o industria",
-    "country": "String - Código de país ISO 3166-1 alpha-2",
-    "description": "String - Descripción detallada",
-    "logo": "String - Logo en base64",
-    "profilePhoto": "String - Foto de perfil en base64",
-    "websiteUrl": "String - URL del sitio web",
-    "location": "String - Ubicación",
-    "links": [
-        {
-            "title": "String - Título del enlace",
-            "url": "String - URL del enlace"
-        }
-    ],
-    "attachments": [
-        {
-            "title": "String - Título del adjunto",
-            "description": "String - Descripción del adjunto",
-            "mediaType": "String - Tipo de medio (PHOTO, VIDEO, DOCUMENT)",
-            "data": "String - Contenido del archivo en base64"
-        }
-    ],
-    "createdAt": "DateTime - Fecha de creación (formato: yyyy-MM-dd'T'HH:mm:ss)",
-    "updatedAt": "DateTime - Fecha de última actualización (formato: yyyy-MM-dd'T'HH:mm:ss)"
-}
-
-si mi perfil es de infleunecr consuems esto:
-
-http://localhost:8080/api/profiles/influencer/me
-
-ambos son gets devuvel esto
-
-
+    "userId": 29,
+    "tradeName": "dsasda",
+    "logoUrl": "",  // lgo en base 64 
+    "country": "asdas",
+    "sector": "sadasd"
+},
 {
-    "id": "Long - ID del perfil",
-    "name": "String - Nombre del influencer",
-    "niches": ["String - Lista de nichos o categorías"],
-    "bio": "String - Biografía",
-    "country": "String - Código de país ISO 3166-1 alpha-2",
-    "photo": "String - Foto principal en base64",
-    "profilePhoto": "String - Foto de perfil en base64",
-    "followers": "Integer - Número de seguidores",
-    "socialLinks": [
-        {
-            "platform": "String - Plataforma de red social",
-            "url": "String - URL del perfil social"
-        }
-    ],
-    "location": "String - Ubicación",
-    "links": [
-        {
-            "title": "String - Título del enlace",
-            "url": "String - URL del enlace"
-        }
-    ],
-    "attachments": [
-        {
-            "title": "String - Título del adjunto",
-            "description": "String - Descripción del adjunto",
-            "mediaType": "String - Tipo de medio (PHOTO, VIDEO, DOCUMENT)",
-            "data": "String - Contenido del archivo en base64"
-        }
-    ],
-    "createdAt": "DateTime - Fecha de creación (formato: yyyy-MM-dd'T'HH:mm:ss)",
-    "updatedAt": "DateTime - Fecha de última actualización (formato: yyyy-MM-dd'T'HH:mm:ss)"
+    "userId": 33,
+    "tradeName": "dsadsa",
+    "logoUrl": "",  // lgo en base 64 
+    "" "country": "asdsada",
+    "sector": "sadsa"
 }
-
-si algun campo devuelvo un null, entonces no lo muestro en el frontend y tmapo si e sque devuele "" tmapoc lo muestro
-
-de ahi esto tiene qeu ser bajo DDD la estrutura de la aplicacion, y revisa misa rhcivos y ten en cuneta qeu ya ahy algunos dtos, crados los cuales
-tiene una esturura y si tus los modifcas peuden qeu otros componenes se ropmpan poruqe ya tabajand con eso asi qe lop mas recomndable es crees todo nuevo exceptop de este componetnde de @profiele.compoente que te digo ese si lo puedes cambias porque no se usa
+]
 
 
-tambien trienes que cambiar en el componedne de @sidebar para que te redirga a esdya pesatña en la priema cargga nomas se tioene que consumir los endpoints osea apensa redenricen
+de auqi obetenesmo el userID de aqui cuadno presione el boton de contacatar 
+
+http://localhost:8080/api/collaborations

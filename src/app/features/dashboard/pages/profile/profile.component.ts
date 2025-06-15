@@ -6,6 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
+import { DomSanitizer, SafeUrl, SafeResourceUrl } from '@angular/platform-browser';
 import { UserProfileRepository } from '../../../../domain/repositories/user-profile-repository';
 import { UserProfileRepositoryImpl } from '../../../../infrastructure/repositories/user-profile.repository';
 import { UserProfileDetailVO } from '../../../../domain/value-objects/user-profile-detail.vo';
@@ -39,7 +40,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userProfileRepository: UserProfileRepository,
-    private authService: AuthService
+    private authService: AuthService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -112,22 +114,95 @@ export class ProfileComponent implements OnInit {
   }
 
   // Método para obtener la imagen de perfil
-  getProfileImage(): string {
+  getProfileImage(): SafeUrl | string {
     if (!this.user) return '';
     
     if (this.user.profilePhoto) {
-      return `data:image/jpeg;base64,${this.user.profilePhoto}`;
+      return this.createImageUrl(this.user.profilePhoto);
     }
     
     if (this.user.photo) {
-      return `data:image/jpeg;base64,${this.user.photo}`;
+      return this.createImageUrl(this.user.photo);
     }
     
     if (this.user.logo) {
-      return `data:image/jpeg;base64,${this.user.logo}`;
+      return this.createImageUrl(this.user.logo);
     }
     
     return '';
+  }
+
+  // Método para crear URL segura de imagen base64
+  createImageUrl(base64Data: string): SafeUrl {
+    if (!base64Data) return '';
+    
+    // Si ya tiene el prefijo data:image, usarlo directamente
+    if (base64Data.startsWith('data:image')) {
+      return this.sanitizer.bypassSecurityTrustUrl(base64Data);
+    }
+    
+    // Si es solo base64, agregar el prefijo
+    const imageUrl = `data:image/jpeg;base64,${base64Data}`;
+    return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+  }
+
+  // Método para crear URL segura de video base64
+  createVideoUrl(base64Data: string): SafeUrl {
+    if (!base64Data) return '';
+    
+    // Si ya tiene el prefijo data:video, usarlo directamente
+    if (base64Data.startsWith('data:video')) {
+      return this.sanitizer.bypassSecurityTrustUrl(base64Data);
+    }
+    
+    // Si es solo base64, agregar el prefijo
+    const videoUrl = `data:video/mp4;base64,${base64Data}`;
+    return this.sanitizer.bypassSecurityTrustUrl(videoUrl);
+  }
+
+  // Método para crear URL segura de documento base64
+  createDocumentUrl(base64Data: string, fileName: string): SafeUrl {
+    if (!base64Data) return '';
+    
+    // Determinar el tipo MIME basado en la extensión del archivo
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    let mimeType = 'application/octet-stream';
+    
+    switch (extension) {
+      case 'pdf':
+        mimeType = 'application/pdf';
+        break;
+      case 'doc':
+        mimeType = 'application/msword';
+        break;
+      case 'docx':
+        mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        break;
+      case 'xls':
+        mimeType = 'application/vnd.ms-excel';
+        break;
+      case 'xlsx':
+        mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        break;
+      case 'ppt':
+        mimeType = 'application/vnd.ms-powerpoint';
+        break;
+      case 'pptx':
+        mimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+        break;
+      case 'txt':
+        mimeType = 'text/plain';
+        break;
+    }
+    
+    // Si ya tiene el prefijo data:, usarlo directamente
+    if (base64Data.startsWith('data:')) {
+      return this.sanitizer.bypassSecurityTrustUrl(base64Data);
+    }
+    
+    // Si es solo base64, agregar el prefijo
+    const documentUrl = `data:${mimeType};base64,${base64Data}`;
+    return this.sanitizer.bypassSecurityTrustUrl(documentUrl);
   }
 
   // Método para verificar si un campo tiene valor
@@ -146,6 +221,70 @@ export class ProfileComponent implements OnInit {
         return 'description';
       default:
         return 'attachment';
+    }
+  }
+
+  // Método para verificar si es una imagen
+  isImage(mediaType: string): boolean {
+    return mediaType === 'PHOTO';
+  }
+
+  // Método para verificar si es un video
+  isVideo(mediaType: string): boolean {
+    return mediaType === 'VIDEO';
+  }
+
+  // Método para verificar si es un documento
+  isDocument(mediaType: string): boolean {
+    return mediaType === 'DOCUMENT';
+  }
+
+  // Método para obtener la URL segura del adjunto
+  getAttachmentUrl(attachment: any): SafeUrl {
+    if (!attachment.data) return '';
+    
+    if (this.isImage(attachment.mediaType)) {
+      return this.createImageUrl(attachment.data);
+    } else if (this.isVideo(attachment.mediaType)) {
+      return this.createVideoUrl(attachment.data);
+    } else if (this.isDocument(attachment.mediaType)) {
+      return this.createDocumentUrl(attachment.data, attachment.title);
+    }
+    
+    return '';
+  }
+
+  // Método para descargar el archivo
+  downloadAttachment(attachment: any): void {
+    if (!attachment.data) return;
+    
+    const url = this.getAttachmentUrl(attachment);
+    const link = document.createElement('a');
+    link.href = url as string;
+    link.download = attachment.title || 'archivo';
+    link.click();
+  }
+
+  // Método para obtener el tipo de documento
+  getDocumentType(fileName: string): string {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    
+    switch (extension) {
+      case 'pdf':
+        return 'PDF';
+      case 'doc':
+      case 'docx':
+        return 'Documento Word';
+      case 'xls':
+      case 'xlsx':
+        return 'Hoja de cálculo Excel';
+      case 'ppt':
+      case 'pptx':
+        return 'Presentación PowerPoint';
+      case 'txt':
+        return 'Archivo de texto';
+      default:
+        return 'Documento';
     }
   }
 
