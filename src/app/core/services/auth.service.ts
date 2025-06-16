@@ -34,6 +34,10 @@ export class AuthService {
     return !!this.currentUserSubject.value;
   }
 
+  public getCurrentUserId(): number | null {
+    return this.currentUserSubject.value ? this.currentUserSubject.value.userId : null;
+  }
+
   public save(user: User): void {
     localStorage.setItem(this.USER_STORAGE_KEY, JSON.stringify(user));
     this.currentUserSubject.next(user);

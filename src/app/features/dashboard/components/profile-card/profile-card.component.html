@@ -36,13 +36,21 @@
   </div>
 
   <div class="profile-actions">
-    <button class="action-button primary" (click)="contactUser(); $event.stopPropagation()">
-      <span class="icon">👋</span>
-      {{ 'dashboard.profile.actions.contact' | translate }}
-    </button>
-    <button class="action-button secondary" (click)="viewDetails(); $event.stopPropagation()">
-      <span class="icon">ℹ️</span>
-      {{ 'dashboard.profile.actions.viewProfile' | translate }}
-    </button>
+    <div class="action-row">
+      <button class="action-button primary" (click)="sendRequest(); $event.stopPropagation()">
+        <span class="icon">🤝</span>
+        Enviar Solicitud
+      </button>
+      <button class="action-button secondary" (click)="sendMessage(); $event.stopPropagation()">
+        <span class="icon">💬</span>
+        Enviar Mensaje
+      </button>
+    </div>
+    <div class="action-row">
+      <button class="action-button tertiary" (click)="viewDetails(); $event.stopPropagation()">
+        <span class="icon">ℹ️</span>
+        {{ 'dashboard.profile.actions.viewProfile' | translate }}
+      </button>
+    </div>
   </div>
 </div>

@@ -7,7 +7,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 import { ProfileService } from '../../../infrastructure/services/profile.service';
+import { ChatService } from '../../../application/services/chat.service';
 import { BrandProfile, InfluencerProfile } from '../../../domain/models/profile.model';
 
 @Component({
@@ -34,7 +37,10 @@ export class ProfileDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private profileService: ProfileService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private chatService: ChatService,
+    private snackBar: MatSnackBar,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -212,11 +218,13 @@ export class ProfileDetailsComponent implements OnInit {
   }
 
   contactUser(): void {
-    this.router.navigate(['/dashboard/new-collaboration'], {
-      queryParams: {
-        counterpartId: this.profile?.id,
-        counterpartName: this.profile?.name
-      }
-    });
+    if (this.profile && this.profile.id) {
+      // Navigate to the chat detail page with the profile ID as the 'chatId'
+      // The chat-detail component will determine if it's a new chat or an existing one.
+      this.router.navigate(['/dashboard/chats', this.profile.id]);
+    } else {
+      console.warn('Cannot initiate chat: Profile or Profile ID not available.');
+      this.snackBar.open(this.translate.instant('CHAT_FLOW.PROFILE_NOT_AVAILABLE'), 'Close', { duration: 5000 });
+    }
   }
 } 

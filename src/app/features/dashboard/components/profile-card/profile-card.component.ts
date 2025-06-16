@@ -33,6 +33,23 @@ export class ProfileCardComponent {
     });
   }
 
+  sendRequest(): void {
+    // TODO: Implementar lógica para enviar solicitud de colaboración
+    console.log('Enviar solicitud a:', this.profile.name);
+    // Por ahora, redirigir a la página de nueva colaboración
+    this.router.navigate(['/dashboard/new-collaboration'], {
+      queryParams: {
+        counterpartId: this.profile.userId,
+        counterpartName: this.profile.name
+      }
+    });
+  }
+
+  sendMessage(): void {
+    // Navegar al chat con este usuario
+    this.router.navigate(['/dashboard/chats', this.profile.userId]);
+  }
+
   formatNumber(num: number): string {
     if (num >= 1000000) {
       return (num / 1000000).toFixed(1) + 'M';

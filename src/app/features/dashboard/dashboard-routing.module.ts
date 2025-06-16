@@ -23,6 +23,14 @@ const routes: Routes = [
       {
         path: 'new-collaboration',
         loadComponent: () => import('./presentation/pages/collaborations/collaborations.component').then(m => m.CollaborationsComponent)
+      },
+      {
+        path: 'chats',
+        loadComponent: () => import('./presentation/pages/chat-list/chat-list.component').then(m => m.ChatListComponent)
+      },
+      {
+        path: 'chats/:chatId',
+        loadComponent: () => import('./presentation/pages/chat-detail/chat-detail.component').then(m => m.ChatDetailComponent)
       }
     ]
   }

@@ -45,9 +45,13 @@
             <span>Influencer</span>
           </div>
           <div class="profile-actions">
-            <button mat-raised-button color="primary" (click)="contactUser()" class="contact-button">
+            <button mat-raised-button color="primary" class="request-button">
               <mat-icon>handshake</mat-icon>
-              Contactar para Colaboración
+              Enviar Solicitud
+            </button>
+            <button mat-raised-button color="accent" (click)="contactUser()" class="message-button">
+              <mat-icon>chat</mat-icon>
+              Enviar Mensaje
             </button>
           </div>
         </div>

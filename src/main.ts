@@ -5,7 +5,7 @@ import { importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -17,6 +17,7 @@ import { CalendarDateFormatter, CalendarAngularDateFormatter } from 'angular-cal
 import { routes } from './app/app.routes'; // <-- tu archivo de rutas stand-alone
 import { AppComponent } from './app/app.component';
 import { CoreModule } from './app/core/core.module';
+import { authInterceptor } from './app/core/interceptors/auth.interceptor';
 
 // 🔧 Factory para ngx-translate
 export function createTranslateLoader(http: HttpClient) {
@@ -31,13 +32,15 @@ bootstrapApplication(AppComponent, {
     // 👉 Animaciones (equivalente a BrowserAnimationsModule)
     provideAnimations(),
 
+    // 👉 HTTP Client with interceptors
+    provideHttpClient(withInterceptors([authInterceptor])),
+
     // 👉 Date adapter providers for angular-calendar
     { provide: DateAdapter, useClass: NativeDateAdapter },
     { provide: CalendarDateFormatter, useClass: CalendarAngularDateFormatter },
 
     // 👉 Imports de módulos "clásicos" que aún necesitas
     importProvidersFrom(
-      HttpClientModule,
       CoreModule,
       TranslateModule.forRoot({
         loader: {

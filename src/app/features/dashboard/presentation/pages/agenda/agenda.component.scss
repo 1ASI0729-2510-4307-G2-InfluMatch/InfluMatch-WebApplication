@@ -215,12 +215,31 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 30px;
   margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  height: 100%; // Ensure it takes full height to manage children's flex
+
+  @media (max-width: 992px) {
+    padding: 25px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+
+  @media (max-width: 576px) {
+    padding: 15px;
+    border-radius: 0; // Full width on small screens
+    box-shadow: none;
+    border: none;
+  }
 
   .calendar-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
+    flex-shrink: 0; // Prevent header from shrinking
 
     h2 {
       font-size: 1.8rem;
@@ -228,13 +247,40 @@
       color: #333;
       margin: 0;
       text-transform: capitalize;
+      white-space: nowrap;
+
+      @media (max-width: 992px) {
+        font-size: 1.6rem;
+      }
+      @media (max-width: 768px) {
+        font-size: 1.4rem;
+      }
+      @media (max-width: 576px) {
+        font-size: 1.2rem;
+      }
     }
 
     button {
       color: #a0d911;
-      
+      padding: 8px;
+      min-width: unset; // Allow shrinking
+      width: auto; // Allow shrinking
+      height: auto; // Allow shrinking
+
       &:hover {
         background-color: rgba(160, 217, 17, 0.1);
+      }
+
+      mat-icon {
+        font-size: 24px; // Default icon size
+        width: 24px;
+        height: 24px;
+
+        @media (max-width: 576px) {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
       }
     }
   }
@@ -247,134 +293,202 @@
     padding: 10px 25px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    flex-shrink: 0; // Prevent shrinking
 
     &:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
+
+    @media (max-width: 992px) {
+      padding: 8px 20px;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 768px) {
+      padding: 7px 18px;
+      font-size: 0.85rem;
+    }
+    @media (max-width: 576px) {
+      padding: 6px 15px;
+      font-size: 0.8rem;
+    }
   }
 
   .calendar-grid {
-    .calendar-week-header {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 1px;
-      margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; // Allow grid to grow and take available space
+  }
 
-      .calendar-day-header {
-        padding: 15px 10px;
-        text-align: center;
-        font-weight: 600;
-        color: #666;
-        background-color: #f8f9fa;
-        border-radius: 8px;
+  .calendar-week-header,
+  .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); // Ensure 7 equal columns always
+    text-align: center;
+  }
+
+  .calendar-week-header {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    font-weight: 600;
+    color: #555;
+
+    div {
+      padding: 5px 0;
+      font-size: 0.9rem;
+
+      @media (max-width: 992px) {
+        font-size: 0.85rem;
+      }
+      @media (max-width: 768px) {
+        font-size: 0.8rem;
+      }
+      @media (max-width: 576px) {
+        font-size: 0.75rem;
+      }
+      @media (max-width: 400px) {
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  .calendar-days {
+    border-left: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    flex-grow: 1; // Allow calendar days to grow
+  }
+
+  .calendar-day {
+    border-top: 1px solid #eee;
+    border-right: 1px solid #eee;
+    padding: 10px;
+    min-height: 120px; // Default minimum height
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; // Space out number and events
+    background-color: #fff;
+
+    &.today {
+      background-color: #e6ffe6; // Light green for today
+    }
+
+    &.current-month {
+      color: #333;
+    }
+
+    &.other-month {
+      color: #bbb;
+      background-color: #fafafa;
+    }
+
+    @media (max-width: 1200px) {
+      min-height: 110px;
+      padding: 8px;
+    }
+    @media (max-width: 992px) {
+      min-height: 100px;
+      padding: 7px;
+    }
+    @media (max-width: 768px) {
+      min-height: 90px;
+      padding: 6px;
+    }
+    @media (max-width: 576px) {
+      min-height: 80px;
+      padding: 5px;
+    }
+    @media (max-width: 400px) {
+      min-height: 70px;
+      padding: 4px;
+    }
+
+    .day-number {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 5px; // Space between number and events
+      text-align: right;
+      flex-shrink: 0; // Prevent day number from shrinking
+
+      @media (max-width: 992px) {
+        font-size: 1rem;
+      }
+      @media (max-width: 768px) {
         font-size: 0.9rem;
+      }
+      @media (max-width: 576px) {
+        font-size: 0.85rem;
+      }
+      @media (max-width: 400px) {
+        font-size: 0.8rem;
       }
     }
 
-    .calendar-days {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 1px;
+    .day-events {
+      flex-grow: 1; // Allow events container to grow
+      overflow-y: auto;
+      padding-right: 2px; // Space for scrollbar
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
 
-      .calendar-day {
-        padding: 10px;
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
+      // Custom scrollbar for better aesthetics
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      .event-card {
+        background-color: #a0d911; // Green for events
+        color: white;
+        padding: 5px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        margin-bottom: 2px;
         cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        background-color: #fff;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        min-height: 100px; /* Base minimum height */
-        box-sizing: border-box; 
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 100%; // Ensure it takes full available width
+        flex-shrink: 0; // Prevent cards from shrinking below content
 
-        &:hover {
-          background-color: #f8f9fa;
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        &:last-child {
+          margin-bottom: 0;
         }
 
-        &.current-month {
-          .day-number {
-            color: #333;
-            font-weight: 500;
-          }
+        @media (max-width: 1200px) {
+          font-size: 0.75rem;
+          padding: 4px 7px;
         }
-
-        &:not(.current-month) {
-          .day-number {
-            color: #ccc;
-          }
+        @media (max-width: 992px) {
+          font-size: 0.7rem;
+          padding: 3px 6px;
         }
-
-        &.today {
-          background: linear-gradient(45deg, #a0d911, #8cc53e);
-          
-          .day-number {
-            color: white;
-            font-weight: 700;
-          }
+        @media (max-width: 768px) {
+          font-size: 0.65rem;
+          padding: 2px 5px;
         }
-
-        .day-number {
-          font-size: 1rem;
-          margin-bottom: 5px;
+        @media (max-width: 576px) {
+          font-size: 0.6rem;
+          padding: 1px 4px;
         }
-
-        .day-events {
-          display: flex;
-          flex-direction: column; 
-          flex-wrap: wrap;
-          gap: 2px;
-          justify-content: flex-start; 
-          width: 100%;
-          height: calc(100% - 25px); /* Adjusted height calculation based on min-height for day cell */
-          overflow-y: auto; 
-          padding-top: 5px; 
-
-          /* Custom scrollbar for better appearance */
-          &::-webkit-scrollbar {
-            width: 5px;
-          }
-          &::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-          }
-          &::-webkit-scrollbar-track {
-            background-color: rgba(0, 0, 0, 0.05);
-          }
-
-          .event-card {
-            width: 100%; /* Ensure full width */
-            padding: 6px 8px;
-            border-radius: 6px;
-            margin-bottom: 4px; 
-            cursor: pointer;
-            transition: all 0.2s ease;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap; 
-            font-size: 0.8rem; 
-            color: white;
-            text-align: left;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
-
-            &:hover {
-              transform: translateY(-1px);
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-            }
-
-            .event-title {
-              display: block;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-            }
-          }
+        @media (max-width: 400px) {
+          font-size: 0.55rem;
+          padding: 1px 3px;
         }
       }
     }

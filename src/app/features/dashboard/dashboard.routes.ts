@@ -48,4 +48,12 @@ export const DASHBOARD_ROUTES: Routes = [
         (m) => m.AgendaComponent
       ),
   },
+  {
+    path: 'chats',
+    loadComponent: () => import('./presentation/pages/chat-list/chat-list.component').then(m => m.ChatListComponent)
+  },
+  {
+    path: 'chats/:chatId',
+    loadComponent: () => import('./presentation/pages/chat-detail/chat-detail.component').then(m => m.ChatDetailComponent)
+  }
 ];

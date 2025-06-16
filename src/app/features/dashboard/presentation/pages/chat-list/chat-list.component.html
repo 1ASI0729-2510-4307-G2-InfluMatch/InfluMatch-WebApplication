@@ -1,0 +1,45 @@
+<div class="chat-list-container">
+  <div class="chat-list-header">
+    <mat-icon>chat</mat-icon>
+    <h1>{{ 'CHAT_LIST.TITLE' | translate }}</h1>
+  </div>
+
+  <div class="loading-section" *ngIf="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>{{ 'CHAT_LIST.LOADING' | translate }}</p>
+  </div>
+
+  <div class="error-section" *ngIf="error && !loading">
+    <mat-icon>error_outline</mat-icon>
+    <h3>{{ 'CHAT_LIST.ERROR_TITLE' | translate }}</h3>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadChats()">
+      {{ 'CHAT_LIST.RETRY' | translate }}
+    </button>
+  </div>
+
+  <div class="empty-state" *ngIf="!loading && !error && chats.length === 0">
+    <mat-icon>inbox</mat-icon>
+    <h3>{{ 'CHAT_LIST.NO_CHATS_TITLE' | translate }}</h3>
+    <p>{{ 'CHAT_LIST.NO_CHATS_MESSAGE' | translate }}</p>
+    <button mat-raised-button color="primary" (click)="navigateToDashboard()">
+      {{ 'CHAT_LIST.INITIATE_CHAT_BUTTON' | translate }}
+    </button>
+  </div>
+
+  <div class="chat-cards-container" *ngIf="!loading && !error && chats.length > 0">
+    <mat-card *ngFor="let chat of chats" class="chat-card" (click)="openChat(chat.chatId)">
+      <mat-card-header>
+        <img mat-card-avatar [src]="getInterlocutorAvatar(chat.interlocutor)" alt="Interlocutor Avatar" />
+        <mat-card-title>{{ chat.interlocutor.name }}</mat-card-title>
+        <mat-card-subtitle>{{ chat.lastMessage?.content }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chat-meta">
+          <span class="last-message-time">{{ chat.lastMessage?.createdAt | date:'shortTime' }}</span>
+          <span class="unread-count" *ngIf="chat.unreadCount > 0">{{ chat.unreadCount }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div> 
