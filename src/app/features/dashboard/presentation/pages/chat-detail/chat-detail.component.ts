@@ -103,10 +103,11 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
           messageId: msg.messageId,
           content: msg.content,
           createdAt: msg.createdAt,
-          senderId: msg.isFromMe ? (this.currentUserId || 0) : response.interlocutor.userId,
-          receiverId: msg.isFromMe ? response.interlocutor.userId : (this.currentUserId || 0),
+          senderId: msg.senderId,
+          receiverId: msg.receiverId,
           chatId: 0,
-          attachmentUrl: msg.attachmentUrl || undefined
+          attachmentUrl: msg.attachmentUrl || undefined,
+          isFromMe: msg.isFromMe
         }));
 
         if (response.messages.length > 0) {
@@ -232,11 +233,7 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
   }
 
   getMessageAlignment(message: Message): string {
-    if (message.senderId) {
-      return message.senderId === this.currentUserId ? 'end' : 'start';
-    }
-    
-    return 'start';
+    return message.isFromMe ? 'end' : 'start';
   }
 
   getInterlocutorAvatar(interlocutor: Interlocutor | undefined): string {

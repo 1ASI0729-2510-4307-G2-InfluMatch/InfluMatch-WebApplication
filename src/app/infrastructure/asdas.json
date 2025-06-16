@@ -1,117 +1,25 @@
-perfecto ahroa necesito unos cambios este ednpoint 
-
-eel qeu me lsiatss lasmsolicitudes se han añadido algunos campos 
-
 [
   {
-      "id": 2,
-      "initiatorId": 123,
-      "counterpartId": 456,
-      "initiatorRole": "INFLUENCER",
-      "status": "PENDING",
-      "counterpartName": "Nike",
-      "counterpartPhotoUrl": "data:image/jpeg;base64,/9j/4AAQ...",
-      "message": "aadssadasdasdasdasasmkdhkajsdhusaijkdhjkasdhjkasdkhgjahjgdsashjk",
-      "actionType": "POST_IG",
-      "createdAt": "2025-06-15T04:00:30Z"
-  }
-]
-
-
-para ser mans especificso se han añaiddo estos 
-
-"initiatorId": 123,
-"counterpartId": 456,
-
-
-porque ahoa necewsito que aghregues en cda card de kla lsiat un boton el cual va ser 
-
-confirmacion de proceso 
-
-
-
-el cual me va abrir un modal el cual 
-
-mer va lsita esto 
-
-
+      "chatId": 3,
+      "interlocutorId": 2,
+      "interlocutor": {
+          "id": 2,
+          "name": "Carlos Fitness",
+          "photoBase64": null
+      },
+      "lastMessage": null,
+      "unreadCount": 0
+  },
   {
-      "id": 2,
-      "initiatorId": 123,
-      "counterpartId": 456,
-      "initiatorRole": "INFLUENCER",
-      "status": "PENDING",
-      "counterpartName": "Nike",
-      "counterpartPhotoUrl": "data:image/jpeg;base64,/9j/4AAQ...",
-      "message": "aadssadasdasdasdasasmkdhkajsdhusaijkdhjkasdhjkasdkhgjahjgdsashjk",
-      "actionType": "POST_IG",
-      "createdAt": "2025-06-15T04:00:30Z"
-  }
- osea los datros cortos de esa solcitud y va ahber un boton para acepatr o rechazar 
-
-el qeu peude aceprtar o rechazar solo es la persona qeu recibio 
-
-aqui tiene que buscar nuestro id de usario qeu esta en el local storage y ver si 
-
-
-"counterpartId": 456,(este es el userID)
-
-es igual a nuestro userid entonces este modal se muestra 
-
-si fuera dierente 
-
-entonces te vas a le segunda verificacion "initiatorId": 123,
-este seria del qeu envia 
-
-
-etonces si "initiatorId": 123, conidice con nuestro suer id de l lcoal storage entocnes 
-
-solo me sale el mismo modal pero en las opcione ssopllo me va aslir 
-
-lña ocpion de cancerlar 
-
-y se cierra el mdoal en ambos casoss
-
-
-este mdoal tiene qeuy tener un boton qeu ejeucte este enpoitn el cual le va mandar al back 
-el nuevo estado 
-
-http://localhost:8080/api/collaborations/1 (put)
-
-{
-  "action": "ACCEPT"
-}
-
-
-estros son  los estdos que tengo:
-
-aqui le envias esto public enum CollaborationStatus {
-  PENDING,
-  ACCEPTED,
-  REJECTED,
-  CANCELED,
-  FINISHED
-} 
-
-por ahora solo hemos inpmenteado 3 aceptar o rechazar si nuestrpo idUser conicide con  "counterpartId": 456,
-
-
-y cancelar si nuestro idUSer coincide con       "initiatorId": 123,
-
-
-ah verdad esto solo sale si el estado esta en pendiende para otro estado no peude salir 
-
-
-ahroa este modal tambine puede salri si el estado es ACCEPTED,
-
-y solo le sale la opcion de FINISHED si es que el nuestro idUSer coincide con       "initiatorId": 123,
-
-aqui hay un tbalita quelo explica mejro 
-
-
-🎯 Resumen de Permisos:
-Acción	Quién puede	Estado requerido	Nuevo estado
-ACCEPT	Recipient	PENDING	          ACCEPTED
-REJECT	Recipient	PENDING	          REJECTED
-CANCEL	Initiator	PENDING	        CANCELED
-FINISH	Initiator	ACCEPTED	        FINISHED
+      "chatId": 4,
+      "interlocutorId": 12,
+      "interlocutor": {
+          "id": 12,
+          "name": "Carlos Fitness",
+          "photoBase64": "sdkfnakdiojw" //foto en base 64 },
+      "lastMessage": null,
+      "unreadCount": 0
+  },
+  {
+      "chatId": 5,
+      "i

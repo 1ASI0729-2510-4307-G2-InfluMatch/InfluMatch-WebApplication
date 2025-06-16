@@ -35,6 +35,7 @@ export interface Message {
   status?: 'sent' | 'delivered' | 'read'; // Optional as it's not always in GET /messages
   type?: 'text' | 'photo' | 'video' | 'document'; // Optional as it's not always in GET /messages
   attachmentUrl?: string; // URL for attachment after upload
+  isFromMe?: boolean; // Add isFromMe to the Message interface
 }
 
 // Interface for the response from GET /api/chats/{userId}/messages
@@ -46,6 +47,8 @@ export interface ChatMessagesResponse {
   };
   messages: {
     messageId: number;
+    senderId: number;
+    receiverId: number;
     content: string;
     attachmentUrl: string | null;
     createdAt: string;

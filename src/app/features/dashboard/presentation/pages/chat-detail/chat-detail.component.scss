@@ -108,9 +108,9 @@
       justify-content: flex-end;
 
       .message-content {
-        background-color: #dcf8c6; /* Light green for sent messages */
+        background-color: #dcf8c6;
         color: #333;
-        border-bottom-right-radius: 4px; /* Straight edge for sender */
+        border-bottom-right-radius: 4px;
         border-bottom-left-radius: 12px;
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
@@ -121,9 +121,9 @@
       justify-content: flex-start;
 
       .message-content {
-        background-color: #f0f0f0; /* Light gray for received messages */
+        background-color: #f0f0f0;
         color: #333;
-        border-bottom-left-radius: 4px; /* Straight edge for receiver */
+        border-bottom-left-radius: 4px;
         border-bottom-right-radius: 12px;
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
@@ -138,6 +138,8 @@
       p {
         margin: 0;
         word-wrap: break-word;
+        line-height: 1.5;
+        font-size: 0.95rem;
       }
 
       .message-time {

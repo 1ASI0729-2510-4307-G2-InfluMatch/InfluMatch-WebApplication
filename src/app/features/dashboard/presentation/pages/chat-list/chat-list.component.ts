@@ -60,9 +60,9 @@ export class ChatListComponent implements OnInit {
     });
   }
 
-  openChat(chatId: number): void {
-    // Navigate to the specific chat messages
-    this.router.navigate(['/dashboard/chats', chatId]);
+  openChat(userId: number): void {
+    // Navigate to the specific chat messages using userId
+    this.router.navigate(['/dashboard/chats', userId]);
   }
 
   getInterlocutorAvatar(interlocutor: Interlocutor): string {

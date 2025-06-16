@@ -28,7 +28,7 @@
   </div>
 
   <div class="chat-cards-container" *ngIf="!loading && !error && chats.length > 0">
-    <mat-card *ngFor="let chat of chats" class="chat-card" (click)="openChat(chat.chatId)">
+    <mat-card *ngFor="let chat of chats" class="chat-card" (click)="openChat(chat.interlocutor.id)">
       <mat-card-header>
         <img mat-card-avatar [src]="getInterlocutorAvatar(chat.interlocutor)" alt="Interlocutor Avatar" />
         <mat-card-title>{{ chat.interlocutor.name }}</mat-card-title>
