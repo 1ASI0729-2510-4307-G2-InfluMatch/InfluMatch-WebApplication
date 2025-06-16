@@ -607,5 +607,28 @@
     "MONTH": "Mes",
     "WEEK": "Semana",
     "DAY": "Día"
+  },
+  "CHAT_LIST": {
+    "TITLE": "Mensajes",
+    "LOADING": "Cargando chats...",
+    "ERROR_TITLE": "Error al cargar chats",
+    "ERROR_LOADING_CHATS": "Ha ocurrido un error al cargar tus conversaciones. Por favor, intenta de nuevo.",
+    "RETRY": "Reintentar",
+    "NO_CHATS_TITLE": "¡Aún no tienes conversaciones!",
+    "NO_CHATS_MESSAGE": "Parece que no has iniciado ningún chat. Busca perfiles para conectar y empezar a colaborar.",
+    "INITIATE_CHAT_BUTTON": "Iniciar Chat"
+  },
+  "CHAT_DETAIL": {
+    "LOADING_CHAT": "Cargando chat...",
+    "LOADING_MESSAGES": "Cargando mensajes...",
+    "ERROR_TITLE": "Error en el chat",
+    "ERROR_LOADING_INITIAL_DATA": "No se pudo cargar la información inicial del chat.",
+    "ERROR_FETCHING_INTERLOCUTOR": "No se pudo obtener la información del interlocutor.",
+    "UNKNOWN_USER": "Usuario Desconocido",
+    "ERROR_LOADING_MESSAGES": "No se pudieron cargar los mensajes.",
+    "ERROR_SENDING_MESSAGE": "Error al enviar el mensaje. Intenta de nuevo.",
+    "RETRY": "Reintentar",
+    "TYPE_MESSAGE": "Escribe un mensaje...",
+    "WELCOME_MESSAGE": "Inicia una conversación con {{name}}"
   }
 }

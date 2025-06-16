@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewChecked, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
@@ -34,7 +34,7 @@ import { ProfileService } from '../../../infrastructure/services/profile.service
   templateUrl: './chat-detail.component.html',
   styleUrls: ['./chat-detail.component.scss'],
 })
-export class ChatDetailComponent implements OnInit, OnDestroy {
+export class ChatDetailComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
   currentChatId: number | null = null;
   targetInterlocutorId!: number;
   chat: Chat | undefined;
@@ -48,6 +48,9 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
   private currentUserId: number | null = null;
+
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+  private shouldScrollToBottomFlag = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -71,6 +74,20 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
         this.router.navigate(['/dashboard/chats']);
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    // Ensure scroll to bottom after view is initialized
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 100);
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.shouldScrollToBottomFlag) {
+      this.scrollToBottom();
+      this.shouldScrollToBottomFlag = false; // Reset the flag
+    }
   }
 
   ngOnDestroy(): void {
@@ -99,16 +116,18 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
           photoBase64: response.interlocutor.photoBase64
         };
 
-        this.messages = response.messages.map(msg => ({
-          messageId: msg.messageId,
-          content: msg.content,
-          createdAt: msg.createdAt,
-          senderId: msg.senderId,
-          receiverId: msg.receiverId,
-          chatId: 0,
-          attachmentUrl: msg.attachmentUrl || undefined,
-          isFromMe: msg.isFromMe
-        }));
+        this.messages = response.messages
+          .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+          .map(msg => ({
+            messageId: msg.messageId,
+            content: msg.content,
+            createdAt: msg.createdAt,
+            senderId: msg.senderId,
+            receiverId: msg.receiverId,
+            chatId: 0,
+            attachmentUrl: msg.attachmentUrl || undefined,
+            isFromMe: msg.isFromMe
+          }));
 
         if (response.messages.length > 0) {
           this.chatService.listChats().pipe(
@@ -157,6 +176,8 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
       }
       
       this.loadingInitialData = false;
+      // Trigger scroll to bottom with multiple attempts to ensure it works
+      this.forceScrollToBottom();
     });
   }
 
@@ -175,6 +196,8 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
         this.messages = data;
         this.loadingMessages = false;
         this.loadingInitialData = false;
+        // Scroll to bottom after loading messages
+        this.forceScrollToBottom();
       },
       error: (err) => {
         console.error('Error loading messages:', err);
@@ -214,12 +237,28 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
                 lastMessage: { content: messageResponse.content, createdAt: messageResponse.createdAt }
             };
           }
-          this.messages.push(messageResponse);
+          
+          const newMessageForDisplay: Message = {
+            messageId: messageResponse.messageId,
+            content: messageResponse.content,
+            createdAt: messageResponse.createdAt,
+            senderId: this.currentUserId!,
+            receiverId: receiverId,
+            chatId: messageResponse.chatId,
+            attachmentUrl: messageResponse.attachmentUrl || undefined,
+            isFromMe: true
+          };
+
+          this.messages.push(newMessageForDisplay);
           this.newMessageContent = '';
           this.sendingMessage = false;
+          
+          // Force scroll to bottom immediately and with delays
+          this.forceScrollToBottom();
+
         } else {
           console.error('Message sent but no chatId received in response.');
-          this.snackBar.open(this.translate.instant('CHAT_DETAIL.ERROR_SENDING_MESSAGE'), 'Close', { duration: 5000 });
+          this.snackBar.open(this.translate.instant('CHAT_DETAIL.ERROR_SENDING_MESSAGE') ?? '', 'Close', { duration: 5000 });
           this.sendingMessage = false;
         }
       },
@@ -241,5 +280,34 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
       return 'assets/images/default-avatar.png';
     }
     return interlocutor.photoBase64 ? `data:image/jpeg;base64,${interlocutor.photoBase64}` : 'assets/images/default-avatar.png';
+  }
+
+  // Public method to force scroll to bottom
+  public forceScrollToBottom(): void {
+    this.shouldScrollToBottomFlag = true;
+    // Multiple scroll attempts to ensure it works
+    this.scrollToBottom();
+    setTimeout(() => this.scrollToBottom(), 50);
+    setTimeout(() => this.scrollToBottom(), 150);
+    setTimeout(() => this.scrollToBottom(), 300);
+  }
+
+  private scrollToBottom(): void {
+    if (this.messagesContainer && this.messagesContainer.nativeElement) {
+      console.log('Attempting to scroll to bottom...');
+      const element = this.messagesContainer.nativeElement;
+      
+      // Use requestAnimationFrame to ensure DOM is ready
+      requestAnimationFrame(() => {
+        element.scrollTop = element.scrollHeight;
+        
+        // Force a reflow to ensure the scroll happens
+        element.style.scrollBehavior = 'smooth';
+        setTimeout(() => {
+          element.scrollTop = element.scrollHeight;
+          element.style.scrollBehavior = 'auto';
+        }, 10);
+      });
+    }
   }
 } 

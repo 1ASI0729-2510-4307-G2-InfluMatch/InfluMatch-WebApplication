@@ -585,5 +585,28 @@
     "MONTH": "Month",
     "WEEK": "Week",
     "DAY": "Day"
+  },
+  "CHAT_LIST": {
+    "TITLE": "Messages",
+    "LOADING": "Loading chats...",
+    "ERROR_TITLE": "Error loading chats",
+    "ERROR_LOADING_CHATS": "An error occurred while loading your conversations. Please try again.",
+    "RETRY": "Retry",
+    "NO_CHATS_TITLE": "You don't have any conversations yet!",
+    "NO_CHATS_MESSAGE": "It looks like you haven't started any chats. Search for profiles to connect and start collaborating.",
+    "INITIATE_CHAT_BUTTON": "Initiate Chat"
+  },
+  "CHAT_DETAIL": {
+    "LOADING_CHAT": "Loading chat...",
+    "LOADING_MESSAGES": "Loading messages...",
+    "ERROR_TITLE": "Chat error",
+    "ERROR_LOADING_INITIAL_DATA": "Could not load initial chat information.",
+    "ERROR_FETCHING_INTERLOCUTOR": "Could not fetch interlocutor information.",
+    "UNKNOWN_USER": "Unknown User",
+    "ERROR_LOADING_MESSAGES": "Could not load messages.",
+    "ERROR_SENDING_MESSAGE": "Error sending message. Please try again.",
+    "RETRY": "Retry",
+    "TYPE_MESSAGE": "Type a message...",
+    "WELCOME_MESSAGE": "Start a conversation with {{name}}"
   }
 }

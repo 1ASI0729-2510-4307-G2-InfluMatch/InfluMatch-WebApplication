@@ -31,7 +31,7 @@
   </div>
 
   <!-- Mensajes -->
-  <div class="messages-container" *ngIf="!loadingInitialData && !loadingMessages && !error && interlocutorInfo">
+  <div #messagesContainer class="messages-container" *ngIf="!loadingInitialData && !loadingMessages && !error && interlocutorInfo">
     <div class="message" *ngFor="let message of messages" [class.sent-by-me]="getMessageAlignment(message) === 'end'">
       <div class="message-content">
         <p>{{ message.content }}</p>
