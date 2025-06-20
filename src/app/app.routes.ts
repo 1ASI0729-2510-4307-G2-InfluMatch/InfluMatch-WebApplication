@@ -1,20 +1,51 @@
-import { Routes } from '@angular/router';
-import { AuthGuard } from './core/guards/auth.guard';
-import { ProfileGuard } from './core/guards/profile.guard';
+import  { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
+import { profileIncompleteGuard } from './core/guards/profile-incomplete.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
+    loadComponent: () =>
+      import('./features/auth/pages/login/login.component').then(
+        (m) => m.LoginComponent
+      ),
   },
   {
-    path: 'auth',
-    loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES)
+    path: 'login',
+    loadComponent: () =>
+      import('./features/auth/pages/login/login.component').then(
+        (m) => m.LoginComponent
+      ),
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./features/auth/pages/register/register.component').then(
+        (m) => m.RegisterComponent
+      ),
+  },
+  {
+    path: 'onboarding',
+    canActivate: [profileIncompleteGuard],
+    loadComponent: () =>
+      import('./features/auth/pages/onboarding/onboarding.component').then(
+        (m) => m.OnboardingComponent
+      ),
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./features/dashboard/dashboard.routes').then(m => m.DASHBOARD_ROUTES),
-    canActivate: [AuthGuard, ProfileGuard]
-  }
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent
+      ),
+    loadChildren: () =>
+      import('./features/dashboard/dashboard.routes').then(
+        (m) => m.DASHBOARD_ROUTES
+      ),
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];
