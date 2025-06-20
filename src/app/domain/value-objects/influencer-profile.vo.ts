@@ -1,18 +1,48 @@
-export interface InfluencerProfileVO {
-  user_id: string;
-  display_name: string;
-  avatar_url: string;
-  bio: string;
-  location: string;
-  contact_email: string;
-  niche: string;
-  followers: { instagram: number; tiktok: number; youtube: number };
-  rate_per_post: number;
-  engagement_rate?: number;
-  main_audience?: string;
-  languages?: string;
-  social_links?: Record<string, string>;
-  portfolio_urls?: string[];
-  previous_experience?: string;
-  preferred_categories?: string;
+export interface Link {
+  title: string;
+  url: string;
+}
+
+export interface SocialLink {
+  platform: 'INSTAGRAM' | 'YOUTUBE' | 'TIKTOK' | 'FACEBOOK' | 'TWITTER';
+  url: string;
+}
+
+export interface Attachment {
+  title: string;
+  description: string;
+  mediaType: 'PHOTO' | 'VIDEO' | 'DOCUMENT';
+  data: string;
+}
+
+export class InfluencerProfileVO {
+  constructor(
+    public name: string,
+    public niches: string[],
+    public bio: string,
+    public country: string,
+    public photo: string,
+    public profilePhoto: string,
+    public followers: number,
+    public socialLinks: SocialLink[],
+    public location: string,
+    public links: Link[],
+    public attachments: Attachment[]
+  ) {}
+
+  toJSON() {
+    return {
+      name: this.name,
+      niches: this.niches,
+      bio: this.bio,
+      country: this.country,
+      photo: this.photo,
+      profilePhoto: this.profilePhoto,
+      followers: this.followers,
+      socialLinks: this.socialLinks,
+      location: this.location,
+      links: this.links,
+      attachments: this.attachments
+    };
+  }
 }

@@ -2,6 +2,5 @@
 export interface NewUserVO {
   email: string;
   password: string;
-  user_type: string;
-  profile_completed: boolean;
+  role: 'BRAND' | 'INFLUENCER';
 }
