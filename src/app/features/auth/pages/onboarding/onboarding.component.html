@@ -1,27 +1,14 @@
 <div class="onboarding-container">
-  <div class="onboarding-content">
-    <!-- Language Selector -->
-    <div class="top-actions">
-      <div class="language-selector">
-        <button
-          class="lang-btn"
-          [class.active]="currentLang === 'es'"
-          (click)="changeLang('es')"
-        >
-          ES
-        </button>
-        <div class="lang-divider"></div>
-        <button
-          class="lang-btn"
-          [class.active]="currentLang === 'en'"
-          (click)="changeLang('en')"
-        >
-          EN
-        </button>
-      </div>
-    </div>
-
-    <div class="onboarding-header">
+  <div class="onboarding-card">
+    <!-- Header -->
+    <div class="card-header">
+      <h1>¡Completa tu perfil!</h1>
+      <p class="white" *ngIf="user_type === 'influencer'">
+        Para que las marcas puedan encontrarte, cuéntanos sobre ti.
+      </p>
+      <p *ngIf="user_type === 'marca'">
+        Para encontrar los influencers adecuados, cuéntanos sobre tu marca.
+      </p>
       <div class="logo">
         <img
           src="../../../../../assets/images/logo-dark.png"
@@ -45,303 +32,871 @@
         <span class="step-label">{{step | translate}}</span>
         <div class="step-connector" *ngIf="i < steps.length - 1"></div>
       </div>
+      <div class="step-item" [ngClass]="{ completed: currentStep > 2 }">
+        <div
+          class="step-circle"
+          [ngClass]="{ active: currentStep === 2, completed: currentStep > 2 }"
+        >
+          <ng-container *ngIf="currentStep <= 2">2</ng-container>
+          <span *ngIf="currentStep > 2">✓</span>
+        </div>
+        <div
+          class="step-label"
+          [ngClass]="{ active: currentStep === 2, completed: currentStep > 2 }"
+        >
+          {{
+            user_type === "influencer" ? "Redes sociales" : "Detalles de marca"
+          }}
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle" [ngClass]="{ active: currentStep === 3 }">
+          <ng-container *ngIf="currentStep <= 3">3</ng-container>
+          <span *ngIf="currentStep > 3">✓</span>
+        </div>
+        <div class="step-label" [ngClass]="{ active: currentStep === 3 }">
+          {{ user_type === "influencer" ? "Portafolio" : "Objetivos" }}
+        </div>
+      </div>
     </div>
 
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="onboarding-form">
-      <!-- Step 1: Basic Information -->
-      <div class="form-step" *ngIf="currentStep === 1">
-        <div class="form-section">
-          <h2>{{ 'ONBOARDING.BASIC_INFO' | translate }}</h2>
-          
-          <mat-form-field appearance="outline">
-            <mat-label>{{ 'ONBOARDING.NAME' | translate }}</mat-label>
-            <mat-icon matPrefix>person</mat-icon>
-            <input matInput formControlName="name" required>
-            <mat-error *ngIf="form.get('name')?.hasError('required')">
-              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-            </mat-error>
-          </mat-form-field>
+    <!-- Form Content -->
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="card-body">
+        <!-- Step 1: Información básica (común para ambos) -->
+        <div class="step-content" *ngIf="currentStep === 1">
+          <h2 class="step-title">
+            <div class="step-icon">👤</div>
+            Información básica
+          </h2>
 
-          <mat-form-field appearance="outline">
-            <mat-label>{{ 'ONBOARDING.DESCRIPTION' | translate }}</mat-label>
-            <mat-icon matPrefix>description</mat-icon>
-            <textarea matInput formControlName="description" rows="4" required></textarea>
-            <mat-error *ngIf="form.get('description')?.hasError('required')">
-              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-            </mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-
-      <!-- Step 2: Location Information -->
-      <div class="form-step" *ngIf="currentStep === 2">
-        <div class="form-section">
-          <h2>{{ 'ONBOARDING.LOCATION_INFO' | translate }}</h2>
-
-          <mat-form-field appearance="outline">
-            <mat-label>{{ 'ONBOARDING.COUNTRY' | translate }}</mat-label>
-            <mat-icon matPrefix>public</mat-icon>
-            <input matInput formControlName="country" required>
-            <mat-error *ngIf="form.get('country')?.hasError('required')">
-              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>{{ 'ONBOARDING.LOCATION' | translate }}</mat-label>
-            <mat-icon matPrefix>location_on</mat-icon>
-            <input matInput formControlName="location" required>
-            <mat-error *ngIf="form.get('location')?.hasError('required')">
-              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-            </mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-
-      <!-- Step 3: Profile Specific Information -->
-      <div class="form-step" *ngIf="currentStep === 3">
-        <!-- Brand specific fields -->
-        <div class="form-section" *ngIf="isBrand">
-          <h2>{{ 'ONBOARDING.BRAND_INFO' | translate }}</h2>
-          
-          <mat-form-field appearance="outline">
-            <mat-label>{{ 'ONBOARDING.SECTOR' | translate }}</mat-label>
-            <mat-icon matPrefix>business</mat-icon>
-            <input matInput formControlName="sector" required>
-            <mat-error *ngIf="form.get('sector')?.hasError('required')">
-              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>{{ 'ONBOARDING.WEBSITE' | translate }}</mat-label>
-            <mat-icon matPrefix>language</mat-icon>
-            <input matInput type="url" formControlName="websiteUrl" required>
-            <mat-error *ngIf="form.get('websiteUrl')?.hasError('required')">
-              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-            </mat-error>
-            <mat-error *ngIf="form.get('websiteUrl')?.hasError('pattern')">
-              {{ 'ONBOARDING.INVALID_URL' | translate }}
-            </mat-error>
-          </mat-form-field>
-
-          <div class="file-upload-section">
-            <div class="upload-field">
-              <label>{{ 'ONBOARDING.LOGO' | translate }}</label>
-              <div class="upload-container" (click)="logoInput.click()">
-                <input #logoInput type="file" hidden (change)="onFileSelected($event, 'logo')" accept="image/*">
-                <mat-icon>cloud_upload</mat-icon>
-                <span>{{ logoPreview ? 'ONBOARDING.CHANGE_LOGO' : 'ONBOARDING.UPLOAD_LOGO' | translate }}</span>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Nombre público <span class="required">*</span></label>
+              <input
+                type="text"
+                formControlName="display_name"
+                placeholder="Cómo aparecerás en la plataforma"
+              />
+              <div
+                class="error-message"
+                *ngIf="
+                  form.get('display_name')?.invalid &&
+                  form.get('display_name')?.touched
+                "
+              >
+                Este campo es obligatorio
               </div>
-              <img *ngIf="logoPreview" [src]="logoPreview" class="preview-image" alt="Logo preview">
             </div>
 
-            <div class="upload-field">
-              <label>{{ 'ONBOARDING.PROFILE_PHOTO' | translate }}</label>
-              <div class="upload-container" (click)="profilePhotoInput.click()">
-                <input #profilePhotoInput type="file" hidden (change)="onFileSelected($event, 'profilePhoto')" accept="image/*">
-                <mat-icon>cloud_upload</mat-icon>
-                <span>{{ profilePhotoPreview ? 'ONBOARDING.CHANGE_PHOTO' : 'ONBOARDING.UPLOAD_PHOTO' | translate }}</span>
+            <div class="form-field">
+              <label>Ubicación <span class="required">*</span></label>
+              <input
+                type="text"
+                formControlName="location"
+                placeholder="Ciudad, País"
+              />
+              <div
+                class="error-message"
+                *ngIf="
+                  form.get('location')?.invalid && form.get('location')?.touched
+                "
+              >
+                Este campo es obligatorio
               </div>
-              <img *ngIf="profilePhotoPreview" [src]="profilePhotoPreview" class="preview-image" alt="Profile photo preview">
+            </div>
+
+            <div class="form-field form-field-full">
+              <label>Foto de perfil (opcional)</label>
+              <div class="image-upload">
+                <div class="preview-container">
+                  <img
+                    *ngIf="imagePreview"
+                    [src]="imagePreview"
+                    class="preview-image"
+                    alt="Vista previa"
+                  />
+                  <div
+                    *ngIf="imagePreview"
+                    class="remove-image"
+                    (click)="removeImage()"
+                  >
+                    ✕
+                  </div>
+                  <div *ngIf="!imagePreview" class="upload-placeholder">
+                    <p>📷 Sube una foto de perfil</p>
+                  </div>
+                </div>
+                <label class="upload-button" (click)="fileInput.click()">
+                  <span>{{
+                    imagePreview ? "Cambiar imagen" : "Subir imagen"
+                  }}</span>
+                </label>
+                <input
+                  type="file"
+                  #fileInput
+                  style="display: none"
+                  accept="image/*"
+                  (change)="onFileSelected($event)"
+                />
+                <input type="hidden" formControlName="avatar_url" />
+              </div>
+            </div>
+
+            <div class="form-field form-field-full">
+              <label>Biografía <span class="required">*</span></label>
+              <textarea
+                formControlName="bio"
+                placeholder="{{
+                  user_type === 'influencer'
+                    ? 'Cuéntanos sobre tu contenido y experiencia...'
+                    : 'Cuéntanos sobre tu marca y los valores que representa...'
+                }}"
+              >
+              </textarea>
+              <div
+                class="error-message"
+                *ngIf="form.get('bio')?.invalid && form.get('bio')?.touched"
+              >
+                Este campo es obligatorio
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Correo de contacto <span class="required">*</span></label>
+              <input
+                type="email"
+                formControlName="contact_email"
+                placeholder="email@ejemplo.com"
+              />
+              <div
+                class="error-message"
+                *ngIf="
+                  form.get('contact_email')?.invalid &&
+                  form.get('contact_email')?.touched
+                "
+              >
+                Introduce un correo electrónico válido
+              </div>
+            </div>
+
+            <div class="form-field" *ngIf="user_type === 'influencer'">
+              <label>Nicho / Categoría <span class="required">*</span></label>
+              <select formControlName="niche">
+                <option value="">Selecciona una categoría</option>
+                <option value="moda">Moda</option>
+                <option value="belleza">Belleza</option>
+                <option value="lifestyle">Lifestyle</option>
+                <option value="fitness">Fitness</option>
+                <option value="viajes">Viajes</option>
+                <option value="tecnologia">Tecnología</option>
+                <option value="gastronomia">Gastronomía</option>
+                <option value="gaming">Gaming</option>
+                <option value="otro">Otro</option>
+              </select>
+              <div
+                class="error-message"
+                *ngIf="form.get('niche')?.invalid && form.get('niche')?.touched"
+              >
+                Este campo es obligatorio
+              </div>
+            </div>
+
+            <div class="form-field" *ngIf="user_type === 'marca'">
+              <label>Sector / Industria <span class="required">*</span></label>
+              <select formControlName="sector">
+                <option value="">Selecciona un sector</option>
+                <option value="moda">Moda</option>
+                <option value="belleza">Belleza</option>
+                <option value="tecnologia">Tecnología</option>
+                <option value="alimentacion">Alimentación</option>
+                <option value="hogar">Hogar y Decoración</option>
+                <option value="salud">Salud</option>
+                <option value="entretenimiento">Entretenimiento</option>
+                <option value="otro">Otro</option>
+              </select>
+              <div
+                class="error-message"
+                *ngIf="
+                  form.get('sector')?.invalid && form.get('sector')?.touched
+                "
+              >
+                Este campo es obligatorio
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Influencer specific fields -->
-        <div class="form-section" *ngIf="!isBrand">
-          <h2>{{ 'ONBOARDING.INFLUENCER_INFO' | translate }}</h2>
+        <!-- Step 2: Redes sociales (Influencer) o Detalles de marca (Marca) -->
+        <div class="step-content" *ngIf="currentStep === 2">
+          <!-- Influencer: Redes sociales y seguidores -->
+          <ng-container *ngIf="user_type === 'influencer'">
+            <h2 class="step-title">
+              <div class="step-icon">📱</div>
+              Redes sociales y audiencia
+            </h2>
 
-          <mat-form-field appearance="outline">
-            <mat-label>{{ 'ONBOARDING.NICHES' | translate }}</mat-label>
-            <mat-icon matPrefix>category</mat-icon>
-            <mat-select multiple formControlName="niches" required>
-              <mat-option *ngFor="let niche of nicheOptions" [value]="niche.value">
-                {{ niche.label | translate }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="form.get('niches')?.hasError('required')">
-              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>{{ 'ONBOARDING.FOLLOWERS' | translate }}</mat-label>
-            <mat-icon matPrefix>group</mat-icon>
-            <input matInput type="number" formControlName="followers" required>
-            <mat-error *ngIf="form.get('followers')?.hasError('required')">
-              {{ 'ONBOARDING.REQUIRED_FIELD' | translate }}
-            </mat-error>
-            <mat-error *ngIf="form.get('followers')?.hasError('min')">
-              {{ 'ONBOARDING.INVALID_FOLLOWERS' | translate }}
-            </mat-error>
-          </mat-form-field>
-
-          <div class="file-upload-section">
-            <div class="upload-field">
-              <label>{{ 'ONBOARDING.PHOTO' | translate }}</label>
-              <div class="upload-container" (click)="photoInput.click()">
-                <input #photoInput type="file" hidden (change)="onFileSelected($event, 'photo')" accept="image/*">
-                <mat-icon>cloud_upload</mat-icon>
-                <span>{{ photoPreview ? 'ONBOARDING.CHANGE_PHOTO' : 'ONBOARDING.UPLOAD_PHOTO' | translate }}</span>
+            <div class="form-field form-field-full">
+              <label>Seguidores por plataforma</label>
+              <div class="portfolio-items" formGroupName="followers">
+                <div class="portfolio-item">
+                  <div class="platform-icon instagram">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect
+                        x="2"
+                        y="2"
+                        width="20"
+                        height="20"
+                        rx="5"
+                        ry="5"
+                      ></rect>
+                      <path
+                        d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                      ></path>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                  </div>
+                  <input
+                    type="number"
+                    formControlName="instagram"
+                    placeholder="Instagram: Número de seguidores"
+                  />
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    (click)="
+                      form.get('followers')?.patchValue({ instagram: 0 })
+                    "
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div class="portfolio-item">
+                  <div class="platform-icon tiktok">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M9 12a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>
+                      <path d="M15 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
+                      <path d="M15 8v8a4 4 0 0 1-4 4H9"></path>
+                      <path d="M15 4v8"></path>
+                    </svg>
+                  </div>
+                  <input
+                    type="number"
+                    formControlName="tiktok"
+                    placeholder="TikTok: Número de seguidores"
+                  />
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    (click)="form.get('followers')?.patchValue({ tiktok: 0 })"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div class="portfolio-item">
+                  <div class="platform-icon youtube">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"
+                      ></path>
+                      <polygon
+                        points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"
+                      ></polygon>
+                    </svg>
+                  </div>
+                  <input
+                    type="number"
+                    formControlName="youtube"
+                    placeholder="YouTube: Número de seguidores"
+                  />
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    (click)="form.get('followers')?.patchValue({ youtube: 0 })"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
-              <img *ngIf="photoPreview" [src]="photoPreview" class="preview-image" alt="Photo preview">
             </div>
 
-            <div class="upload-field">
-              <label>{{ 'ONBOARDING.PROFILE_PHOTO' | translate }}</label>
-              <div class="upload-container" (click)="profilePhotoInput.click()">
-                <input #profilePhotoInput type="file" hidden (change)="onFileSelected($event, 'profilePhoto')" accept="image/*">
-                <mat-icon>cloud_upload</mat-icon>
-                <span>{{ profilePhotoPreview ? 'ONBOARDING.CHANGE_PHOTO' : 'ONBOARDING.UPLOAD_PHOTO' | translate }}</span>
+            <div class="form-grid">
+              <div class="form-field">
+                <label
+                  >Tarifa base por publicación (USD)
+                  <span class="required">*</span></label
+                >
+                <input
+                  type="number"
+                  formControlName="rate_per_post"
+                  placeholder="Ej: 500"
+                />
+                <div
+                  class="error-message"
+                  *ngIf="
+                    form.get('rate_per_post')?.invalid &&
+                    form.get('rate_per_post')?.touched
+                  "
+                >
+                  Este campo es obligatorio
+                </div>
               </div>
-              <img *ngIf="profilePhotoPreview" [src]="profilePhotoPreview" class="preview-image" alt="Profile photo preview">
+
+              <div class="form-field">
+                <label>Engagement promedio (%)</label>
+                <input
+                  type="number"
+                  formControlName="engagement_rate"
+                  placeholder="Ej: 3.5"
+                />
+              </div>
+
+              <div class="form-field">
+                <label>Audiencia principal</label>
+                <select formControlName="main_audience">
+                  <option value="">Selecciona un rango</option>
+                  <option value="18-24">18-24 años</option>
+                  <option value="25-34">25-34 años</option>
+                  <option value="35-44">35-44 años</option>
+                  <option value="45+">45+ años</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label>Idioma principal</label>
+                <select formControlName="languages">
+                  <option value="es">Español</option>
+                  <option value="en">Inglés</option>
+                  <option value="fr">Francés</option>
+                  <option value="de">Alemán</option>
+                  <option value="it">Italiano</option>
+                  <option value="pt">Portugués</option>
+                  <option value="other">Otro</option>
+                </select>
+              </div>
             </div>
-          </div>
 
-          <!-- Social Links -->
-          <div class="social-links-section">
-            <h3>{{ 'ONBOARDING.SOCIAL_LINKS' | translate }}</h3>
-            <div formArrayName="socialLinks">
-              <div *ngFor="let link of socialLinks.controls; let i = index" [formGroupName]="i" class="link-group">
-                <mat-form-field appearance="outline">
-                  <mat-label>{{ 'ONBOARDING.PLATFORM' | translate }}</mat-label>
-                  <mat-select formControlName="platform" required>
-                    <mat-option value="INSTAGRAM">Instagram</mat-option>
-                    <mat-option value="FACEBOOK">Facebook</mat-option>
-                    <mat-option value="TWITTER">Twitter</mat-option>
-                    <mat-option value="LINKEDIN">LinkedIn</mat-option>
-                    <mat-option value="YOUTUBE">YouTube</mat-option>
-                    <mat-option value="TIKTOK">TikTok</mat-option>
-                  </mat-select>
-                </mat-form-field>
+            <div class="form-field form-field-full">
+              <label>Enlaces a redes sociales</label>
+              <div class="portfolio-items" formGroupName="social_links">
+                <div class="portfolio-item">
+                  <div class="platform-icon instagram">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect
+                        x="2"
+                        y="2"
+                        width="20"
+                        height="20"
+                        rx="5"
+                        ry="5"
+                      ></rect>
+                      <path
+                        d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                      ></path>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    formControlName="instagram"
+                    placeholder="Instagram: @usuario"
+                  />
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    (click)="
+                      form.get('social_links')?.patchValue({ instagram: '' })
+                    "
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div class="portfolio-item">
+                  <div class="platform-icon tiktok">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M9 12a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>
+                      <path d="M15 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path>
+                      <path d="M15 8v8a4 4 0 0 1-4 4H9"></path>
+                      <path d="M15 4v8"></path>
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    formControlName="tiktok"
+                    placeholder="TikTok: @usuario"
+                  />
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    (click)="
+                      form.get('social_links')?.patchValue({ tiktok: '' })
+                    "
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div class="portfolio-item">
+                  <div class="platform-icon youtube">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"
+                      ></path>
+                      <polygon
+                        points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"
+                      ></polygon>
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    formControlName="youtube"
+                    placeholder="YouTube: URL del canal"
+                  />
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    (click)="
+                      form.get('social_links')?.patchValue({ youtube: '' })
+                    "
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div class="portfolio-item">
+                  <div class="platform-icon twitter">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    formControlName="twitter"
+                    placeholder="Twitter: @usuario"
+                  />
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    (click)="
+                      form.get('social_links')?.patchValue({ twitter: '' })
+                    "
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div class="portfolio-item">
+                  <div class="platform-icon facebook">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    formControlName="facebook"
+                    placeholder="Facebook: URL del perfil"
+                  />
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    (click)="
+                      form.get('social_links')?.patchValue({ facebook: '' })
+                    "
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
 
-                <mat-form-field appearance="outline">
-                  <mat-label>{{ 'ONBOARDING.URL' | translate }}</mat-label>
-                  <input matInput type="url" formControlName="url" required>
-                </mat-form-field>
-                
-                <button type="button" mat-icon-button color="warn" (click)="removeSocialLink(i)">
-                  <mat-icon>delete</mat-icon>
+          <!-- Marca: Detalles de marca -->
+          <ng-container *ngIf="user_type === 'marca'">
+            <h2 class="step-title">
+              <div class="step-icon">🏢</div>
+              Detalles de marca
+            </h2>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Sitio web oficial</label>
+                <input
+                  type="url"
+                  formControlName="website"
+                  placeholder="https://www.ejemplo.com"
+                />
+              </div>
+
+              <div class="form-field">
+                <label
+                  >Rango de presupuesto <span class="required">*</span></label
+                >
+                <select formControlName="budget_range">
+                  <option value="">Selecciona un rango</option>
+                  <option value="1000-5000">$1,000 - $5,000</option>
+                  <option value="5000-10000">$5,000 - $10,000</option>
+                  <option value="10000-50000">$10,000 - $50,000</option>
+                  <option value="50000+">$50,000+</option>
+                </select>
+                <div
+                  class="error-message"
+                  *ngIf="
+                    form.get('budget_range')?.invalid &&
+                    form.get('budget_range')?.touched
+                  "
+                >
+                  Este campo es obligatorio
+                </div>
+              </div>
+
+              <div class="form-field form-field-full">
+                <label>Tipo de contenido que buscas</label>
+                <select formControlName="content_s">
+                  <option value="posts">Posts</option>
+                  <option value="stories">Stories</option>
+                  <option value="reels">Reels/TikToks</option>
+                  <option value="video">Videos</option>
+                  <option value="blogs">Blog Posts</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label>Persona de contacto</label>
+                <input
+                  type="text"
+                  formControlName="contact_name"
+                  placeholder="Nombre completo"
+                />
+              </div>
+
+              <div class="form-field">
+                <label>Cargo</label>
+                <input
+                  type="text"
+                  formControlName="contact_position"
+                  placeholder="Ej: Marketing Manager"
+                />
+              </div>
+
+              <div class="form-field form-field-full">
+                <label>Redes sociales de la marca</label>
+                <div class="portfolio-items" formGroupName="social_links">
+                  <div class="portfolio-item">
+                    <div class="platform-icon instagram">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <rect
+                          x="2"
+                          y="2"
+                          width="20"
+                          height="20"
+                          rx="5"
+                          ry="5"
+                        ></rect>
+                        <path
+                          d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                        ></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                      </svg>
+                    </div>
+                    <input
+                      type="text"
+                      formControlName="instagram"
+                      placeholder="Instagram: @usuario"
+                    />
+                    <button
+                      type="button"
+                      class="remove-btn"
+                      (click)="
+                        form.get('social_links')?.patchValue({ instagram: '' })
+                      "
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <div class="portfolio-item">
+                    <div class="platform-icon facebook">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <input
+                      type="text"
+                      formControlName="facebook"
+                      placeholder="Facebook: URL del perfil"
+                    />
+                    <button
+                      type="button"
+                      class="remove-btn"
+                      (click)="
+                        form.get('social_links')?.patchValue({ facebook: '' })
+                      "
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Step 3: Portafolio (Influencer) o Objetivos (Marca) -->
+        <div class="step-content" *ngIf="currentStep === 3">
+          <!-- Influencer: Portafolio -->
+          <ng-container *ngIf="user_type === 'influencer'">
+            <h2 class="step-title">
+              <div class="step-icon">🖼️</div>
+              Portafolio
+            </h2>
+
+            <div class="portfolio-section">
+              <div class="form-field">
+                <label>URLs a posts destacados</label>
+                <div class="portfolio-items" formArrayName="portfolio_urls">
+                  <div
+                    *ngFor="let url of portfolioUrls.controls; let i = index"
+                    class="portfolio-item"
+                  >
+                    <input
+                      type="text"
+                      [formControlName]="i"
+                      placeholder="https://"
+                    />
+                    <button
+                      type="button"
+                      class="remove-btn"
+                      (click)="removePortfolioUrl(i)"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="add-portfolio-btn"
+                  (click)="addPortfolioUrl()"
+                >
+                  + Añadir URL
                 </button>
               </div>
-            </div>
 
-            <button type="button" mat-stroked-button (click)="addSocialLink()">
-              <mat-icon>add</mat-icon>
-              {{ 'ONBOARDING.ADD_SOCIAL_LINK' | translate }}
-            </button>
-          </div>
-        </div>
-
-        <!-- Additional Links (for both types) -->
-        <div class="links-section">
-          <h3>{{ 'ONBOARDING.ADDITIONAL_LINKS' | translate }}</h3>
-          <div formArrayName="links">
-            <div *ngFor="let link of links.controls; let i = index" [formGroupName]="i" class="link-group">
-              <mat-form-field appearance="outline">
-                <mat-label>{{ 'ONBOARDING.LINK_TITLE' | translate }}</mat-label>
-                <input matInput formControlName="title" required>
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
-                <mat-label>{{ 'ONBOARDING.URL' | translate }}</mat-label>
-                <input matInput type="url" formControlName="url" required>
-              </mat-form-field>
-
-              <button type="button" mat-icon-button color="warn" (click)="removeLink(i)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </div>
-
-          <button type="button" mat-stroked-button (click)="addLink()">
-            <mat-icon>add</mat-icon>
-            {{ 'ONBOARDING.ADD_LINK' | translate }}
-          </button>
-        </div>
-
-        <!-- Attachments -->
-        <div class="attachments-section">
-          <h3>{{ 'ONBOARDING.ATTACHMENTS' | translate }}</h3>
-          <div formArrayName="attachments">
-            <div *ngFor="let attachment of attachments.controls; let i = index" [formGroupName]="i" class="attachment-group">
-              <div class="attachment-header">
-                <mat-form-field appearance="outline">
-                  <mat-label>{{ 'ONBOARDING.ATTACHMENT_TITLE' | translate }}</mat-label>
-                  <input matInput formControlName="title" required>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                  <mat-label>{{ 'ONBOARDING.ATTACHMENT_DESCRIPTION' | translate }}</mat-label>
-                  <textarea matInput formControlName="description"></textarea>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                  <mat-label>{{ 'ONBOARDING.MEDIA_TYPE' | translate }}</mat-label>
-                  <mat-select formControlName="mediaType" required>
-                    <mat-option value="PHOTO">{{ 'ONBOARDING.MEDIA_TYPES.PHOTO' | translate }}</mat-option>
-                    <mat-option value="VIDEO">{{ 'ONBOARDING.MEDIA_TYPES.VIDEO' | translate }}</mat-option>
-                    <mat-option value="DOCUMENT">{{ 'ONBOARDING.MEDIA_TYPES.DOCUMENT' | translate }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-
-                <button type="button" mat-icon-button color="warn" (click)="removeAttachment(i)">
-                  <mat-icon>delete</mat-icon>
-                </button>
+              <div class="form-field">
+                <label>Experiencia previa con marcas</label>
+                <textarea
+                  formControlName="previous_experience"
+                  placeholder="Describe brevemente tu experiencia previa trabajando con marcas..."
+                >
+                </textarea>
               </div>
 
-              <div class="upload-container" (click)="fileInput.click()">
-                <input #fileInput type="file" hidden [accept]="getAcceptType(i)" (change)="onAttachmentSelected($event, i)">
-                <mat-icon>cloud_upload</mat-icon>
-                <span>{{ 'ONBOARDING.UPLOAD_FILE' | translate }}</span>
+              <div class="form-field">
+                <label>Categoría de productos preferida</label>
+                <select formControlName="preferred_categories">
+                  <option value="moda">Moda</option>
+                  <option value="belleza">Belleza</option>
+                  <option value="tecnologia">Tecnología</option>
+                  <option value="alimentacion">Alimentación</option>
+                  <option value="hogar">Hogar y Decoración</option>
+                  <option value="salud">Salud</option>
+                  <option value="entretenimiento">Entretenimiento</option>
+                  <option value="otro">Otro</option>
+                </select>
               </div>
-
-              <img *ngIf="attachment.get('preview')?.value" 
-                   [src]="attachment.get('preview')?.value" 
-                   alt="Preview" 
-                   class="preview-image">
             </div>
-          </div>
+          </ng-container>
 
-          <button type="button" mat-stroked-button (click)="addAttachment()">
-            <mat-icon>add</mat-icon>
-            {{ 'ONBOARDING.ADD_ATTACHMENT' | translate }}
-          </button>
+          <!-- Marca: Objetivos -->
+          <ng-container *ngIf="user_type === 'marca'">
+            <h2 class="step-title">
+              <div class="step-icon">🎯</div>
+              Objetivos
+            </h2>
+
+            <div class="form-field">
+              <label
+                >Objetivos de campaña <span class="required">*</span></label
+              >
+              <textarea
+                formControlName="objectives"
+                placeholder="¿Qué buscas lograr con tus campañas de influencer marketing?"
+              >
+              </textarea>
+              <div
+                class="error-message"
+                *ngIf="
+                  form.get('objectives')?.invalid &&
+                  form.get('objectives')?.touched
+                "
+              >
+                Este campo es obligatorio
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Tipo de influencer que buscas</label>
+              <select formControlName="influencer_s">
+                <option value="micro">
+                  Micro influencers (10K-50K seguidores)
+                </option>
+                <option value="mid">Mid-tier (50K-500K seguidores)</option>
+                <option value="macro">
+                  Macro influencers (500K-1M seguidores)
+                </option>
+                <option value="mega">Mega influencers (1M+ seguidores)</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Duración típica de campañas</label>
+              <select formControlName="campaign_duration">
+                <option value="">Selecciona una duración</option>
+                <option value="one-time">Publicación única</option>
+                <option value="short">Corta (1-2 semanas)</option>
+                <option value="medium">Media (1 mes)</option>
+                <option value="long">Larga (3+ meses)</option>
+                <option value="ongoing">Colaboración continua</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Información adicional</label>
+              <textarea
+                formControlName="additional_info"
+                placeholder="Cualquier otra información relevante para los influencers..."
+              >
+              </textarea>
+            </div>
+          </ng-container>
         </div>
       </div>
 
-      <!-- Navigation Buttons -->
-      <div class="form-navigation">
+      <!-- Footer con botones de navegación -->
+      <div class="card-footer">
         <button
-          mat-stroked-button
           type="button"
-          *ngIf="currentStep > 1"
-          (click)="previousStep()"
-          class="nav-button prev-button"
+          class="btn-back"
+          [disabled]="currentStep === 1"
+          (click)="prevStep()"
         >
-          <mat-icon>arrow_back</mat-icon>
-          <span>{{ 'ONBOARDING.PREVIOUS' | translate }}</span>
+          Anterior
         </button>
-
         <button
-          mat-flat-button
-          type="button"
           *ngIf="currentStep < 3"
+          type="button"
+          class="btn-next"
           (click)="nextStep()"
-          class="nav-button next-button"
-          [disabled]="!isCurrentStepValid()"
         >
           <span>{{ 'ONBOARDING.NEXT' | translate }}</span>
           <mat-icon>arrow_forward</mat-icon>
         </button>
-
         <button
-          mat-flat-button
-          type="submit"
           *ngIf="currentStep === 3"
-          class="nav-button submit-button"
-          [disabled]="!form.valid || isSubmitting"
+          type="submit"
+          class="btn-submit"
+          [disabled]="form.invalid"
         >
           <span>{{ 'ONBOARDING.SUBMIT' | translate }}</span>
           <mat-spinner *ngIf="isSubmitting" diameter="20"></mat-spinner>
