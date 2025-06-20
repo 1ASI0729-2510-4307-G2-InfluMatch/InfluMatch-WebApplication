@@ -1,8 +1,11 @@
 export interface User {
-  userId: number;
-  email: string;
-  role: 'INFLUENCER' | 'BRAND';
-  token: string;
-  message: string;
-  profile_completed?: boolean;
-}
+    accessToken: string;
+    refreshToken: string;
+    profileCompleted: boolean;
+    userId: number;
+    name: string;
+    photoUrl: string;
+    email: string;
+    user_type: 'influencer' | 'marca';
+    profileType: 'BRAND' | 'INFLUENCER';
+  }

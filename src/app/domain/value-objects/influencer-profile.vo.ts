@@ -1,34 +1,48 @@
+export interface Link {
+  title: string;
+  url: string;
+}
+
 export interface SocialLink {
-  platform: 'IG' | 'YT' | 'TT' | 'FB' | 'TW' | 'LN' | 'OTHER';
+  platform: 'INSTAGRAM' | 'YOUTUBE' | 'TIKTOK' | 'FACEBOOK' | 'TWITTER';
   url: string;
 }
 
-export interface MediaAsset {
-  url: string;
-  mediaType: 'IMAGE' | 'VIDEO' | 'DOC';
-  title?: string;
-  description?: string;
-  sizeBytes?: number;
-  metadata?: string;
+export interface Attachment {
+  title: string;
+  description: string;
+  mediaType: 'PHOTO' | 'VIDEO' | 'DOCUMENT';
+  data: string;
 }
 
-export interface InfluencerProfileVO {
-  displayName?: string;
-  bio?: string;
-  category?: string;
-  country?: string;
-  followersCount?: number;
-  socialLinks?: SocialLink[];
-  mediaAssets?: MediaAsset[];
-}
+export class InfluencerProfileVO {
+  constructor(
+    public name: string,
+    public niches: string[],
+    public bio: string,
+    public country: string,
+    public photo: string,
+    public profilePhoto: string,
+    public followers: number,
+    public socialLinks: SocialLink[],
+    public location: string,
+    public links: Link[],
+    public attachments: Attachment[]
+  ) {}
 
-export interface InfluencerProfileResponseVO {
-  id: number;
-  userId: number;
-  displayName: string;
-  bio: string;
-  category: string;
-  country: string;
-  followersCount: number;
-  message: string;
+  toJSON() {
+    return {
+      name: this.name,
+      niches: this.niches,
+      bio: this.bio,
+      country: this.country,
+      photo: this.photo,
+      profilePhoto: this.profilePhoto,
+      followers: this.followers,
+      socialLinks: this.socialLinks,
+      location: this.location,
+      links: this.links,
+      attachments: this.attachments
+    };
+  }
 }

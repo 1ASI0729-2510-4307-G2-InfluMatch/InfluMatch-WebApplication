@@ -15,10 +15,11 @@
     "PROFILE": "Mi Perfil",
     "MESSAGES": "Mensajes",
     "CAMPAIGNS": "Campañas",
-    "ANALYTICS": "Analíticas",
+    "AGENDA": "Agenda",
     "SETTINGS": "Configuración",
     "LOGOUT": "Cerrar Sesión",
-    "LANGUAGE": "Idioma"
+    "LANGUAGE": "Idioma",
+    "COLLABORATIONS": "Colaboraciones"
   },
   "LOGIN": {
     "WELCOME": "¡Bienvenido de nuevo!",
@@ -267,5 +268,372 @@
     "NEWSLETTER_TEXT": "Mantente actualizado con las últimas tendencias en marketing de influencers y características de la plataforma.",
     "EMAIL_PLACEHOLDER": "Ingresa tu correo electrónico",
     "SUBSCRIBE": "Suscribirse"
+  },
+  "onboarding": {
+    "missingFields": "Por favor, completa los siguientes campos: {{fields}}",
+    "success": "¡Perfil completado exitosamente!",
+    "error": "Error al guardar el perfil. Por favor, inténtalo de nuevo.",
+    "fields": {
+      "name": "Nombre",
+      "sector": "Sector",
+      "country": "País",
+      "description": "Descripción",
+      "logo": "Logo",
+      "profilePhoto": "Foto de perfil",
+      "websiteUrl": "URL del sitio web",
+      "location": "Ubicación",
+      "links": "Enlaces",
+      "attachments": "Archivos adjuntos",
+      "niches": "Nichos",
+      "bio": "Biografía",
+      "photo": "Foto",
+      "followers": "Seguidores",
+      "socialLinks": "Enlaces sociales"
+    }
+  },
+  "dashboard": {
+    "titles": {
+      "influencers": "Influencers",
+      "brands": "Marcas"
+    },
+    "loading": "Cargando perfiles...",
+    "errors": {
+      "loading": "Ha ocurrido un error al cargar los perfiles. Por favor, intenta nuevamente."
+    },
+    "empty": {
+      "influencers": "No hay influencers disponibles en este momento.",
+      "brands": "No hay marcas disponibles en este momento."
+    },
+    "profile": {
+      "followers": "seguidores",
+      "actions": {
+        "contact": "Contactar",
+        "viewProfile": "Ver Perfil"
+      },
+      "attachments": {
+        "title": "Adjuntos",
+        "types": {
+          "PHOTO": "Foto",
+          "VIDEO": "Video",
+          "DOCUMENT": "Documento"
+        }
+      },
+      "details": {
+        "about": "Acerca de",
+        "contact": "Información de Contacto",
+        "socialMedia": "Redes Sociales",
+        "location": "Ubicación",
+        "category": "Categoría",
+        "bio": "Biografía",
+        "niches": "Nichos",
+        "followers": "Seguidores",
+        "languages": "Idiomas",
+        "preferredCategories": "Categorías Preferidas",
+        "contactName": "Nombre de Contacto",
+        "contactPosition": "Cargo",
+        "contactEmail": "Email",
+        "additionalInfo": "Información Adicional"
+      }
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "profile": "Perfil",
+    "messages": "Mensajes",
+    "settings": "Configuración",
+    "logout": "Cerrar Sesión"
+  },
+  "auth": {
+    "register": {
+      "welcome": "¡Únete a InfluMatch!",
+      "subtitle": "Conecta con los mejores influencers y marcas en nuestra plataforma impulsada por IA",
+      "title": "Crear cuenta",
+      "instruction": "Completa tus datos para comenzar",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "selectRole": "Selecciona tu rol",
+      "roles": {
+        "influencer": "Soy Influencer",
+        "brand": "Soy Marca"
+      },
+      "submit": "Registrarse",
+      "haveAccount": "¿Ya tienes una cuenta?",
+      "loginLink": "Inicia sesión",
+      "errors": {
+        "email": {
+          "required": "El correo electrónico es requerido",
+          "invalid": "Ingresa un correo electrónico válido"
+        },
+        "password": {
+          "required": "La contraseña es requerida",
+          "minLength": "La contraseña debe tener al menos 6 caracteres"
+        },
+        "confirmPassword": {
+          "required": "Confirma tu contraseña",
+          "mismatch": "Las contraseñas no coinciden"
+        },
+        "role": {
+          "required": "Selecciona tu rol"
+        }
+      }
+    }
+  },
+  "ONBOARDING": {
+    "STEPS": {
+      "BASIC": "Información Básica",
+      "LOCATION": "Ubicación",
+      "PROFILE": "Perfil"
+    },
+    "BRAND_TITLE": "Completa tu perfil de marca",
+    "BRAND_SUBTITLE": "Ayúdanos a conocer mejor tu marca",
+    "INFLUENCER_TITLE": "Completa tu perfil de influencer",
+    "INFLUENCER_SUBTITLE": "Ayúdanos a conocer mejor tu perfil",
+    "BASIC_INFO": "Información Básica",
+    "LOCATION_INFO": "Información de Ubicación",
+    "BRAND_INFO": "Información de la Marca",
+    "INFLUENCER_INFO": "Información del Influencer",
+    "NAME": "Nombre",
+    "DESCRIPTION": "Descripción",
+    "COUNTRY": "País",
+    "LOCATION": "Ciudad",
+    "SECTOR": "Sector",
+    "WEBSITE": "Sitio Web",
+    "LOGO": "Logo de la marca",
+    "PHOTO": "Foto",
+    "PROFILE_PHOTO": "Foto de perfil",
+    "NICHES": {
+      "LABEL": "Nichos",
+      "FASHION": "Moda",
+      "LIFESTYLE": "Estilo de vida",
+      "TRAVEL": "Viajes",
+      "BEAUTY": "Belleza",
+      "FITNESS": "Fitness",
+      "FOOD": "Comida",
+      "TECH": "Tecnología",
+      "GAMING": "Gaming",
+      "MUSIC": "Música",
+      "SPORTS": "Deportes"
+    },
+    "FOLLOWERS": "Número de seguidores",
+    "SOCIAL_LINKS": "Redes Sociales",
+    "PLATFORM": "Plataforma",
+    "URL": "URL",
+    "ADDITIONAL_LINKS": "Enlaces Adicionales",
+    "LINK_TITLE": "Título del enlace",
+    "ATTACHMENTS": "Archivos adjuntos",
+    "ATTACHMENT_TITLE": "Título del archivo",
+    "ATTACHMENT_DESCRIPTION": "Descripción del archivo",
+    "MEDIA_TYPE": "Tipo de archivo",
+    "MEDIA_TYPES": {
+      "PHOTO": "Foto",
+      "VIDEO": "Video",
+      "DOCUMENT": "Documento"
+    },
+    "UPLOAD_LOGO": "Subir logo",
+    "CHANGE_LOGO": "Cambiar logo",
+    "UPLOAD_PHOTO": "Subir foto",
+    "CHANGE_PHOTO": "Cambiar foto",
+    "UPLOAD_FILE": "Subir archivo",
+    "ADD_SOCIAL_LINK": "Agregar red social",
+    "ADD_LINK": "Agregar enlace",
+    "ADD_ATTACHMENT": "Agregar archivo",
+    "REQUIRED_FIELD": "Este campo es obligatorio",
+    "INVALID_URL": "Por favor, introduce una URL válida",
+    "INVALID_FOLLOWERS": "El número de seguidores debe ser mayor que 0",
+    "PREVIOUS": "Anterior",
+    "NEXT": "Siguiente",
+    "SUBMIT": "Finalizar",
+    "SUCCESS": "¡Perfil creado exitosamente!",
+    "ERROR": "Ha ocurrido un error al crear el perfil"
+  },
+  "ERRORS": {
+    "INVALID_FILE_TYPE": "Tipo de archivo no válido",
+    "FILE_TOO_LARGE": "El archivo es demasiado grande"
+  },
+  "COLLABORATIONS": {
+    "TITLE": "Nueva Colaboración",
+    "SUBTITLE": "Propón una colaboración con",
+    "GENERAL_INFO": "Información General",
+    "PROJECT_MILESTONES": "Hitos del Proyecto",
+    "MILESTONES_SUBTITLE": "Define los pasos y fechas importantes de la colaboración",
+    "MILESTONE": "Hito",
+    "ADD_MILESTONE": "Agregar Hito",
+    "CANCEL": "Cancelar",
+    "SEND_COLLABORATION": "Enviar Colaboración",
+    "SENDING": "Enviando colaboración...",
+    "SUCCESS": "¡Colaboración enviada exitosamente!",
+    "ERROR": "Error al enviar la colaboración. Inténtalo de nuevo.",
+    "ERROR_NO_USER": "Error: No se especificó el usuario para colaborar",
+    "ERROR_LOADING": "Error al cargar las colaboraciones. Inténtalo de nuevo.",
+    "DEFAULT_USER": "Usuario",
+    "STATUS": {
+      "PENDING": "Pendiente",
+      "ACCEPTED": "Aceptado",
+      "REJECTED": "Rechazado",
+      "CANCELED": "Cancelado",
+      "FINISHED": "Finalizado"
+    },
+    "FILTERS": {
+      "ALL_STATUS": "Todos los estados",
+      "PENDING": "Pendiente",
+      "ACCEPTED": "Aceptado",
+      "REJECTED": "Rechazado",
+      "CANCELED": "Cancelado",
+      "FINISHED": "Finalizado"
+    },
+    "LIST": {
+      "TITLE": "Mis Colaboraciones",
+      "SUBTITLE": "Gestiona todas tus colaboraciones en un solo lugar",
+      "SEARCH": "Buscar",
+      "SEARCH_PLACEHOLDER": "Buscar por nombre o mensaje...",
+      "STATUS_FILTER": "Filtrar por estado",
+      "LOADING": "Cargando colaboraciones...",
+      "EMPTY_TITLE": "No hay colaboraciones",
+      "EMPTY_MESSAGE": "Aún no tienes colaboraciones. ¡Comienza a conectar con otros usuarios!",
+      "MESSAGE": "Mensaje",
+      "CREATED": "Creado",
+      "VIEW_DETAILS": "Ver Detalles",
+      "NEW_COLLABORATION": "Nueva Colaboración",
+      "CONFIRM_PROCESS": "Confirmar Proceso",
+      "CANCEL_COLLABORATION": "Cancelar Colaboración",
+      "FINISH_COLLABORATION": "Finalizar Colaboración",
+      "ROLE": {
+        "INFLUENCER": "Influencer",
+        "BRAND": "Marca"
+      }
+    },
+    "ACTIONS": {
+      "ACCEPT": "Aceptar",
+      "REJECT": "Rechazar",
+      "CANCEL": "Cancelar",
+      "FINISH": "Finalizar",
+      "ACCEPT_SUCCESS": "Colaboración aceptada exitosamente",
+      "REJECT_SUCCESS": "Colaboración rechazada exitosamente",
+      "CANCEL_SUCCESS": "Colaboración cancelada exitosamente",
+      "FINISH_SUCCESS": "Colaboración finalizada exitosamente",
+      "ACCEPT_ERROR": "Error al aceptar la colaboración",
+      "REJECT_ERROR": "Error al rechazar la colaboración",
+      "CANCEL_ERROR": "Error al cancelar la colaboración",
+      "FINISH_ERROR": "Error al finalizar la colaboración"
+    },
+    "CONFIRMATION": {
+      "TITLE": "Confirmación de Proceso",
+      "PROCESSING": "Procesando...",
+      "MESSAGE": "Mensaje",
+      "ACTION_TYPE": "Tipo de Acción",
+      "CREATED_DATE": "Fecha de Creación",
+      "RECIPIENT_DESCRIPTION": "Puedes aceptar o rechazar esta propuesta de colaboración",
+      "INITIATOR_CANCEL_DESCRIPTION": "Puedes cancelar esta colaboración si ya no deseas continuar",
+      "INITIATOR_FINISH_DESCRIPTION": "Marca esta colaboración como finalizada cuando se hayan completado todos los entregables",
+      "NO_ACTIONS_AVAILABLE": "No hay acciones disponibles para esta colaboración",
+      "CLOSE": "Cerrar"
+    },
+    "FIELDS": {
+      "MESSAGE": "Mensaje de propuesta",
+      "MESSAGE_PLACEHOLDER": "Describe tu propuesta de colaboración...",
+      "MESSAGE_REQUIRED": "El mensaje es obligatorio",
+      "MESSAGE_MINLENGTH": "Mínimo 50 caracteres",
+      "ACTION_TYPE": "Tipo de acción",
+      "ACTION_TYPE_REQUIRED": "Selecciona un tipo de acción",
+      "TARGET_DATE": "Fecha objetivo",
+      "TARGET_DATE_REQUIRED": "La fecha es obligatoria",
+      "BUDGET": "Presupuesto (€)",
+      "BUDGET_PLACEHOLDER": "0.00",
+      "BUDGET_REQUIRED": "El presupuesto es obligatorio",
+      "BUDGET_MIN": "El presupuesto debe ser mayor a 0",
+      "LOCATION": "Ubicación",
+      "LOCATION_PLACEHOLDER": "Madrid, España",
+      "LOCATION_REQUIRED": "La ubicación es obligatoria",
+      "DELIVERABLES": "Entregables",
+      "DELIVERABLES_PLACEHOLDER": "Describe los entregables de la colaboración...",
+      "DELIVERABLES_REQUIRED": "Los entregables son obligatorios",
+      "MILESTONE_TITLE": "Título del hito",
+      "MILESTONE_TITLE_PLACEHOLDER": "Ej: Propuesta creativa",
+      "MILESTONE_TITLE_REQUIRED": "El título es obligatorio",
+      "MILESTONE_DATE": "Fecha",
+      "MILESTONE_DATE_REQUIRED": "La fecha es obligatoria",
+      "MILESTONE_LOCATION": "Ubicación",
+      "MILESTONE_LOCATION_PLACEHOLDER": "Zoom, Estudio, etc.",
+      "MILESTONE_LOCATION_REQUIRED": "La ubicación es obligatoria",
+      "MILESTONE_DESCRIPTION": "Descripción",
+      "MILESTONE_DESCRIPTION_PLACEHOLDER": "Describe qué se realizará en este hito...",
+      "MILESTONE_DESCRIPTION_REQUIRED": "La descripción es obligatoria",
+      "MILESTONE_DELIVERABLES": "Entregables",
+      "MILESTONE_DELIVERABLES_PLACEHOLDER": "Qué se entregará al finalizar este hito...",
+      "MILESTONE_DELIVERABLES_REQUIRED": "Los entregables son obligatorios"
+    },
+    "ACTION_TYPES": {
+      "REEL_IG": "Reel de Instagram",
+      "POST_IG": "Post de Instagram",
+      "STORY_IG": "Story de Instagram",
+      "VIDEO_YT": "Video de YouTube",
+      "TIKTOK": "Video de TikTok",
+      "BLOG_POST": "Artículo de Blog",
+      "PODCAST": "Podcast",
+      "EVENT": "Evento"
+    },
+    "DETAILS": {
+      "TITLE": "Detalles de Colaboración",
+      "COUNTERPART": "Contraparte",
+      "INFORMATION": "Información General",
+      "ACTION_TYPE": "Tipo de Acción",
+      "TARGET_DATE": "Fecha Objetivo",
+      "BUDGET": "Presupuesto",
+      "LOCATION": "Ubicación",
+      "MESSAGE": "Mensaje",
+      "DELIVERABLES": "Entregables",
+      "MILESTONES": "Hitos del Proyecto",
+      "DATES": "Fechas",
+      "CREATED_AT": "Fecha de Creación",
+      "UPDATED_AT": "Última Actualización",
+      "LOADING": "Cargando detalles...",
+      "ERROR_TITLE": "Error al Cargar",
+      "ERROR_MESSAGE": "No se pudieron cargar los detalles de la colaboración. Por favor, inténtalo de nuevo.",
+      "ERROR_INVALID_ID": "ID de colaboración inválido",
+      "ERROR_LOADING": "Error al cargar los detalles de la colaboración",
+      "RETRY": "Reintentar",
+      "NO_MILESTONES": "No hay hitos definidos para esta colaboración"
+    }
+  },
+  "AGENDA": {
+    "TITLE": "Agenda de Colaboraciones",
+    "LOADING": "Cargando eventos de la agenda...",
+    "ERROR_TITLE": "Error al cargar la agenda",
+    "ERROR_MESSAGE": "No se pudieron cargar los eventos de la agenda. Por favor, inténtalo de nuevo.",
+    "RETRY": "Reintentar",
+    "EMPTY_TITLE": "No hay eventos en la agenda",
+    "EMPTY_MESSAGE": "Parece que no tienes eventos de colaboración programados. ¡Empieza a conectar!",
+    "COUNTERPART": "Contraparte",
+    "DATE": "Fecha",
+    "LOCATION": "Ubicación",
+    "VIEW_COLLABORATION": "Ver Colaboración",
+    "TODAY": "Hoy",
+    "MONTH": "Mes",
+    "WEEK": "Semana",
+    "DAY": "Día"
+  },
+  "CHAT_LIST": {
+    "TITLE": "Mensajes",
+    "LOADING": "Cargando chats...",
+    "ERROR_TITLE": "Error al cargar chats",
+    "ERROR_LOADING_CHATS": "Ha ocurrido un error al cargar tus conversaciones. Por favor, intenta de nuevo.",
+    "RETRY": "Reintentar",
+    "NO_CHATS_TITLE": "¡Aún no tienes conversaciones!",
+    "NO_CHATS_MESSAGE": "Parece que no has iniciado ningún chat. Busca perfiles para conectar y empezar a colaborar.",
+    "INITIATE_CHAT_BUTTON": "Iniciar Chat"
+  },
+  "CHAT_DETAIL": {
+    "LOADING_CHAT": "Cargando chat...",
+    "LOADING_MESSAGES": "Cargando mensajes...",
+    "ERROR_TITLE": "Error en el chat",
+    "ERROR_LOADING_INITIAL_DATA": "No se pudo cargar la información inicial del chat.",
+    "ERROR_FETCHING_INTERLOCUTOR": "No se pudo obtener la información del interlocutor.",
+    "UNKNOWN_USER": "Usuario Desconocido",
+    "ERROR_LOADING_MESSAGES": "No se pudieron cargar los mensajes.",
+    "ERROR_SENDING_MESSAGE": "Error al enviar el mensaje. Intenta de nuevo.",
+    "RETRY": "Reintentar",
+    "TYPE_MESSAGE": "Escribe un mensaje...",
+    "WELCOME_MESSAGE": "Inicia una conversación con {{name}}"
   }
 }

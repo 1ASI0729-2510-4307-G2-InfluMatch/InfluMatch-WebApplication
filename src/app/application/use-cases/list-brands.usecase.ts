@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProfileRepository } from '../../domain/repositories/profile-repository';
-import { BrandProfileVO } from '../../domain/value-objects/brand-profile.vo';
+import { DashboardRepository } from '../../domain/repositories/dashboard-repository';
+import { DashboardProfileVO } from '../../domain/value-objects/dashboard-profile.vo';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class ListBrandsUseCase {
-  constructor(private repo: ProfileRepository) {}
-  execute(): Observable<BrandProfileVO[]> {
-    return this.repo.listBrands();
+  constructor(private repository: DashboardRepository) {}
+
+  execute(): Observable<DashboardProfileVO[]> {
+    return this.repository.getBrands();
   }
 }

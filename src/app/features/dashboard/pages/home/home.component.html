@@ -1,8 +1,6 @@
-<div class="dashboard-home">
+<div class="dashboard-container">
   <div class="dashboard-header">
-    <h1>
-      {{ role === "marca" ? "Influencers Disponibles" : "Marcas Disponibles" }}
-    </h1>
+    <h1>{{ (role === 'marca' ? 'dashboard.titles.influencers' : 'dashboard.titles.brands') | translate }}</h1>
     <p class="subtitle">
       {{
         role === "marca"
@@ -12,49 +10,26 @@
     </p>
   </div>
 
-  <div *ngIf="loading" class="loading-container">
-    <mat-spinner diameter="40"></mat-spinner>
-    <p>Cargando perfiles...</p>
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+    <p>{{ 'dashboard.loading' | translate }}</p>
   </div>
 
-  <div *ngIf="error" class="error-container">
+  <div class="error-container" *ngIf="error">
+    <p>{{ 'dashboard.errors.loading' | translate }}</p>
+  </div>
+
+  <div *ngIf="!loading && !error && profiles.length === 0" class="empty-state">
     <p>
-      No se pudieron cargar los perfiles. Por favor, intenta de nuevo más tarde.
+      {{ (role === 'marca' ? 'dashboard.empty.influencers' : 'dashboard.empty.brands') | translate }}
     </p>
   </div>
 
-  <div *ngIf="!loading && !error" class="profiles-grid">
-    <div
-      *ngIf="role === 'marca' && influencers.length === 0"
-      class="empty-state"
+  <div *ngIf="!loading && !error && profiles.length > 0" class="profiles-grid">
+    <app-profile-card
+      *ngFor="let profile of profiles"
+      [profile]="profile"
     >
-      <p>No hay influencers disponibles en este momento.</p>
-    </div>
-
-    <div *ngIf="role !== 'marca' && brands.length === 0" class="empty-state">
-      <p>No hay marcas disponibles en este momento.</p>
-    </div>
-
-    <div *ngIf="role === 'marca'">
-      <div class="profiles-grid">
-        <app-profile-card
-          *ngFor="let influencer of influencers"
-          [profile]="influencer"
-          type="influencer"
-        >
-        </app-profile-card>
-      </div>
-    </div>
-
-    <div *ngIf="role !== 'marca'">
-      <div class="profiles-grid">
-        <app-profile-card
-          *ngFor="let brand of brands"
-          [profile]="brand"
-          type="brand"
-        >
-        </app-profile-card>
-      </div>
-    </div>
+    </app-profile-card>
   </div>
 </div>

@@ -1,27 +1,27 @@
 export interface ProfileVO {
-  user_id: string;
+  user_id: number;
   profile_completed: boolean;
   display_name: string;
-  avatar_url?: string;
+  avatar_url: string;
   bio: string;
-  location?: string;
-  contact_email?: string;
+  location: string;
+  contact_email: string;
 
   // Campos para influencers
   niche?: string;
   followers?: {
-    instagram?: number;
-    tiktok?: number;
-    youtube?: number;
+    instagram: number;
+    tiktok: number;
+    youtube: number;
   };
   rate_per_post?: number;
-  engagement_rate?: number;
+  engagement_rate?: string;
   main_audience?: string;
   languages?: string[];
   social_links?: {
-    instagram?: string;
-    tiktok?: string;
-    youtube?: string;
+    instagram: string;
+    tiktok: string;
+    youtube: string;
     twitter?: string;
     facebook?: string;
   };

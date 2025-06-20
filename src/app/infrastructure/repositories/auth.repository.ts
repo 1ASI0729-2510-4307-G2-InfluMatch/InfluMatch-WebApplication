@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { AuthRepository } from '../../domain/repositories/auth-repository';
 import { AuthApi } from '../api/auth.api';
 import { User } from '../../domain/entities/user.entity';
 import { UserCredentials } from '../../domain/value-objects/user-credentials.vo';
-import { RegisterVO } from '../../domain/value-objects/auth/register.vo';
+import { NewUserVO } from '../../domain/value-objects/new-user.vo';
 import { ProfileVO } from '../../domain/value-objects/profile.vo';
 
 @Injectable({ providedIn: 'root' })
@@ -14,17 +14,20 @@ export class AuthRepositoryImpl extends AuthRepository {
     super();
   }
 
-  login(creds: UserCredentials): Observable<User | null> {
-    return this.api.login(creds);
+  login(email: string, password: string): Observable<any> {
+    return this.api.login(email, password);
   }
 
-  register(data: RegisterVO): Observable<User> {
-    return this.api.register(data);
+  register(email: string, password: string, role: string): Observable<any> {
+    return this.api.register(email, password, role);
   }
 
-  updateProfile(data: ProfileVO): Observable<User> {
-    return this.api
-      .updateProfile(data)
-      .pipe(map((u) => ({ ...u, profile_completed: true })));
+  logout(): Observable<any> {
+    localStorage.removeItem('token');
+    return of(null);
+  }
+
+  updateProfile(data: any): Observable<any> {
+    return this.api.updateProfile(data);
   }
 }

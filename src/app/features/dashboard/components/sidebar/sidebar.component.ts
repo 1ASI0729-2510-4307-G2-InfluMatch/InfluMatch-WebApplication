@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../../infrastructure/services/auth.service';
 import { Router } from '@angular/router';
 import {
   trigger,
@@ -96,6 +96,8 @@ export class SidebarComponent implements OnInit {
   settingsTooltip = '';
   logoutTooltip = '';
   languageTooltip = '';
+  collaborationsTooltip = '';
+  agendaTooltip = '';
 
   constructor(
     private authService: AuthService,
@@ -171,8 +173,20 @@ export class SidebarComponent implements OnInit {
   }
 
   logout(): void {
+    // Limpiar todos los datos de sesión
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('current_user');
+    localStorage.removeItem('profileType');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('userId');
+
+    // Notificar al servicio de autenticación
     this.authService.logout();
-    this.router.navigate(['/login']);
+
+    // Redirigir al login
+    this.router.navigate(['/auth/login']);
   }
 
   translateTooltips(): void {
@@ -189,8 +203,8 @@ export class SidebarComponent implements OnInit {
       .get('SIDEBAR.CAMPAIGNS')
       .subscribe((text) => (this.campaignsTooltip = text));
     this.translateService
-      .get('SIDEBAR.ANALYTICS')
-      .subscribe((text) => (this.analyticsTooltip = text));
+      .get('SIDEBAR.AGENDA')
+      .subscribe((text) => (this.agendaTooltip = text));
     this.translateService
       .get('SIDEBAR.SETTINGS')
       .subscribe((text) => (this.settingsTooltip = text));
@@ -200,5 +214,8 @@ export class SidebarComponent implements OnInit {
     this.translateService
       .get('Language')
       .subscribe((text) => (this.languageTooltip = text));
+    this.translateService
+      .get('SIDEBAR.COLLABORATIONS')
+      .subscribe((text) => (this.collaborationsTooltip = text));
   }
 }

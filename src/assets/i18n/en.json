@@ -15,10 +15,11 @@
     "PROFILE": "My Profile",
     "MESSAGES": "Messages",
     "CAMPAIGNS": "Campaigns",
-    "ANALYTICS": "Analytics",
+    "AGENDA": "Agenda",
     "SETTINGS": "Settings",
     "LOGOUT": "Logout",
-    "LANGUAGE": "Language"
+    "LANGUAGE": "Language",
+    "COLLABORATIONS": "Collaborations"
   },
   "LOGIN": {
     "WELCOME": "Welcome back!",
@@ -267,5 +268,350 @@
     "NEWSLETTER_TEXT": "Stay updated with the latest trends in influencer marketing and platform features.",
     "EMAIL_PLACEHOLDER": "Enter your email address",
     "SUBSCRIBE": "Subscribe"
+  },
+  "dashboard": {
+    "titles": {
+      "influencers": "Influencers",
+      "brands": "Brands"
+    },
+    "loading": "Loading profiles...",
+    "errors": {
+      "loading": "An error occurred while loading profiles. Please try again."
+    },
+    "empty": {
+      "influencers": "No influencers available at the moment.",
+      "brands": "No brands available at the moment."
+    },
+    "profile": {
+      "followers": "followers",
+      "actions": {
+        "contact": "Contact",
+        "viewProfile": "View Profile"
+      },
+      "attachments": {
+        "title": "Attachments",
+        "types": {
+          "PHOTO": "Photo",
+          "VIDEO": "Video",
+          "DOCUMENT": "Document"
+        }
+      },
+      "details": {
+        "about": "About",
+        "contact": "Contact Information",
+        "socialMedia": "Social Media",
+        "location": "Location",
+        "category": "Category",
+        "bio": "Bio",
+        "niches": "Niches",
+        "followers": "Followers",
+        "languages": "Languages",
+        "preferredCategories": "Preferred Categories",
+        "contactName": "Contact Name",
+        "contactPosition": "Position",
+        "contactEmail": "Email",
+        "additionalInfo": "Additional Information"
+      }
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "messages": "Messages",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "auth": {
+    "register": {
+      "welcome": "Join InfluMatch!",
+      "subtitle": "Connect with the best influencers and brands on our AI-powered platform",
+      "title": "Create Account",
+      "instruction": "Fill in your details to get started",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "selectRole": "Select your role",
+      "roles": {
+        "influencer": "I'm an Influencer",
+        "brand": "I'm a Brand"
+      },
+      "submit": "Sign Up",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Sign In",
+      "errors": {
+        "email": {
+          "required": "Email is required",
+          "invalid": "Enter a valid email"
+        },
+        "password": {
+          "required": "Password is required",
+          "minLength": "Password must be at least 6 characters"
+        },
+        "confirmPassword": {
+          "required": "Confirm your password",
+          "mismatch": "Passwords do not match"
+        },
+        "role": {
+          "required": "Select your role"
+        }
+      }
+    }
+  },
+  "ONBOARDING": {
+    "STEPS": {
+      "BASIC": "Basic Information",
+      "LOCATION": "Location",
+      "PROFILE": "Profile"
+    },
+    "BRAND_TITLE": "Complete your brand profile",
+    "BRAND_SUBTITLE": "Help us get to know your brand better",
+    "INFLUENCER_TITLE": "Complete your influencer profile",
+    "INFLUENCER_SUBTITLE": "Help us get to know your profile better",
+    "BASIC_INFO": "Basic Information",
+    "LOCATION_INFO": "Location Information",
+    "BRAND_INFO": "Brand Information",
+    "INFLUENCER_INFO": "Influencer Information",
+    "NAME": "Name",
+    "DESCRIPTION": "Description",
+    "COUNTRY": "Country",
+    "LOCATION": "City",
+    "SECTOR": "Sector",
+    "WEBSITE": "Website",
+    "LOGO": "Brand Logo",
+    "PHOTO": "Photo",
+    "PROFILE_PHOTO": "Profile Photo",
+    "NICHES": {
+      "LABEL": "Niches",
+      "FASHION": "Fashion",
+      "LIFESTYLE": "Lifestyle",
+      "TRAVEL": "Travel",
+      "BEAUTY": "Beauty",
+      "FITNESS": "Fitness",
+      "FOOD": "Food",
+      "TECH": "Technology",
+      "GAMING": "Gaming",
+      "MUSIC": "Music",
+      "SPORTS": "Sports"
+    },
+    "FOLLOWERS": "Number of followers",
+    "SOCIAL_LINKS": "Social Networks",
+    "PLATFORM": "Platform",
+    "URL": "URL",
+    "ADDITIONAL_LINKS": "Additional Links",
+    "LINK_TITLE": "Link title",
+    "ATTACHMENTS": "Attachments",
+    "ATTACHMENT_TITLE": "File title",
+    "ATTACHMENT_DESCRIPTION": "File description",
+    "MEDIA_TYPE": "File type",
+    "MEDIA_TYPES": {
+      "PHOTO": "Photo",
+      "VIDEO": "Video",
+      "DOCUMENT": "Document"
+    },
+    "UPLOAD_LOGO": "Upload logo",
+    "CHANGE_LOGO": "Change logo",
+    "UPLOAD_PHOTO": "Upload photo",
+    "CHANGE_PHOTO": "Change photo",
+    "UPLOAD_FILE": "Upload file",
+    "ADD_SOCIAL_LINK": "Add social network",
+    "ADD_LINK": "Add link",
+    "ADD_ATTACHMENT": "Add file",
+    "REQUIRED_FIELD": "This field is required",
+    "INVALID_URL": "Please enter a valid URL",
+    "INVALID_FOLLOWERS": "Number of followers must be greater than 0",
+    "PREVIOUS": "Previous",
+    "NEXT": "Next",
+    "SUBMIT": "Finish",
+    "SUCCESS": "Profile created successfully!",
+    "ERROR": "An error occurred while creating the profile"
+  },
+  "ERRORS": {
+    "INVALID_FILE_TYPE": "Invalid file type",
+    "FILE_TOO_LARGE": "File is too large"
+  },
+  "COLLABORATIONS": {
+    "TITLE": "New Collaboration",
+    "SUBTITLE": "Propose a collaboration with",
+    "GENERAL_INFO": "General Information",
+    "PROJECT_MILESTONES": "Project Milestones",
+    "MILESTONES_SUBTITLE": "Define the important steps and dates of the collaboration",
+    "MILESTONE": "Milestone",
+    "ADD_MILESTONE": "Add Milestone",
+    "CANCEL": "Cancel",
+    "SEND_COLLABORATION": "Send Collaboration",
+    "SENDING": "Sending collaboration...",
+    "SUCCESS": "Collaboration sent successfully!",
+    "ERROR": "Error sending collaboration. Please try again.",
+    "ERROR_NO_USER": "Error: No user specified for collaboration",
+    "ERROR_LOADING": "Error loading collaborations. Please try again.",
+    "DEFAULT_USER": "User",
+    "STATUS": {
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "REJECTED": "Rejected",
+      "CANCELED": "Canceled",
+      "FINISHED": "Finished"
+    },
+    "FILTERS": {
+      "ALL_STATUS": "All Status",
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "REJECTED": "Rejected",
+      "CANCELED": "Canceled",
+      "FINISHED": "Finished"
+    },
+    "LIST": {
+      "TITLE": "My Collaborations",
+      "SUBTITLE": "Manage all your collaborations in one place",
+      "SEARCH": "Search",
+      "SEARCH_PLACEHOLDER": "Search by name or message...",
+      "STATUS_FILTER": "Filter by status",
+      "LOADING": "Loading collaborations...",
+      "EMPTY_TITLE": "No collaborations",
+      "EMPTY_MESSAGE": "You don't have any collaborations yet. Start connecting with other users!",
+      "MESSAGE": "Message",
+      "CREATED": "Created",
+      "VIEW_DETAILS": "View Details",
+      "NEW_COLLABORATION": "New Collaboration",
+      "CONFIRM_PROCESS": "Confirm Process",
+      "CANCEL_COLLABORATION": "Cancel Collaboration",
+      "FINISH_COLLABORATION": "Finish Collaboration",
+      "ROLE": {
+        "INFLUENCER": "Influencer",
+        "BRAND": "Brand"
+      }
+    },
+    "ACTIONS": {
+      "ACCEPT": "Accept",
+      "REJECT": "Reject",
+      "CANCEL": "Cancel",
+      "FINISH": "Finish",
+      "ACCEPT_SUCCESS": "Collaboration accepted successfully",
+      "REJECT_SUCCESS": "Collaboration rejected successfully",
+      "CANCEL_SUCCESS": "Collaboration canceled successfully",
+      "FINISH_SUCCESS": "Collaboration finished successfully",
+      "ACCEPT_ERROR": "Error accepting collaboration",
+      "REJECT_ERROR": "Error rejecting collaboration",
+      "CANCEL_ERROR": "Error canceling collaboration",
+      "FINISH_ERROR": "Error finishing collaboration"
+    },
+    "CONFIRMATION": {
+      "TITLE": "Process Confirmation",
+      "PROCESSING": "Processing...",
+      "MESSAGE": "Message",
+      "ACTION_TYPE": "Action Type",
+      "CREATED_DATE": "Created Date",
+      "RECIPIENT_DESCRIPTION": "You can accept or reject this collaboration proposal",
+      "INITIATOR_CANCEL_DESCRIPTION": "You can cancel this collaboration if you no longer want to continue",
+      "INITIATOR_FINISH_DESCRIPTION": "Mark this collaboration as finished when all deliverables have been completed",
+      "NO_ACTIONS_AVAILABLE": "No actions available for this collaboration",
+      "CLOSE": "Close"
+    },
+    "FIELDS": {
+      "MESSAGE": "Proposal message",
+      "MESSAGE_PLACEHOLDER": "Describe your collaboration proposal...",
+      "MESSAGE_REQUIRED": "Message is required",
+      "MESSAGE_MINLENGTH": "Minimum 50 characters",
+      "ACTION_TYPE": "Action type",
+      "ACTION_TYPE_REQUIRED": "Select an action type",
+      "TARGET_DATE": "Target date",
+      "TARGET_DATE_REQUIRED": "Date is required",
+      "BUDGET": "Budget (€)",
+      "BUDGET_PLACEHOLDER": "0.00",
+      "BUDGET_REQUIRED": "Budget is required",
+      "BUDGET_MIN": "Budget must be greater than 0",
+      "LOCATION": "Location",
+      "LOCATION_PLACEHOLDER": "Madrid, Spain",
+      "LOCATION_REQUIRED": "Location is required",
+      "DELIVERABLES": "Deliverables",
+      "DELIVERABLES_PLACEHOLDER": "Describe the collaboration deliverables...",
+      "DELIVERABLES_REQUIRED": "Deliverables are required",
+      "MILESTONE_TITLE": "Milestone title",
+      "MILESTONE_TITLE_PLACEHOLDER": "Ex: Creative proposal",
+      "MILESTONE_TITLE_REQUIRED": "Title is required",
+      "MILESTONE_DATE": "Date",
+      "MILESTONE_DATE_REQUIRED": "Date is required",
+      "MILESTONE_LOCATION": "Location",
+      "MILESTONE_LOCATION_PLACEHOLDER": "Zoom, Studio, etc.",
+      "MILESTONE_LOCATION_REQUIRED": "Location is required",
+      "MILESTONE_DESCRIPTION": "Description",
+      "MILESTONE_DESCRIPTION_PLACEHOLDER": "Describe what will be done in this milestone...",
+      "MILESTONE_DESCRIPTION_REQUIRED": "Description is required",
+      "MILESTONE_DELIVERABLES": "Deliverables",
+      "MILESTONE_DELIVERABLES_PLACEHOLDER": "What will be delivered when this milestone is completed...",
+      "MILESTONE_DELIVERABLES_REQUIRED": "Deliverables are required"
+    },
+    "ACTION_TYPES": {
+      "REEL_IG": "Instagram Reel",
+      "POST_IG": "Instagram Post",
+      "STORY_IG": "Instagram Story",
+      "VIDEO_YT": "YouTube Video",
+      "TIKTOK": "TikTok Video",
+      "BLOG_POST": "Blog Post",
+      "PODCAST": "Podcast",
+      "EVENT": "Event"
+    },
+    "DETAILS": {
+      "TITLE": "Collaboration Details",
+      "COUNTERPART": "Counterpart",
+      "INFORMATION": "General Information",
+      "ACTION_TYPE": "Action Type",
+      "TARGET_DATE": "Target Date",
+      "BUDGET": "Budget",
+      "LOCATION": "Location",
+      "MESSAGE": "Message",
+      "DELIVERABLES": "Deliverables",
+      "MILESTONES": "Project Milestones",
+      "DATES": "Dates",
+      "CREATED_AT": "Created At",
+      "UPDATED_AT": "Last Updated",
+      "LOADING": "Loading details...",
+      "ERROR_TITLE": "Error Loading",
+      "ERROR_MESSAGE": "Could not load collaboration details. Please try again.",
+      "ERROR_INVALID_ID": "Invalid collaboration ID",
+      "ERROR_LOADING": "Error loading collaboration details",
+      "RETRY": "Retry",
+      "NO_MILESTONES": "No milestones defined for this collaboration"
+    }
+  },
+  "AGENDA": {
+    "TITLE": "Collaboration Agenda",
+    "LOADING": "Loading agenda events...",
+    "ERROR_TITLE": "Error loading agenda",
+    "ERROR_MESSAGE": "Could not load agenda events. Please try again.",
+    "RETRY": "Retry",
+    "EMPTY_TITLE": "No agenda events",
+    "EMPTY_MESSAGE": "It seems you don't have any scheduled collaboration events. Start connecting!",
+    "COUNTERPART": "Counterpart",
+    "DATE": "Date",
+    "LOCATION": "Location",
+    "VIEW_COLLABORATION": "View Collaboration",
+    "TODAY": "Today",
+    "MONTH": "Month",
+    "WEEK": "Week",
+    "DAY": "Day"
+  },
+  "CHAT_LIST": {
+    "TITLE": "Messages",
+    "LOADING": "Loading chats...",
+    "ERROR_TITLE": "Error loading chats",
+    "ERROR_LOADING_CHATS": "An error occurred while loading your conversations. Please try again.",
+    "RETRY": "Retry",
+    "NO_CHATS_TITLE": "You don't have any conversations yet!",
+    "NO_CHATS_MESSAGE": "It looks like you haven't started any chats. Search for profiles to connect and start collaborating.",
+    "INITIATE_CHAT_BUTTON": "Initiate Chat"
+  },
+  "CHAT_DETAIL": {
+    "LOADING_CHAT": "Loading chat...",
+    "LOADING_MESSAGES": "Loading messages...",
+    "ERROR_TITLE": "Chat error",
+    "ERROR_LOADING_INITIAL_DATA": "Could not load initial chat information.",
+    "ERROR_FETCHING_INTERLOCUTOR": "Could not fetch interlocutor information.",
+    "UNKNOWN_USER": "Unknown User",
+    "ERROR_LOADING_MESSAGES": "Could not load messages.",
+    "ERROR_SENDING_MESSAGE": "Error sending message. Please try again.",
+    "RETRY": "Retry",
+    "TYPE_MESSAGE": "Type a message...",
+    "WELCOME_MESSAGE": "Start a conversation with {{name}}"
   }
 }

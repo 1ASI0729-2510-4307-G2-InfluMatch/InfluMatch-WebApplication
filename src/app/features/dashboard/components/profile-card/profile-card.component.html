@@ -1,59 +1,56 @@
-<mat-card class="profile-card" (click)="viewDetails()">
+<div class="profile-card" [class.brand]="profile.type === 'brand'" [class.influencer]="profile.type === 'influencer'" (click)="viewDetails()">
   <div class="profile-header">
-    <div class="profile-avatar">
-      <img
-        [src]="profile.avatar_url || 'assets/images/default-avatar.png'"
-        alt="Profile Avatar"
-      />
+    <div class="profile-image">
+      <img [src]="getImageSrc(profile.imageUrl)" [alt]="profile.name">
     </div>
-    <div class="profile-info">
-      <h3 class="profile-name">{{ profile.display_name || profile.name }}</h3>
-      <span class="profile-type">{{
-        type === "influencer" ? "Influencer" : "Marca"
-      }}</span>
+    <div class="profile-badge">
+      <span>{{ profile.type === 'brand' ? '🏢' : '👤' }}</span>
     </div>
   </div>
-
+  
   <div class="profile-content">
-    <p class="profile-bio">{{ profile.bio || "Sin biografía" }}</p>
+    <h3 class="profile-name">{{ profile.name }}</h3>
+    
+    <div class="profile-info">
+      <div class="info-item">
+        <span class="icon">🌍</span>
+        <span class="text">{{ profile.country }}</span>
+      </div>
+      
+      <div class="info-item">
+        <span class="icon">🎯</span>
+        <span class="text">{{ profile.category }}</span>
+      </div>
 
-    <!-- Información específica para influencers -->
-    <div *ngIf="type === 'influencer'" class="profile-metrics">
-      <div class="metric" *ngIf="profile.followers">
-        <mat-icon>people</mat-icon>
-        <span>{{ formatNumber(getTotalFollowers()) }} seguidores</span>
-      </div>
-      <div class="metric" *ngIf="profile.engagement_rate">
-        <mat-icon>trending_up</mat-icon>
-        <span>{{ profile.engagement_rate }}% engagement</span>
-      </div>
-      <div class="metric" *ngIf="profile.niche">
-        <mat-icon>category</mat-icon>
-        <span>{{ profile.niche }}</span>
-      </div>
-    </div>
-
-    <!-- Información específica para marcas -->
-    <div *ngIf="type === 'brand'" class="profile-metrics">
-      <div class="metric" *ngIf="profile.sector">
-        <mat-icon>business</mat-icon>
-        <span>{{ profile.sector }}</span>
-      </div>
-      <div class="metric" *ngIf="profile.budget_range">
-        <mat-icon>attach_money</mat-icon>
-        <span>{{ profile.budget_range }}</span>
-      </div>
-      <div class="metric" *ngIf="profile.content_s">
-        <mat-icon>video_library</mat-icon>
-        <span>{{ profile.content_s }}</span>
-      </div>
+      <ng-container *ngIf="profile.type === 'influencer'">
+        <div class="info-item followers" *ngIf="profile.followersCount">
+          <span class="icon">👥</span>
+          <span class="text">{{ formatNumber(profile.followersCount) }} {{ 'dashboard.profile.followers' | translate }}</span>
+        </div>
+        
+        <div class="bio" *ngIf="profile.bio">
+          <p>{{ profile.bio }}</p>
+        </div>
+      </ng-container>
     </div>
   </div>
 
-  <div class="profile-footer">
-    <button mat-button color="primary" class="view-details-btn">
-      Ver detalles
-      <mat-icon>arrow_forward</mat-icon>
-    </button>
+  <div class="profile-actions">
+    <div class="action-row">
+      <button class="action-button primary" (click)="sendRequest(); $event.stopPropagation()">
+        <span class="icon">🤝</span>
+        Enviar Solicitud
+      </button>
+      <button class="action-button secondary" (click)="sendMessage(); $event.stopPropagation()">
+        <span class="icon">💬</span>
+        Enviar Mensaje
+      </button>
+    </div>
+    <div class="action-row">
+      <button class="action-button tertiary" (click)="viewDetails(); $event.stopPropagation()">
+        <span class="icon">ℹ️</span>
+        {{ 'dashboard.profile.actions.viewProfile' | translate }}
+      </button>
+    </div>
   </div>
-</mat-card>
+</div>

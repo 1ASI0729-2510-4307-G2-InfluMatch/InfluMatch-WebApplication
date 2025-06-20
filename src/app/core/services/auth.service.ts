@@ -1,79 +1,82 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { AuthResponseDTO } from '../../infrastructure/dtos/auth/auth-response.dto';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { User } from '../../domain/entities/user.entity';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = environment.apiBase;
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  private readonly USER_STORAGE_KEY = 'currentUser';
 
-  constructor(
-    private http: HttpClient,
-    private router: Router
-  ) {}
-
-  register(email: string, password: string, role: 'INFLUENCER' | 'BRAND'): Observable<AuthResponseDTO> {
-    return this.http.post<AuthResponseDTO>(`${this.apiUrl}/auth/register`, {
-      email,
-      password,
-      role
-    }).pipe(
-      tap(response => {
-        // Guardar datos de autenticación
-        localStorage.setItem('authData', JSON.stringify(response));
-        localStorage.setItem('token', response.token);
-        
-        // Redirigir al onboarding
-        this.router.navigate(['/auth/onboarding']);
-      })
-    );
+  constructor() {
+    // Recuperar usuario del localStorage al iniciar
+    const storedUser = localStorage.getItem(this.USER_STORAGE_KEY);
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        this.currentUserSubject.next(user);
+      } catch (e) {
+        localStorage.removeItem(this.USER_STORAGE_KEY);
+      }
+    }
   }
 
-  login(email: string, password: string): Observable<AuthResponseDTO> {
-    return this.http.post<AuthResponseDTO>(`${this.apiUrl}/auth/login`, {
-      email,
-      password
-    }).pipe(
-      tap(response => {
-        localStorage.setItem('authData', JSON.stringify(response));
-        localStorage.setItem('token', response.token);
-        
-        // Si no tiene perfil, redirigir al onboarding
-        if (!localStorage.getItem('hasProfile')) {
-          this.router.navigate(['/auth/onboarding']);
-        } else {
-          this.router.navigate(['/dashboard']);
-        }
-      })
-    );
+  public get currentUser(): User | null {
+    return this.currentUserSubject.value;
   }
 
-  logout() {
-    localStorage.removeItem('authData');
-    localStorage.removeItem('token');
-    localStorage.removeItem('hasProfile');
-    this.router.navigate(['/auth/login']);
+  public get currentUserObservable(): Observable<User | null> {
+    return this.currentUserSubject.asObservable();
   }
 
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+  public get isAuthenticated(): boolean {
+    return !!this.currentUserSubject.value;
   }
 
-  hasProfile(): boolean {
-    return !!localStorage.getItem('hasProfile');
+  public getCurrentUserId(): number | null {
+    return this.currentUserSubject.value ? this.currentUserSubject.value.userId : null;
   }
 
-  getCurrentUser(): AuthResponseDTO | null {
-    const authData = localStorage.getItem('authData');
-    return authData ? JSON.parse(authData) : null;
+  public save(user: User): void {
+    localStorage.setItem(this.USER_STORAGE_KEY, JSON.stringify(user));
+    this.currentUserSubject.next(user);
   }
 
-  save(user: AuthResponseDTO): void {
-    localStorage.setItem('authData', JSON.stringify(user));
-    localStorage.setItem('token', user.token);
+  public logout(): void {
+    // Limpiar todos los datos de sesión
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('current_user');
+    localStorage.removeItem('profileType');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('userId');
+
+    // Limpiar el estado del servicio
+    this.currentUserSubject.next(null);
+  }
+
+  getUserRole(): string {
+    const user = this.getCurrentUser();
+    return user?.user_type || '';
+  }
+
+  private getCurrentUser(): any {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
   }
 }

@@ -1,3 +1,5 @@
+
+
 <div class="login-container">
   <div class="login-left">
     <div class="image-container">
@@ -47,7 +49,7 @@
       <h2>{{ "LOGIN.TITLE" | translate }}</h2>
       <p class="subtitle">{{ "LOGIN.INSTRUCTION" | translate }}</p>
 
-      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
         <mat-form-field appearance="outline">
           <mat-label>{{ "LOGIN.EMAIL" | translate }}</mat-label>
           <mat-icon matPrefix>email</mat-icon>

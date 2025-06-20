@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBase: 'https://68226283b342dce8004e1b82.mockapi.io',
+  apiBase: 'http://localhost:8080/api',
 };

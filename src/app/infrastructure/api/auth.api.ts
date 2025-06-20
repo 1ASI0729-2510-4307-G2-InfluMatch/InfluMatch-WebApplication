@@ -1,53 +1,35 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { User } from '../../domain/entities/user.entity';
 import { UserCredentials } from '../../domain/value-objects/user-credentials.vo';
-import { RegisterVO } from '../../domain/value-objects/auth/register.vo';
+import { NewUserVO } from '../../domain/value-objects/new-user.vo';
 import { ProfileVO } from '../../domain/value-objects/profile.vo';
-
-import { RegisterAssembler } from '../assemblers/auth/register.assembler';
-import { RegisterResponseDTO } from '../dtos/auth/register.dto';
-import { 
-  UserAssembler, 
-  LoginResponseDTO, 
-  ProfileResponseDTO 
-} from '../assemblers/user.assembler';
+import { UserAssembler, RegisterResponse } from '../assemblers/user.assembler';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApi {
-  private readonly baseUrl = environment.apiBase;
+  private readonly baseUrl = `${environment.apiBase}/auth`;
 
   constructor(private http: HttpClient) {}
 
-  login(creds: UserCredentials): Observable<User> {
-    return this.http.post<LoginResponseDTO>(`${this.baseUrl}/auth/login`, {
-      email: creds.email,
-      password: creds.password
-    }).pipe(
-      map(response => UserAssembler.toUser(response))
-    );
+  private handleError(error: HttpErrorResponse) {
+    console.error('An error occurred:', error);
+    return throwError(() => error);
   }
 
-  register(data: RegisterVO): Observable<User> {
-    const dto = RegisterAssembler.toRequestDTO(data);
-    return this.http.post<RegisterResponseDTO>(
-      `${this.baseUrl}/auth/register`, 
-      dto
-    ).pipe(
-      map(response => RegisterAssembler.toUser(response))
-    );
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/login`, { email, password });
   }
 
-  updateProfile(data: ProfileVO): Observable<User> {
-    const dto = UserAssembler.toProfileDTO(data);
-    return this.http.put<ProfileResponseDTO>(
-      `${this.baseUrl}/users-register/${data.user_id}`, 
-      dto
-    ).pipe(
-      map(response => UserAssembler.toUserFromProfile(response))
-    );
+  register(email: string, password: string, role: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, { email, password, role });
+  }
+
+  updateProfile(data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/profile`, data);
   }
 }

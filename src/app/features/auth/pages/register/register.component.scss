@@ -40,16 +40,16 @@
     height: 100%;
     overflow: hidden;
     z-index: 0;
-  }
 
-  .register-bg-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
+    .register-bg-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
   }
 
   .image-overlay {
@@ -160,7 +160,6 @@
   align-items: center;
   padding: 2rem;
   transition: background-color 0.3s ease;
-  overflow-y: auto;
 }
 
 .register-form-container {
@@ -202,17 +201,20 @@
     }
   }
 
-  .terms-checkbox {
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1rem;
-    font-size: 0.9rem;
-    color: var(--text-secondary-color);
 
-    .terms-link {
+    .forgot-password {
       color: var(--primary-color);
       text-decoration: none;
-      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.2s;
 
       &:hover {
+        opacity: 0.8;
         text-decoration: underline;
       }
     }
@@ -328,35 +330,38 @@
 
     .left-content {
       padding: 0 1rem;
-    }
 
-    .logo img {
-      height: 50px;
-    }
+      .logo img {
+        height: 45px;
+      }
 
-    .welcome-text {
-      font-size: 2.25rem;
-      margin-bottom: 0.5rem;
-    }
+      .welcome-text {
+        font-size: 2rem;
+        margin-bottom: 0.25rem;
+      }
 
-    .welcome-subtitle {
-      font-size: 1rem;
+      .welcome-subtitle {
+        font-size: 0.9rem;
+      }
     }
   }
 
   .register-right {
     height: 70%;
-    padding: 1.5rem;
+    padding: 1rem;
+    overflow-y: auto;
   }
 
   .register-form-container {
     max-width: 500px;
+    margin: 0 auto;
+    padding: 1.5rem;
   }
 }
 
 @media (max-width: 576px) {
   .register-left {
-    height: 25%; // Reducir la altura de la sección izquierda
+    height: 25%;
 
     .top-actions {
       top: 10px;
@@ -364,7 +369,7 @@
     }
 
     .logo img {
-      height: 40px; // Reducir el tamaño del logo
+      height: 40px;
     }
 
     .welcome-text {
@@ -376,55 +381,55 @@
       font-size: 0.85rem;
       max-width: 90%;
     }
+
+    .image-overlay {
+      background: linear-gradient(
+        135deg,
+        rgba(var(--primary-rgb), 0.75) 0%,
+        rgba(var(--primary-light-rgb), 0.75) 100%
+      );
+    }
   }
 
   .register-right {
-    height: 75%; // Aumentar la altura de la sección derecha
-    padding: 0.75rem;
-  }
+    height: 75%;
+    padding: 1rem 0.75rem;
 
-  .register-form-container {
-    padding: 1rem;
-    box-shadow: none;
-    border: none;
-    border-radius: 0;
+    .register-form-container {
+      padding: 1rem 0.75rem;
+      box-shadow: none;
+      border: none;
+      border-radius: 0;
 
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 0.25rem;
-    }
+      h2 {
+        font-size: 1.5rem;
+      }
 
-    .subtitle {
-      font-size: 0.85rem;
-      margin-bottom: 1.25rem;
+      .subtitle {
+        font-size: 0.85rem;
+        margin-bottom: 1.25rem;
+      }
     }
   }
 
   .register-form {
-    gap: 0.75rem;
+    gap: 1rem;
 
     mat-form-field {
-      margin-bottom: 0.25rem;
-    }
-
-    .terms-checkbox {
-      margin-bottom: 0.75rem;
-      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
     }
 
     .register-button {
       height: 44px;
-      font-size: 0.9rem;
     }
   }
 
   .login-link {
-    margin-top: 1rem;
-    font-size: 0.8rem;
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
   }
 }
 
-// Añadir estilos específicos para pantallas muy pequeñas
 @media (max-width: 400px) {
   .register-left {
     height: 22%;
@@ -440,10 +445,24 @@
 
   .register-right {
     height: 78%;
-    padding: 0.5rem;
+    padding: 0.75rem 0.5rem;
   }
 
   .register-form-container {
-    padding: 0.75rem;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .register-form {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .register-left {
+    display: none;
+  }
+
+  .register-right {
+    height: 100%;
   }
 }

@@ -1,0 +1,25 @@
+[
+  {
+      "chatId": 3,
+      "interlocutorId": 2,
+      "interlocutor": {
+          "id": 2,
+          "name": "Carlos Fitness",
+          "photoBase64": null
+      },
+      "lastMessage": null,
+      "unreadCount": 0
+  },
+  {
+      "chatId": 4,
+      "interlocutorId": 12,
+      "interlocutor": {
+          "id": 12,
+          "name": "Carlos Fitness",
+          "photoBase64": "sdkfnakdiojw" //foto en base 64 },
+      "lastMessage": null,
+      "unreadCount": 0
+  },
+  {
+      "chatId": 5,
+      "i

@@ -1,56 +1,52 @@
 import { User } from '../../domain/entities/user.entity';
-import { NewUserVO } from '../../domain/value-objects/new-user.vo';
-import { ProfileVO } from '../../domain/value-objects/profile.vo';
-import { AuthResponseDTO } from '../../infrastructure/dtos/auth/auth-response.dto';
 
-export interface LoginResponseDTO extends AuthResponseDTO {}
-
-export interface RegisterResponseDTO {
-  id: string;
-  email: string;
-  name: string;
-  user_type: string;
-  profile_completed: boolean;
-}
-
-export interface ProfileResponseDTO extends AuthResponseDTO {
-  profile_completed: boolean;
+export interface RegisterResponse {
+  accessToken: string;
+  refreshToken: string;
+  profileCompleted: boolean;
+  userId: number;
 }
 
 export class UserAssembler {
-  static toUser(dto: AuthResponseDTO): User {
+  static toUser(response: RegisterResponse): User {
     return {
-      userId: dto.userId,
-      email: dto.email,
-      role: dto.role,
-      token: dto.token,
-      message: dto.message,
-      profile_completed: false
+      accessToken: response.accessToken,
+      refreshToken: response.refreshToken,
+      profileCompleted: response.profileCompleted,
+      userId: response.userId,
+      name: '', // Will be set during profile completion
+      photoUrl: '', // Will be set during profile completion
+      email: '', // Will be set during profile completion
+      user_type: 'marca', // Default value, will be updated during profile completion
+      profileType: response.userId === 1 ? 'BRAND' : 'INFLUENCER'
     };
   }
 
-  static toUserFromRegister(dto: AuthResponseDTO): User {
-    return this.toUser(dto);
-  }
-
-  static toUserFromProfile(dto: ProfileResponseDTO): User {
+  static toDomain(data: any): User {
     return {
-      ...this.toUser(dto),
-      profile_completed: true
+      userId: data.userId,
+      email: data.email,
+      name: data.name,
+      photoUrl: data.photoUrl,
+      user_type: data.user_type,
+      profileCompleted: data.profileCompleted,
+      profileType: data.user_type === 'marca' ? 'BRAND' : 'INFLUENCER',
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken
     };
   }
 
-  static toNewUserDTO(vo: NewUserVO): any {
+  static toDTO(user: User): any {
     return {
-      email: vo.email,
-      password: vo.password,
-      role: vo.user_type
-    };
-  }
-
-  static toProfileDTO(vo: ProfileVO): any {
-    return {
-      ...vo
+      userId: user.userId,
+      email: user.email,
+      name: user.name,
+      photoUrl: user.photoUrl,
+      user_type: user.user_type,
+      profileCompleted: user.profileCompleted,
+      profileType: user.profileType,
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken
     };
   }
 } 

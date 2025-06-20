@@ -7,27 +7,31 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { RegisterUseCase } from '../../../../application/use-cases/register.usecase';
-import { AuthService } from '../../../../core/services/auth.service';
-import { RegisterVO } from '../../../../domain/value-objects/auth/register.vo';
-import { UserRole } from '../../../../infrastructure/dtos/auth/register.dto';
-import { passwordValidator } from '../../../../shared/validators/password.validator';
+import { AuthService } from '../../../../infrastructure/services/auth.service';
+import { User } from '../../../../domain/entities/user.entity';
 
-// Interfaz para las opciones de rol
-interface RolOption {
-  value: UserRole;
-  translationKey: string;
+interface RegisterResponse {
+  accessToken: string;
+  refreshToken: string;
+  profileCompleted: boolean;
+  userId: number;
+  profileType: string;
+  name?: string;
+  photoUrl?: string;
 }
 
 @Component({
@@ -41,24 +45,26 @@ interface RolOption {
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatCheckboxModule,
     MatSelectModule,
     MatSnackBarModule,
     TranslateModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  form!: FormGroup;
-  hide = true;
+  registerForm: FormGroup;
+  hidePassword = true;
+  hideConfirmPassword = true;
+  loading = false;
+  error: string | null = null;
   currentLang = 'es';
   private langSubscription: Subscription | null = null;
 
-  // Opciones de rol actualizadas
-  rolOptions: RolOption[] = [
-    { value: 'BRAND', translationKey: 'REGISTER.ROLE_BRAND' },
-    { value: 'INFLUENCER', translationKey: 'REGISTER.ROLE_INFLUENCER' },
+  roleOptions = [
+    { value: 'BRAND', translationKey: 'REGISTER.ACCOUNT_TYPE_BRAND' },
+    { value: 'INFLUENCER', translationKey: 'REGISTER.ACCOUNT_TYPE_INFLUENCER' },
   ];
 
   constructor(
@@ -66,29 +72,27 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private registerUC: RegisterUseCase,
     private auth: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar,
+    private snack: MatSnackBar,
     private translate: TranslateService
   ) {
-    this.initForm();
-  }
-
-  private initForm(): void {
-    this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, passwordValidator]],
-      role: ['', Validators.required],
-      acceptTerms: [false, Validators.requiredTrue],
+    this.registerForm = this.fb.group({
+      email: ['', []],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]],
+      role: ['', [Validators.required]]
+    }, {
+      validators: this.passwordMatchValidator.bind(this)
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.currentLang = this.translate.currentLang || 'es';
     this.langSubscription = this.translate.onLangChange.subscribe((event) => {
       this.currentLang = event.lang;
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.langSubscription) {
       this.langSubscription.unsubscribe();
     }
@@ -99,59 +103,139 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
   }
 
-  getPasswordErrorMessage(): string {
-    const control = this.form.get('password');
-    if (!control?.errors || !control.touched) return '';
+  passwordMatchValidator(g: FormGroup) {
+    const password = g.get('password')?.value;
+    const confirmPassword = g.get('confirmPassword')?.value;
+    
+    if (!password || !confirmPassword) {
+      return null;
+    }
+    
+    if (password === confirmPassword) {
+      return null;
+    }
+    
+    return { mismatch: true };
+  }
+
+  isFieldInvalid(field: string): boolean {
+    const control = this.registerForm.get(field);
+    if (!control) return false;
+
+    if (field === 'email') {
+      // For email field, only show validation errors after submit attempt
+      return control.invalid && control.errors !== null && control.touched;
+    }
+    // For other fields, keep the normal validation behavior
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  getErrorMessage(field: string): string {
+    const control = this.registerForm.get(field);
+    
+    if (!control) return '';
 
     if (control.hasError('required')) {
-      return this.translate.instant('REGISTER.PASSWORD_REQUIRED');
+      return `auth.register.errors.${field}.required`;
+    }
+    if (control.hasError('email')) {
+      return 'auth.register.errors.email.invalid';
     }
     if (control.hasError('minlength')) {
-      return this.translate.instant('REGISTER.PASSWORD_MIN_LENGTH');
+      return 'auth.register.errors.password.minLength';
     }
-    if (control.hasError('noUpperCase')) {
-      return this.translate.instant('REGISTER.PASSWORD_NO_UPPERCASE');
-    }
-    if (control.hasError('noLowerCase')) {
-      return this.translate.instant('REGISTER.PASSWORD_NO_LOWERCASE');
-    }
-    if (control.hasError('noNumber')) {
-      return this.translate.instant('REGISTER.PASSWORD_NO_NUMBER');
-    }
-    if (control.hasError('noSpecialChar')) {
-      return this.translate.instant('REGISTER.PASSWORD_NO_SPECIAL_CHAR');
+    if (field === 'confirmPassword' && this.registerForm.hasError('mismatch')) {
+      return 'auth.register.errors.confirmPassword.mismatch';
     }
 
     return '';
   }
 
-  submit() {
-    if (this.form.invalid) return;
+  onSubmit() {
+    // Add email validation on submit
+    const emailControl = this.registerForm.get('email');
+    if (emailControl) {
+      emailControl.setValidators([Validators.required, Validators.email]);
+      emailControl.updateValueAndValidity();
+    }
 
-    const { acceptTerms, ...formData } = this.form.value;
-    
-    const data: RegisterVO = {
-      email: formData.email,
-      password: formData.password,
-      role: formData.role
-    };
+    // Validate form and show all errors
+    Object.keys(this.registerForm.controls).forEach(key => {
+      const control = this.registerForm.get(key);
+      if (control) {
+        control.markAsTouched();
+        control.updateValueAndValidity();
+      }
+    });
 
-    this.registerUC.execute(data).subscribe(
-      (user) => {
-        this.auth.save(user);
-        this.snackBar.open(
-          this.translate.instant('REGISTER.SUCCESS_MESSAGE'),
-          this.translate.instant('LOGIN.CLOSE'),
-          { duration: 5000 }
-        );
-        this.router.navigateByUrl('/auth/onboarding');
-      },
-      (error) => {
-        this.snackBar.open(
-          this.translate.instant('REGISTER.ERROR_MESSAGE'),
-          this.translate.instant('LOGIN.CLOSE'),
+    // Force validation of confirmPassword when submitting
+    if (this.registerForm.get('password')?.value) {
+      this.registerForm.get('confirmPassword')?.updateValueAndValidity();
+    }
+
+    // Debug: Show form state only on submit
+    console.log('Form valid:', this.registerForm.valid);
+    console.log('Form errors:', this.registerForm.errors);
+    console.log('Form value:', this.registerForm.value);
+
+    if (this.registerForm.valid) {
+      this.loading = true;
+      const { email, password, role } = this.registerForm.value;
+      
+      // Ensure role is either BRAND or INFLUENCER
+      if (role !== 'BRAND' && role !== 'INFLUENCER') {
+        this.snack.open(
+          this.translate.instant('auth.register.errors.invalid_role'),
+          this.translate.instant('auth.register.close'),
           { duration: 3000 }
         );
+        this.loading = false;
+        return;
+      }
+
+      this.registerUC.execute(email, password, role).subscribe({
+        next: (response: RegisterResponse) => {
+          console.log('Registration successful:', response);
+          
+          // Map response to User entity
+          const user: User = {
+            accessToken: response.accessToken,
+            refreshToken: response.refreshToken,
+            profileCompleted: response.profileCompleted,
+            userId: response.userId,
+            name: response.name || '',
+            photoUrl: response.photoUrl || '',
+            email: email,
+            user_type: role === 'BRAND' ? 'marca' : 'influencer',
+            profileType: response.profileType as 'BRAND' | 'INFLUENCER'
+          };
+          
+          this.auth.save(user);
+          
+          if (!response.profileCompleted) {
+            this.router.navigate(['/onboarding']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
+        },
+        error: (error) => {
+          console.error('Registration failed:', error);
+          this.showErrorMessage();
+          this.loading = false;
+        },
+        complete: () => {
+          this.loading = false;
+        }
+      });
+    }
+  }
+
+  private showErrorMessage(): void {
+    this.snack.open(
+      this.translate.instant('REGISTER.ERROR'),
+      this.translate.instant('REGISTER.CLOSE'),
+      {
+        duration: 3000,
       }
     );
   }

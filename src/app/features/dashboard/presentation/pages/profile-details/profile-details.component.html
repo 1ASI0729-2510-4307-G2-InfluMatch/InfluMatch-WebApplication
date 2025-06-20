@@ -1,0 +1,227 @@
+<div class="profile-details-container">
+  <div class="profile-details-content">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="loader">
+        <div class="spinner"></div>
+      </div>
+      <p>Cargando detalles del perfil...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="error-state">
+      <mat-icon>error_outline</mat-icon>
+      <p>{{ error }}</p>
+      <button mat-raised-button color="primary" (click)="navigateToDashboard()">
+        <mat-icon>arrow_back</mat-icon>
+        Volver al Dashboard
+      </button>
+    </div>
+
+    <!-- Profile Content -->
+    <ng-container *ngIf="profile$ | async as profile">
+      <!-- Header Section -->
+      <div class="profile-header">
+        <div class="profile-photos">
+          <div class="logo" *ngIf="getImageUrl(profile.logo)">
+            <img [src]="getImageUrl(profile.logo)" alt="Logo" (error)="onImageError($event)">
+          </div>
+          <div class="profile-photo" *ngIf="getImageUrl(profile.profilePhoto)">
+            <img [src]="getImageUrl(profile.profilePhoto)" alt="Foto de Perfil" (error)="onImageError($event)">
+          </div>
+        </div>
+        <div class="profile-title">
+          <h1>{{ profile.name }}</h1>
+          <p class="location" *ngIf="hasValue(profile.location)">
+            <mat-icon>location_on</mat-icon>
+            {{ profile.location }}
+          </p>
+          <div class="profile-badge" *ngIf="isBrandProfile(profile)">
+            <mat-icon>business</mat-icon>
+            <span>Marca</span>
+          </div>
+          <div class="profile-badge influencer" *ngIf="isInfluencerProfile(profile)">
+            <mat-icon>person</mat-icon>
+            <span>Influencer</span>
+          </div>
+          <div class="profile-actions">
+            <button mat-raised-button color="primary" class="request-button">
+              <mat-icon>handshake</mat-icon>
+              Enviar Solicitud
+            </button>
+            <button mat-raised-button color="accent" (click)="contactUser()" class="message-button">
+              <mat-icon>chat</mat-icon>
+              Enviar Mensaje
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brand Profile -->
+      <ng-container *ngIf="isBrandProfile(profile)">
+        <div class="profile-section" *ngIf="hasValue(profile.sector) || hasValue(profile.description) || hasValue(profile.websiteUrl)">
+          <h2>Información de la Marca</h2>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="hasValue(profile.sector)">
+              <label>Sector</label>
+              <p>{{ profile.sector }}</p>
+            </div>
+            <div class="info-item" *ngIf="hasValue(profile.country)">
+              <label>País</label>
+              <p>{{ profile.country }}</p>
+            </div>
+            <div class="info-item" *ngIf="hasValue(profile.websiteUrl)">
+              <label>Sitio Web</label>
+              <a [href]="profile.websiteUrl" target="_blank" rel="noopener noreferrer" class="link-item">
+                <mat-icon>link</mat-icon>
+                {{ profile.websiteUrl }}
+              </a>
+            </div>
+          </div>
+          <div class="description" *ngIf="hasValue(profile.description)">
+            <label>Descripción</label>
+            <p>{{ profile.description }}</p>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Influencer Profile -->
+      <ng-container *ngIf="isInfluencerProfile(profile)">
+        <div class="profile-section" *ngIf="hasValue(profile.followers) || hasValue(profile.bio) || hasValue(profile.niches)">
+          <h2>Información del Influencer</h2>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="hasValue(profile.followers)">
+              <label>Seguidores</label>
+              <p class="followers-count">{{ formatFollowers(profile.followers) }}</p>
+            </div>
+            <div class="info-item" *ngIf="hasValue(profile.country)">
+              <label>País</label>
+              <p>{{ profile.country }}</p>
+            </div>
+          </div>
+          <div class="description" *ngIf="hasValue(profile.bio)">
+            <label>Biografía</label>
+            <p>{{ profile.bio }}</p>
+          </div>
+          <div class="niches" *ngIf="hasValue(profile.niches)">
+            <label>Nichos</label>
+            <div class="niches-list">
+              <mat-chip *ngFor="let niche of profile.niches" class="niche-chip">
+                {{ niche }}
+              </mat-chip>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-section" *ngIf="hasValue(profile.socialLinks)">
+          <h2>Redes Sociales</h2>
+          <div class="social-links-grid">
+            <a *ngFor="let link of profile.socialLinks"
+              [href]="link.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-link-card">
+              <mat-icon>{{ getSocialIcon(link.platform) }}</mat-icon>
+              <span>{{ link.platform }}</span>
+            </a>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Common Sections -->
+      <div class="profile-section" *ngIf="hasValue(profile.links)">
+        <h2>Enlaces</h2>
+        <div class="links-grid">
+          <a *ngFor="let link of profile.links"
+            [href]="link.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-card">
+            <div class="link-icon">
+              <mat-icon>link</mat-icon>
+            </div>
+            <div class="link-content">
+              <h3>{{ link.title }}</h3>
+              <p>{{ link.url }}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="profile-section" *ngIf="hasValue(profile.attachments)">
+        <h2>Archivos Adjuntos</h2>
+        <div class="attachments-grid">
+          <div *ngFor="let attachment of profile.attachments" class="attachment-card">
+            <div class="attachment-preview">
+              <!-- Imagen -->
+              <img *ngIf="attachment.mediaType === 'PHOTO' && getImageUrl(attachment.data)" 
+                   [src]="getImageUrl(attachment.data)" 
+                   [alt]="attachment.title"
+                   (error)="onImageError($event)">
+              
+              <!-- Video -->
+              <video *ngIf="attachment.mediaType === 'VIDEO' && getVideoUrl(attachment.data)" 
+                     [src]="getVideoUrl(attachment.data)" 
+                     controls
+                     preload="metadata">
+                Tu navegador no soporta el elemento video.
+              </video>
+              
+              <!-- Documento -->
+              <div *ngIf="attachment.mediaType === 'DOCUMENT'" class="document-preview">
+                <mat-icon>description</mat-icon>
+                <span>Documento</span>
+              </div>
+              
+              <!-- Icono por defecto -->
+              <div *ngIf="!getImageUrl(attachment.data) && !getVideoUrl(attachment.data)" class="default-preview">
+                <mat-icon>{{ getAttachmentIcon(attachment.mediaType) }}</mat-icon>
+                <span>{{ attachment.mediaType }}</span>
+              </div>
+            </div>
+            <div class="attachment-info">
+              <h3>{{ attachment.title }}</h3>
+              <p *ngIf="attachment.description">{{ attachment.description }}</p>
+              <div class="attachment-actions">
+                <button mat-button color="primary" (click)="downloadAttachment(attachment)">
+                  <mat-icon>download</mat-icon>
+                  Descargar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rating Section -->
+      <div class="profile-section" *ngIf="hasValue(profile.rating) && profile.rating > 0">
+        <h2>Calificación</h2>
+        <div class="rating-display">
+          <div class="rating-value">{{ profile.rating.toFixed(1) }}/5.0</div>
+          <div class="rating-stars">
+            <mat-icon *ngFor="let star of getRatingStars(profile.rating)"
+                      [class.filled]="star <= profile.rating"
+                      [class.half]="star === Math.ceil(profile.rating) && profile.rating % 1 !== 0">
+              {{ star <= profile.rating ? 'star' : 'star_border' }}
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fechas -->
+      <div class="profile-section dates-section">
+        <h2>Información del Perfil</h2>
+        <div class="dates-grid">
+          <div class="date-item" *ngIf="hasValue(profile.createdAt)">
+            <label>Creado</label>
+            <p>{{ formatDate(profile.createdAt) }}</p>
+          </div>
+          <div class="date-item" *ngIf="hasValue(profile.updatedAt)">
+            <label>Última actualización</label>
+            <p>{{ formatDate(profile.updatedAt) }}</p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div> 
