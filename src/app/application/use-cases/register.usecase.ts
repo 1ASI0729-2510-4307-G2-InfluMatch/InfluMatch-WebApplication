@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { BrandProfileVO } from '../../domain/value-objects/brand-profile.vo';
 import { InfluencerProfileVO } from '../../domain/value-objects/influencer-profile.vo';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class RegisterUseCase {
@@ -54,7 +55,7 @@ export class RegisterUseCase {
         profile.attachments
       );
 
-      return this.http.post('http://localhost:8080/api/profiles/brand', brandProfile, { headers });
+      return this.http.post(`${environment.apiBase}/profiles/brand`, brandProfile, { headers });
     } else {
       const influencerProfile = new InfluencerProfileVO(
         profile.name,
@@ -70,7 +71,7 @@ export class RegisterUseCase {
         profile.attachments
       );
 
-      return this.http.post('http://localhost:8080/api/profiles/influencer', influencerProfile, { headers });
+      return this.http.post(`${environment.apiBase}/profiles/influencer`, influencerProfile, { headers });
     }
   }
 }
