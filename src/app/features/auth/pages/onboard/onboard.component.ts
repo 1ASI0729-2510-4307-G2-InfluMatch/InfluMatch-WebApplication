@@ -6,6 +6,7 @@ import { RegisterUseCase } from '../../../../application/use-cases/register.usec
 import { BrandProfileVO } from '../../../../domain/value-objects/brand-profile.vo';
 import { InfluencerProfileVO } from '../../../../domain/value-objects/influencer-profile.vo';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-onboard',
@@ -215,7 +216,7 @@ export class OnboardComponent implements OnInit {
           attachments: formData.attachments
         };
 
-        this.http.post('http://localhost:8080/api/profiles/brand', brandProfile, { headers })
+        this.http.post(`${environment.apiBase}/profiles/brand`, brandProfile, { headers })
           .subscribe({
             next: (response) => {
               console.log('Brand profile created:', response);
@@ -242,7 +243,7 @@ export class OnboardComponent implements OnInit {
           attachments: formData.attachments
         };
 
-        this.http.post('http://localhost:8080/api/profiles/influencer', influencerProfile, { headers })
+        this.http.post(`${environment.apiBase}/profiles/influencer`, influencerProfile, { headers })
           .subscribe({
             next: (response) => {
               console.log('Influencer profile created:', response);
