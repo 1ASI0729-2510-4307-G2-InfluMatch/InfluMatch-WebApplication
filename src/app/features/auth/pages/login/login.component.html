@@ -1,0 +1,114 @@
+
+
+<div class="login-container">
+  <div class="login-left">
+    <div class="image-container">
+      <img
+        src="../../../../../assets/images/register-bg.jpg"
+        alt="Login Background"
+        class="login-bg-image"
+      />
+      <div class="image-overlay"></div>
+    </div>
+
+    <div class="top-actions">
+      <!-- Language Selector -->
+      <div class="language-selector">
+        <button
+          class="lang-btn"
+          [class.active]="currentLang === 'es'"
+          (click)="changeLang('es')"
+        >
+          ES
+        </button>
+        <div class="lang-divider"></div>
+        <button
+          class="lang-btn"
+          [class.active]="currentLang === 'en'"
+          (click)="changeLang('en')"
+        >
+          EN
+        </button>
+      </div>
+    </div>
+
+    <div class="left-content">
+      <div class="logo">
+        <img
+          src="../../../../../assets/images/logo-dark.png"
+          alt="InfluMatch Logo"
+        />
+      </div>
+      <h1 class="welcome-text">{{ "LOGIN.WELCOME" | translate }}</h1>
+      <p class="welcome-subtitle">{{ "LOGIN.SUBTITLE" | translate }}</p>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <div class="login-form-container">
+      <h2>{{ "LOGIN.TITLE" | translate }}</h2>
+      <p class="subtitle">{{ "LOGIN.INSTRUCTION" | translate }}</p>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "LOGIN.EMAIL" | translate }}</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput formControlName="email" type="email" required />
+          <mat-error *ngIf="form.get('email')?.hasError('required')">
+            {{ "LOGIN.EMAIL_REQUIRED" | translate }}
+          </mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('email')">
+            {{ "LOGIN.EMAIL_INVALID" | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "LOGIN.PASSWORD" | translate }}</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input
+            matInput
+            formControlName="password"
+            [type]="hide ? 'password' : 'text'"
+            required
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            type="button"
+            aria-label="Toggle password visibility"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('password')?.hasError('required')">
+            {{ "LOGIN.PASSWORD_REQUIRED" | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <mat-checkbox color="primary">{{
+            "LOGIN.REMEMBER_ME" | translate
+          }}</mat-checkbox>
+          <a href="#" class="forgot-password">{{
+            "LOGIN.FORGOT_PASSWORD" | translate
+          }}</a>
+        </div>
+
+        <button
+          mat-flat-button
+          type="submit"
+          class="login-button"
+          [disabled]="form.invalid"
+        >
+          <span>{{ "LOGIN.SIGN_IN" | translate }}</span>
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </form>
+
+      <div class="register-link">
+        {{ "LOGIN.NO_ACCOUNT" | translate }}
+        <a routerLink="/register">{{ "LOGIN.SIGN_UP" | translate }}</a>
+      </div>
+    </div>
+  </div>
+</div>

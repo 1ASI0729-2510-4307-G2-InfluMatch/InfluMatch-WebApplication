@@ -1,0 +1,62 @@
+<div class="chat-detail-container">
+  <!-- Header con interlocutor info -->
+  <div class="chat-detail-header" *ngIf="interlocutorInfo">
+    <button mat-icon-button (click)="router.navigate(['/dashboard/chats'])">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <img [src]="getInterlocutorAvatar(interlocutorInfo)" alt="Interlocutor Avatar" class="interlocutor-avatar" />
+    <h2>{{ interlocutorInfo.name }}</h2>
+  </div>
+
+  <!-- Loading inicial -->
+  <div class="loading-section" *ngIf="loadingInitialData">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>{{ 'CHAT_DETAIL.LOADING_CHAT' | translate }}</p>
+  </div>
+
+  <!-- Loading de mensajes -->
+  <div class="loading-section" *ngIf="loadingMessages && !loadingInitialData">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>{{ 'CHAT_DETAIL.LOADING_MESSAGES' | translate }}</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-section" *ngIf="error && !loadingInitialData && !loadingMessages">
+    <mat-icon>error_outline</mat-icon>
+    <h3>{{ 'CHAT_DETAIL.ERROR_TITLE' | translate }}</h3>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadMessages()">
+      {{ 'CHAT_DETAIL.RETRY' | translate }}
+    </button>
+  </div>
+
+  <!-- Mensajes -->
+  <div #messagesContainer class="messages-container" *ngIf="!loadingInitialData && !loadingMessages && !error && interlocutorInfo">
+    <div class="message" *ngFor="let message of messages" [class.sent-by-me]="getMessageAlignment(message) === 'end'">
+      <div class="message-content">
+        <p>{{ message.content }}</p>
+        <span class="message-time">{{ message.createdAt | date:'shortTime' }}</span>
+      </div>
+    </div>
+    
+    <!-- Mensaje de bienvenida si no hay mensajes -->
+    <div class="welcome-message" *ngIf="messages.length === 0">
+      <p>Inicia una conversación con {{ interlocutorInfo.name }}</p>
+    </div>
+  </div>
+
+  <!-- Input de mensaje -->
+  <div class="message-input-container" *ngIf="interlocutorInfo && !loadingInitialData">
+    <mat-form-field appearance="outline" class="message-input-field">
+      <textarea matInput
+                placeholder="{{ 'CHAT_DETAIL.TYPE_MESSAGE' | translate }}"
+                [(ngModel)]="newMessageContent"
+                (keydown.enter)="sendMessage()"
+                rows="1"></textarea>
+      <mat-icon matSuffix>message</mat-icon>
+    </mat-form-field>
+    <button mat-mini-fab color="primary" (click)="sendMessage()" [disabled]="sendingMessage || !newMessageContent.trim()">
+      <mat-icon>{{ sendingMessage ? 'hourglass_empty' : 'send' }}</mat-icon>
+    </button>
+  </div>
+</div> 

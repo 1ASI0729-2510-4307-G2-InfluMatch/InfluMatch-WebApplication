@@ -1,0 +1,265 @@
+// SCSS Mixins for InfluMatch
+// Reusable mixins for common patterns
+
+@use "./variables.scss" as *;
+
+// Media query mixins
+@mixin media-breakpoint-up($breakpoint) {
+  @if $breakpoint == xs {
+    @content;
+  } @else if $breakpoint == sm {
+    @media (min-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == md {
+    @media (min-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == lg {
+    @media (min-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == xl {
+    @media (min-width: $breakpoint-xl) { @content; }
+  } @else if $breakpoint == xxl {
+    @media (min-width: $breakpoint-xxl) { @content; }
+  }
+}
+
+@mixin media-breakpoint-down($breakpoint) {
+  @if $breakpoint == xs {
+    @media (max-width: ($breakpoint-sm - 1px)) { @content; }
+  } @else if $breakpoint == sm {
+    @media (max-width: ($breakpoint-md - 1px)) { @content; }
+  } @else if $breakpoint == md {
+    @media (max-width: ($breakpoint-lg - 1px)) { @content; }
+  } @else if $breakpoint == lg {
+    @media (max-width: ($breakpoint-xl - 1px)) { @content; }
+  } @else if $breakpoint == xl {
+    @media (max-width: ($breakpoint-xxl - 1px)) { @content; }
+  } @else if $breakpoint == xxl {
+    @content;
+  }
+}
+
+// Typography mixins
+@mixin heading-1 {
+  font-size: 2.5rem;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-sm;
+  margin-bottom: $spacing-lg;
+}
+
+@mixin heading-2 {
+  font-size: 2rem;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-sm;
+  margin-bottom: $spacing-md;
+}
+
+@mixin heading-3 {
+  font-size: 1.5rem;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-base;
+  margin-bottom: $spacing-md;
+}
+
+@mixin heading-4 {
+  font-size: 1.25rem;
+  font-weight: $font-weight-medium;
+  line-height: $line-height-base;
+  margin-bottom: $spacing-sm;
+}
+
+@mixin body-text {
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-base;
+}
+
+@mixin caption-text {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-base;
+  color: var(--text-secondary);
+}
+
+// Button mixins
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $btn-padding-y $btn-padding-x;
+  font-size: $btn-font-size;
+  font-weight: $font-weight-medium;
+  line-height: 1;
+  text-decoration: none;
+  border: none;
+  border-radius: $btn-border-radius;
+  cursor: pointer;
+  transition: all $transition-normal;
+  user-select: none;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@mixin button-variant($background, $color, $hover-background, $hover-color) {
+  background-color: $background;
+  color: $color;
+  
+  &:hover:not(:disabled) {
+    background-color: $hover-background;
+    color: $hover-color;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+// Card mixins
+@mixin card-base {
+  background-color: var(--card-background-light);
+  border-radius: $card-border-radius;
+  box-shadow: $card-shadow;
+  padding: $card-padding;
+  transition: all $transition-normal;
+}
+
+@mixin card-hover {
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+// Form mixins
+@mixin form-control-base {
+  display: block;
+  width: 100%;
+  height: $input-height;
+  padding: $input-padding-y $input-padding-x;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-base;
+  color: var(--text-primary);
+  background-color: var(--background-light);
+  border: $input-border-width solid rgba(var(--primary-rgb), 0.2);
+  border-radius: $input-border-radius;
+  transition: all $transition-normal;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+  }
+  
+  &::placeholder {
+    color: var(--text-disabled);
+  }
+  
+  &:disabled {
+    background-color: rgba(var(--primary-rgb), 0.05);
+    cursor: not-allowed;
+  }
+}
+
+// Layout mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin grid-center {
+  display: grid;
+  place-items: center;
+}
+
+// Animation mixins
+@mixin fade-in($duration: $animation-duration-normal) {
+  animation: fadeIn $duration $ease-out;
+}
+
+@mixin slide-up($duration: $animation-duration-normal) {
+  animation: slideUp $duration $ease-out;
+}
+
+@mixin slide-down($duration: $animation-duration-normal) {
+  animation: slideDown $duration $ease-out;
+}
+
+// Utility mixins
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin truncate-lines($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@mixin sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Print mixins
+@mixin print-only {
+  @media print {
+    @content;
+  }
+}
+
+@mixin print-hide {
+  @media print {
+    display: none !important;
+  }
+}
+
+// Focus styles
+@mixin focus-visible {
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+}
+
+// High contrast mode
+@mixin high-contrast {
+  @media (prefers-contrast: high) {
+    @content;
+  }
+}
+
+// Reduced motion
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// Forward all mixins for @use
+@forward "./mixins.scss"; 

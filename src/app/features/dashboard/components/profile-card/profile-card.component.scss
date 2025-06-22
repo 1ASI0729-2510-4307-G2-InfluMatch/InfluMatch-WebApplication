@@ -1,0 +1,184 @@
+.profile-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.25);
+  }
+
+  &.brand {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,240,255,0.9));
+  }
+
+  &.influencer {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,240,245,0.9));
+  }
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.profile-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.profile-badge {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #fff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  
+  span {
+    font-size: 1.2rem;
+  }
+}
+
+.profile-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 1rem;
+  line-height: 1.2;
+}
+
+.profile-info {
+  .info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    
+    .icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .text {
+      color: #4a5568;
+      font-size: 0.95rem;
+    }
+  }
+
+  .followers {
+    color: #6366f1;
+    font-weight: 500;
+  }
+
+  .bio {
+    margin-top: 1rem;
+    color: #718096;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    
+    p {
+      margin: 0;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+}
+
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+
+  .action-row {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+
+    &:first-child {
+      .action-button {
+        flex: 1;
+      }
+    }
+
+    &:last-child {
+      .action-button {
+        width: 100%;
+      }
+    }
+  }
+
+  .action-button {
+    padding: 0.75rem;
+    border-radius: 12px;
+    border: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.primary {
+      background: #6366f1;
+      color: white;
+      
+      &:hover {
+        background: #4f46e5;
+      }
+    }
+
+    &.secondary {
+      background: #10b981;
+      color: white;
+      
+      &:hover {
+        background: #059669;
+      }
+    }
+
+    &.tertiary {
+      background: rgba(99, 102, 241, 0.1);
+      color: #6366f1;
+      
+      &:hover {
+        background: rgba(99, 102, 241, 0.2);
+      }
+    }
+
+    .icon {
+      font-size: 1.1rem;
+    }
+  }
+}

@@ -1,0 +1,239 @@
+.dashboard-container {
+  
+  min-height: 100vh;
+ 
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+  
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0;
+    background: linear-gradient(to right, #4f46e5, #6366f1);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.dashboard-home {
+  padding: 20px;
+
+  .welcome-section {
+    margin-bottom: 30px;
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #2a3f54;
+    }
+
+    p {
+      font-size: 16px;
+      color: #7f8c8d;
+    }
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+
+    .dashboard-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+
+      .card-header {
+        padding: 15px 20px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #eaeaea;
+
+        h2 {
+          margin: 0;
+          font-size: 18px;
+          font-weight: 600;
+          color: #2c3e50;
+        }
+      }
+
+      .card-content {
+        padding: 20px;
+      }
+
+      &.summary-card {
+        grid-column: span 2;
+
+        @media (max-width: 768px) {
+          grid-column: span 1;
+        }
+      }
+
+      .stat-item,
+      .info-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #f0f0f0;
+
+        &:last-child {
+          margin-bottom: 0;
+          padding-bottom: 0;
+          border-bottom: none;
+        }
+
+        .stat-label,
+        .info-label {
+          font-weight: 500;
+          color: #7f8c8d;
+        }
+
+        .stat-value,
+        .info-value {
+          font-weight: 600;
+          color: #2c3e50;
+
+          &.completed {
+            color: #27ae60;
+          }
+        }
+      }
+
+      .steps-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        .step {
+          display: flex;
+          align-items: center;
+          margin-bottom: 15px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          i {
+            margin-right: 10px;
+            font-size: 18px;
+
+            &.fa-check-circle {
+              color: #27ae60;
+            }
+
+            &.fa-circle {
+              color: #bdc3c7;
+            }
+          }
+
+          &.completed {
+            span {
+              text-decoration: line-through;
+              color: #7f8c8d;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .dashboard-content {
+    margin-top: 30px;
+
+    .dashboard-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+      h2 {
+        margin-top: 0;
+        color: #2a3f54;
+        font-size: 18px;
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #2a3f54;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-home {
+    .welcome-section {
+      h1 {
+        font-size: 24px;
+      }
+    }
+
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+/* === Profiles grid === */
+.profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
+.loading-container,
+.error-container,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 2rem;
+  margin: 2rem 0;
+
+  p {
+    margin-top: 1rem;
+    color: #4a5568;
+    font-size: 1.1rem;
+  }
+}
+
+.error-container {
+  p {
+    color: #e53e3e;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .profiles-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .dashboard-header {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+}
