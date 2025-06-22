@@ -29,7 +29,8 @@
             "assets": [
               "src/favicon.ico",
               { "glob": "**/*", "input": "src/assets", "output": "assets" },
-              { "glob": "**/*", "input": "public", "output": "." }
+              { "glob": "**/*", "input": "public", "output": "." },
+              "staticwebapp.config.json"
             ],
             "styles": [
               "src/styles.scss",
@@ -88,7 +89,8 @@
             "assets": [
               "src/favicon.ico",
               { "glob": "**/*", "input": "src/assets", "output": "assets" },
-              { "glob": "**/*", "input": "public", "output": "." }
+              { "glob": "**/*", "input": "public", "output": "." },
+              "staticwebapp.config.json"
             ],
             "styles": [
               "src/styles.scss",
