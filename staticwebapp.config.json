@@ -43,52 +43,7 @@
       "statusCode": 200
     },
     {
-      "route": "/dashboard",
-      "serve": "/index.html",
-      "statusCode": 200
-    },
-    {
       "route": "/dashboard/*",
-      "serve": "/index.html",
-      "statusCode": 200
-    },
-    {
-      "route": "/dashboard/profile",
-      "serve": "/index.html",
-      "statusCode": 200
-    },
-    {
-      "route": "/dashboard/profile/*",
-      "serve": "/index.html",
-      "statusCode": 200
-    },
-    {
-      "route": "/dashboard/collaborations",
-      "serve": "/index.html",
-      "statusCode": 200
-    },
-    {
-      "route": "/dashboard/collaborations/*",
-      "serve": "/index.html",
-      "statusCode": 200
-    },
-    {
-      "route": "/dashboard/new-collaboration",
-      "serve": "/index.html",
-      "statusCode": 200
-    },
-    {
-      "route": "/dashboard/agenda",
-      "serve": "/index.html",
-      "statusCode": 200
-    },
-    {
-      "route": "/dashboard/chats",
-      "serve": "/index.html",
-      "statusCode": 200
-    },
-    {
-      "route": "/dashboard/chats/*",
       "serve": "/index.html",
       "statusCode": 200
     }
